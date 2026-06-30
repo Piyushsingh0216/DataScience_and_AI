@@ -1,3 +1,4 @@
+
 import pandas as pd
 
 # 1. Create the sample data
@@ -49,3 +50,42 @@ print("\n")
 print("--- df.shape ---")
 print(f"The DataFrame has {df.shape[0]} rows and {df.shape[1]} columns.")
 print(df.shape)
+
+# Read the CSV file
+students = pd.read_csv("students.csv")
+
+# Display the first 5 rows
+print("First 5 Rows:")
+print(students.head())
+
+# Display the last 5 rows
+print("\nLast 5 Rows:")
+print(students.tail())
+
+# Information about the dataset
+print("\nDataset Information:")
+students.info()
+
+# Statistical summary
+print("\nStatistical Summary:")
+print(students.describe())
+
+# Shape of the dataset
+print("\nShape:")
+print(students.shape)
+
+# Column names
+print("\nColumns:")
+print(students.columns)
+
+# Display only one column
+print("\nName Column:")
+print(students["Name"])
+
+# Display two columns
+print("\nName and Marks:")
+print(students[["Name", "Marks"]])
+
+# Filter rows where Age > 20
+print("\nStudents with Age > 20:")
+print(students[students["Age"] > 20])

@@ -75,3 +75,38 @@ print("\n--- Array Attributes ---")
 print("Shape (Dimensions):", practice_array.shape) 
 print("Size (Total Elements):", practice_array.size)  
 print("Ndim (Number of Axes):", practice_array.ndim)
+
+# Mini Exercise:
+import numpy as np
+
+# Create a 5×5 NumPy array
+array = np.array([
+    [1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10],
+    [11, 12, 13, 14, 15],
+    [16, 17, 18, 19, 20],
+    [21, 22, 23, 24, 25]
+])
+
+print("Original Array:")
+print(array)
+
+# First row
+print("\nFirst Row:")
+print(array[0])
+
+# Last column
+print("\nLast Column:")
+print(array[:, -1])
+
+# Diagonal elements
+print("\nDiagonal Elements:")
+print(np.diag(array))
+
+# Sum of all elements
+print("\nSum of All Elements:")
+print(np.sum(array))
+
+# Mean of all elements
+print("\nMean of All Elements:")
+print(np.mean(array))

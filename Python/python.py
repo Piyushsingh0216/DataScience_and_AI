@@ -156,3 +156,81 @@ while num > 0:
     num //= 10
     count += 1
 print(f"Number of digits: {count}")
+
+# Sum of digits in a Number
+number = int(input("Enter a number: "))
+
+sum_of_digits = 0
+
+while number > 0:
+    digit = number % 10
+    sum_of_digits += digit
+    number //= 10
+
+print("Sum of digits =", sum_of_digits)
+
+# Count the number of vowels in a string
+text = input("Enter a string: ")
+
+vowel_count = 0
+
+for character in text.lower():
+    if character in "aeiou":
+        vowel_count += 1
+
+print("Number of vowels =", vowel_count)
+
+# Reverse a string
+text = input("Enter a string: ")
+
+reversed_text = text[::-1]
+
+print("Reversed string:", reversed_text)
+
+#check if a string is a palindrome
+text = input("Enter a string: ").lower()
+
+if text == text[::-1]:
+    print("Palindrome")
+else:
+    print("Not a palindrome")
+
+# Find the largest of three numbers
+def find_largest(first, second, third):
+    if first >= second and first >= third:
+        return first
+    elif second >= first and second >= third:
+        return second
+    else:
+        return third
+
+
+num1 = int(input("Enter first number: "))
+num2 = int(input("Enter second number: "))
+num3 = int(input("Enter third number: "))
+
+largest = find_largest(num1, num2, num3)
+
+print("Largest number is:", largest)
+
+#generate first n fabonacci series numbers
+number_of_terms = int(input("Enter number of terms: "))
+
+first = 0
+second = 1
+
+for _ in range(number_of_terms):
+    print(first, end=" ")
+    next_number = first + second
+    first = second
+    second = next_number
+
+#print all even numbers from 1 to 100
+for number in range(2, 101, 2):
+    print(number)
+
+# Print a pyramid of stars
+rows = int(input("Enter number of rows: "))
+
+for row in range(1, rows + 1):
+    print("*" * row)
