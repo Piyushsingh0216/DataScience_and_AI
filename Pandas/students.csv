@@ -1,6 +1,8 @@
 Name,Age,Course,Marks
 Piyush,21,CSE,88
 Rahul,20,IT,75
-Aman,22,CSE,91
-Sneha,19,ECE,85
+Aman,,CSE,91
+Sneha,19,,85
 Riya,23,CSE,95
+Kabir,22,ECE,
+Zara,,,

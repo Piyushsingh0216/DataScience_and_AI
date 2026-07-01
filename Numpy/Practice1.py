@@ -110,3 +110,20 @@ print(np.sum(array))
 # Mean of all elements
 print("\nMean of All Elements:")
 print(np.mean(array))
+
+# Create an array of 20 random integers between 1 and 100
+arr = np.random.randint(1, 101, 20)
+print(f"Original Array: {arr}")
+
+# Even and Odd numbers using boolean indexing
+print(f"Even numbers:   {arr[arr % 2 == 0]}")
+print(f"Odd numbers:    {arr[arr % 2 != 0]}")
+
+# Statistics
+print(f"Maximum:        {arr.max()}")
+print(f"Minimum:        {arr.min()}")
+print(f"Average:        {arr.mean()}")
+
+# Sorting and Uniques
+print(f"Sorted array:   {np.sort(arr)}")
+print(f"Unique values:  {np.unique(arr)}")

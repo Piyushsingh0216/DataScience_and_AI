@@ -234,3 +234,58 @@ rows = int(input("Enter number of rows: "))
 
 for row in range(1, rows + 1):
     print("*" * row)
+
+# Function to find the maximum of two numbers
+def find_maximum(num1, num2):
+    if num1 > num2:
+        return num1
+    else:
+        return num2
+
+# Function to check the number is prime or not
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+#Function to calculate the factorial of a number
+def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+# Function to count vovels in a string
+def count_vowels(string):
+    vowels = "aeiouAEIOU"
+    count = 0
+    for char in string:
+        if char in vowels:
+            count += 1
+    return count
+
+#Function to reverse a string
+def reverse_string(string):
+    return string[::-1]
+
+# Function to check if a string is a palindrome
+def is_palindrome(string):
+    return string == string[::-1]
+
+# Function to calculate sum of a list of numbers
+def sum_of_list(numbers):
+    total = 0
+    for num in numbers:
+        total += num
+    return total
+
+# Function to find the largest element in a list
+def find_largest(numbers):
+    largest = numbers[0]
+    for num in numbers:
+        if num > largest:
+            largest = num
+    return largest
