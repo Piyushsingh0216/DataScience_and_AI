@@ -127,3 +127,77 @@ print(f"Average:        {arr.mean()}")
 # Sorting and Uniques
 print(f"Sorted array:   {np.sort(arr)}")
 print(f"Unique values:  {np.unique(arr)}")
+
+# 1. np.where(): Returns elements chosen from x or y depending on condition.
+arr = np.array([10, 20, 30, 40])
+# Replace values > 25 with 1, else 0
+print(np.where(arr > 25, 1, 0)) 
+# Output: [0 0 1 1]
+
+# 2. np.unique(): Finds the sorted unique elements of an array.
+arr_dup = np.array([1, 1, 2, 3, 3, 4])
+print(np.unique(arr_dup)) 
+# Output: [1 2 3 4]
+
+# 3. np.sort(): Returns a sorted copy of an array.
+arr_unsorted = np.array([5, 2, 9, 1])
+print(np.sort(arr_unsorted)) 
+# Output: [1 2 5 9]
+
+# 4. np.concatenate(): Joins a sequence of arrays along an existing axis.
+a = np.array([1, 2])
+b = np.array([3, 4])
+print(np.concatenate((a, b))) 
+# Output: [1 2 3 4]
+
+# 5. np.vstack(): Stacks arrays in sequence vertically (row wise).
+print(np.vstack((a, b)))
+# Output: 
+# [[1 2]
+#  [3 4]]
+
+# 6. np.hstack(): Stacks arrays in sequence horizontally (column wise).
+print(np.hstack((a, b)))
+# Output: [1 2 3 4]
+
+# 7. np.random.randint(): Returns random integers from `low` (inclusive) to `high` (exclusive).
+print(np.random.randint(0, 10, size=5)) 
+# Output: e.g., [3 8 2 0 9]
+
+# 8. np.random.choice(): Generates a random sample from a given 1-D array.
+choices = ['AI', 'Data Science', 'Web Dev']
+print(np.random.choice(choices, size=2, replace=False)) 
+# Output: e.g., ['Data Science' 'AI']
+
+# Set a seed for reproducibility (optional)
+np.random.seed(42)
+
+# Generate 100 random student marks (between 0 and 100)
+marks = np.random.randint(0, 101, size=100)
+
+# Calculate statistics
+max_mark = np.max(marks)
+min_mark = np.min(marks)
+mean_mark = np.mean(marks)
+median_mark = np.median(marks)
+std_dev = np.std(marks)
+
+# Filter students based on conditions
+# marks > 75 creates a boolean mask, which we use to index the original array
+above_75 = marks[marks > 75]
+below_35 = marks[marks < 35]
+
+# Print Results
+print("--- Student Marks Summary ---")
+print(f"Maximum Mark:        {max_mark}")
+print(f"Minimum Mark:        {min_mark}")
+print(f"Mean Mark:           {mean_mark:.2f}")
+print(f"Median Mark:         {median_mark}")
+print(f"Standard Deviation:  {std_dev:.2f}")
+
+print("\n--- Performance Thresholds ---")
+print(f"Number of students scoring above 75: {len(above_75)}")
+print(f"Marks > 75: {above_75}")
+
+print(f"\nNumber of students scoring below 35: {len(below_35)}")
+print(f"Marks < 35: {below_35}")

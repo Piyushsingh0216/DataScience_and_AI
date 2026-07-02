@@ -289,3 +289,49 @@ def find_largest(numbers):
         if num > largest:
             largest = num
     return largest
+
+# Read a text file and print its contents
+file_path = input("Enter the path of the text file to read: ")
+
+with open(file_path, "r") as file:
+    contents = file.read()
+    print(contents)
+
+# Count the number of lines, words, and characters in a text file
+file_path = input("Enter the path of the text file to analyze: ")
+
+with open(file_path, "r") as file:
+    contents = file.read()
+    line_count = contents.count('\n')
+    word_count = len(contents.split())
+    character_count = len(contents)
+
+    print("Number of lines:", line_count)
+    print("Number of words:", word_count)
+    print("Number of characters:", character_count)
+
+# Copy the contents of one text file to another
+source_file_path = input("Enter the path of the source text file: ")
+destination_file_path = input("Enter the path of the destination text file: ")
+
+with open(source_file_path, "r") as source_file:
+    contents = source_file.read()
+
+with open(destination_file_path, "w") as destination_file:
+    destination_file.write(contents)
+
+# Handle division by zero using exception handling
+try:
+    numerator = float(input("Enter the numerator: "))
+    denominator = float(input("Enter the denominator: "))
+    result = numerator / denominator
+    print(f"Result: {result}")
+except ZeroDivisionError:
+    print("Error: Denominator cannot be zero.")
+
+#handle invalid integer input
+try:
+    user_input = int(input("Enter an integer: "))
+    print(f"You entered: {user_input}")
+except ValueError:
+    print("Error: Invalid input. Please enter a valid integer.")

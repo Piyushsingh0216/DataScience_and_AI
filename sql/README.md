@@ -43,3 +43,35 @@
 ## Difficulty
 
 ⭐⭐☆☆☆
+
+# SQL Day 3
+
+## Topics Covered
+
+* UPDATE
+* DELETE
+* COUNT()
+* SUM()
+* AVG()
+* MAX()
+* MIN()
+
+## Concepts Learned
+
+* Updating Existing Records
+* Deleting Records
+* Aggregate Functions
+* Data Analysis Using SQL
+
+## Practice Completed
+
+* Updated records using `UPDATE`
+* Deleted records using `DELETE`
+* Counted total records using `COUNT()`
+* Calculated total using `SUM()`
+* Calculated average using `AVG()`
+* Found maximum and minimum values using `MAX()` and `MIN()`
+
+## Difficulty
+
+⭐⭐⭐☆☆

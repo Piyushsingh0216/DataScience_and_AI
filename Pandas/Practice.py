@@ -173,3 +173,38 @@ print("\nStudents from CSE branch:\n", cse_students)
 # 0  Piyush   21    CSE     88
 # 2    Aman   22    CSE     91
 # 4    Riya   23    CSE     95
+
+print("--- 1. Original Dataset ---")
+print(df)
+print("\nMissing Values Count:")
+print(df.isnull().sum())
+
+# 2. Data Cleaning
+# Drop rows where all three critical columns (Age, Course, Marks) are missing (drops Zara)
+df_clean = df.dropna(subset=['Age', 'Course', 'Marks'], how='all').copy()
+
+# Fill missing Age with the median age of the remaining students
+median_age = df_clean['Age'].median()
+df_clean['Age'] = df_clean['Age'].fillna(median_age)
+
+# Fill missing Course with 'Unknown'
+df_clean['Course'] = df_clean['Course'].fillna('Unknown')
+
+# Fill missing Marks with the average marks of the class
+mean_marks = df_clean['Marks'].mean()
+df_clean['Marks'] = df_clean['Marks'].fillna(mean_marks)
+
+print("\n--- 2. Cleaned Dataset ---")
+print(df_clean)
+
+# 3. Extracting Insights
+print("\n--- 3. Dataset Insights ---")
+print(f"Total valid students: {len(df_clean)}")
+print(f"Average Marks: {df_clean['Marks'].mean():.2f}")
+print(f"Highest Marks: {df_clean['Marks'].max()} (Scored by: {df_clean.loc[df_clean['Marks'].idxmax(), 'Name']})")
+
+print("\nStudents scoring above 85:")
+print(df_clean[df_clean['Marks'] > 85][['Name', 'Marks']])
+
+print("\nAverage Marks by Course:")
+print(df_clean.groupby('Course')['Marks'].mean().round(2).to_string())
