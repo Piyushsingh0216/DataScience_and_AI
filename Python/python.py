@@ -335,3 +335,90 @@ try:
     print(f"You entered: {user_input}")
 except ValueError:
     print("Error: Invalid input. Please enter a valid integer.")
+
+# Create calculator using function
+def calculator():
+    print("Simple Calculator")
+    print("Select operation:")
+    print("1. Addition")
+    print("2. Subtraction")
+    print("3. Multiplication")
+    print("4. Division")
+
+    choice = input("Enter choice (1/2/3/4): ")
+
+    if choice in ['1', '2', '3', '4']:
+        num1 = float(input("Enter first number: "))
+        num2 = float(input("Enter second number: "))
+
+        if choice == '1':
+            print(f"{num1} + {num2} = {num1 + num2}")
+        elif choice == '2':
+            print(f"{num1} - {num2} = {num1 - num2}")
+        elif choice == '3':
+            print(f"{num1} * {num2} = {num1 * num2}")
+        elif choice == '4':
+            if num2 != 0:
+                print(f"{num1} / {num2} = {num1 / num2}")
+            else:
+                print("Error: Division by zero is not allowed.")
+    else:
+        print("Invalid input. Please select a valid operation.")
+
+# Create a custom Python module and import it into another file.
+import my_module as mm
+mm.calculator()
+print("Maximum of 10 and 20 is:", mm.find_maximum(10, 20))
+
+# Read a text file and count:
+# Words
+# Lines
+# Characters
+file_path = input("Enter the path of the text file to analyze: ")
+
+with open(file_path, "r") as file:
+    contents = file.read()
+    word_count = len(contents.split())
+    line_count = contents.count('\n')
+    character_count = len(contents)
+
+    print("Number of words:", word_count)
+    print("Number of lines:", line_count)
+    print("Number of characters:", character_count)
+
+# Build a simple contact book using file handling.
+contact_file = "contacts.txt"
+print("Simple Contact Book")
+while True:
+    print("\nOptions:")
+    print("1. Add Contact")
+    print("2. View Contacts")
+    print("3. Exit")
+
+    choice = input("Enter your choice (1/2/3): ")
+
+    if choice == '1':
+        name = input("Enter contact name: ")
+        phone = input("Enter contact phone number: ")
+        with open(contact_file, "a") as file:
+            file.write(f"{name},{phone}\n")
+        print("Contact added successfully.")
+    elif choice == '2':
+        print("\nContacts:")
+        with open(contact_file, "r") as file:
+            for line in file:
+                name, phone = line.strip().split(',')
+                print(f"Name: {name}, Phone: {phone}")
+    elif choice == '3':
+        print("Exiting the contact book.")
+        break
+    else:
+        print("Invalid choice. Please try again.")
+
+# Handle invalid input using try and except.
+try:
+    user_input = int(input("Enter an integer: "))
+    print(f"You entered: {user_input}")
+except ValueError:
+    print("Error: Invalid input. Please enter a valid integer.")
+    

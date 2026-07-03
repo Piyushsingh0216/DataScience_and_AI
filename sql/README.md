@@ -75,3 +75,32 @@
 ## Difficulty
 
 ⭐⭐⭐☆☆
+
+# SQL Day 4
+
+## Topics Covered
+
+* DISTINCT
+* GROUP BY
+* HAVING
+* AS (Alias)
+
+## Concepts Learned
+
+* Retrieving Unique Records
+* Grouping Data
+* Aggregate Analysis
+* Filtering Groups
+* Using Aliases for Better Readability
+
+## Practice Completed
+
+* Retrieved unique departments using `DISTINCT`
+* Counted students department-wise using `GROUP BY`
+* Calculated average CGPA department-wise
+* Filtered grouped data using `HAVING`
+* Used aliases with `AS` for meaningful output
+
+## Difficulty
+
+⭐⭐⭐☆☆

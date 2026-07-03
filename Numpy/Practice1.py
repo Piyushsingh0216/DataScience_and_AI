@@ -201,3 +201,24 @@ print(f"Marks > 75: {above_75}")
 
 print(f"\nNumber of students scoring below 35: {len(below_35)}")
 print(f"Marks < 35: {below_35}")
+
+# Generate marks for 200 students (random integers between 0 and 100)
+marks = np.random.randint(0, 101, size=200)
+
+# Calculate statistics using your practice list
+highest_marks = np.max(marks)
+lowest_marks = np.min(marks)
+average_marks = np.mean(marks)
+std_dev = np.std(marks)
+
+# Calculate counts using boolean indexing
+above_80 = np.sum(marks > 80)
+below_40 = np.sum(marks < 40)
+
+# Display results
+print(f"Highest marks: {highest_marks}")
+print(f"Lowest marks: {lowest_marks}")
+print(f"Average marks: {average_marks:.2f}")
+print(f"Standard deviation: {std_dev:.2f}")
+print(f"Number of students above 80: {above_80}")
+print(f"Number of students below 40: {below_40}")

@@ -112,7 +112,7 @@ print(df.columns)
 
 # 6. isnull() - Check for missing data
 print("\n--- isnull() ---")
-print(df.isnull()) # In your dataset, all of these will be False since there is no missing data!
+print(df.isnull()) # In dataset, all of these will be False since there is no missing data!
 
 # 7. dropna() - Drop rows with missing data
 print("\n--- 2. dropna() ---")# This will drop ANY row that has at least one missing value
@@ -208,3 +208,68 @@ print(df_clean[df_clean['Marks'] > 85][['Name', 'Marks']])
 
 print("\nAverage Marks by Course:")
 print(df_clean.groupby('Course')['Marks'].mean().round(2).to_string())
+
+# 1. Create a mock student dataset
+data = {
+    'Student_ID': range(1, 13),
+    'Name': ['Aarav', 'Neha', 'Rohan', 'Priya', 'Aditya', 'Kavya', 
+             'Vikram', 'Sneha', 'Rahul', 'Ananya', 'Karan', 'Meera'],
+    'Department': ['CSE (AI)', 'Data Science', 'CSE (AI)', 'Mechanical', 'CSE (Core)', 
+                   'Data Science', 'CSE (AI)', 'CSE (Core)', 'Mechanical', 'CSE (AI)', 
+                   'CSE (Core)', 'Data Science'],
+    'CGPA': [9.4, 6.8, 8.5, 7.1, 9.6, 6.5, 8.8, 7.9, 6.2, 9.8, 8.1, 9.1],
+    'City': ['Lucknow', 'Delhi', 'Gorakhpur', 'Lucknow', 'Pune', 
+             'Delhi', 'Gorakhpur', 'Pune', 'Lucknow', 'Gorakhpur', 
+             'Delhi', 'Pune']
+}
+
+df = pd.DataFrame(data)
+
+
+# 1. Total number of students
+# Function used: count()
+total_students = df['Student_ID'].count()
+print(f"Total Students: {total_students}")
+
+# 2. Average CGPA
+# Function used: mean()
+avg_cgpa = df['CGPA'].mean()
+print(f"Average CGPA: {avg_cgpa:.2f}")
+
+# 3. Highest CGPA
+# Function used: max()
+highest_cgpa = df['CGPA'].max()
+print(f"Highest CGPA: {highest_cgpa}")
+
+# 4. Lowest CGPA
+# Function used: min()
+lowest_cgpa = df['CGPA'].min()
+print(f"Lowest CGPA: {lowest_cgpa}")
+
+# 5. Students with CGPA above 9
+# Functions used: count() with boolean masking
+above_9 = df[df['CGPA'] > 9]['Student_ID'].count()
+print(f"Students with CGPA > 9: {above_9}")
+
+# 6. Students below 7
+# Functions used: count() with boolean masking
+below_7 = df[df['CGPA'] < 7]['Student_ID'].count()
+print(f"Students with CGPA < 7: {below_7}")
+
+print("\n--- Department-wise Student Count ---")
+# 7. Department-wise student count
+# Functions used: groupby(), count()
+dept_count = df.groupby('Department')['Student_ID'].count()
+print(dept_count)
+
+print("\n--- Department-wise Average CGPA (Sorted) ---")
+# 8. Department-wise average CGPA
+# Functions used: groupby(), mean(), sort_values()
+dept_avg_cgpa = df.groupby('Department')['CGPA'].mean().sort_values(ascending=False)
+print(dept_avg_cgpa)
+
+print("\n--- City-wise Student Distribution ---")
+# 9. City-wise student distribution
+# Function used: value_counts()
+city_dist = df['City'].value_counts()
+print(city_dist)
