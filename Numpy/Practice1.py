@@ -222,3 +222,44 @@ print(f"Average marks: {average_marks:.2f}")
 print(f"Standard deviation: {std_dev:.2f}")
 print(f"Number of students above 80: {above_80}")
 print(f"Number of students below 40: {below_40}")
+
+import random
+import statistics
+import csv
+
+# Set seed for reproducible results (remove this to get different numbers every time)
+random.seed(42)
+
+# Generate 500 random marks between 0 and 100
+marks = [random.randint(0, 100) for _ in range(500)]
+
+# Calculate statistics
+mean = statistics.mean(marks)
+median = statistics.median(marks)
+stdev = statistics.stdev(marks)
+variance = statistics.variance(marks)
+highest = max(marks)
+lowest = min(marks)
+above_90 = sum(1 for mark in marks if mark > 90)
+below_40 = sum(1 for mark in marks if mark < 40)
+top_10 = sorted(marks, reverse=True)[:10]
+
+# Print the calculations
+print(f"Mean: {mean:.2f}")
+print(f"Median: {median}")
+print(f"Standard Deviation: {stdev:.2f}")
+print(f"Variance: {variance:.2f}")
+print(f"Highest: {highest}")
+print(f"Lowest: {lowest}")
+print(f"Students above 90: {above_90}")
+print(f"Students below 40: {below_40}")
+print(f"Top 10 Marks: {top_10}")
+
+# Export the raw dataset to a CSV file
+with open('student_marks.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Student_ID', 'Mark'])
+    for student_id, mark in enumerate(marks, start=1):
+        writer.writerow([student_id, mark])
+
+print("\nDataset successfully exported to 'student_marks.csv'")

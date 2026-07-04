@@ -104,3 +104,38 @@
 ## Difficulty
 
 ⭐⭐⭐☆☆
+
+# SQL Day 5
+
+## Topics Covered
+
+* SELECT
+* WHERE
+* ORDER BY
+* LIMIT
+* DISTINCT
+* GROUP BY
+* HAVING
+* Aggregate Functions (`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`)
+
+## Concepts Learned
+
+* Retrieving and filtering data
+* Sorting query results
+* Grouping records
+* Performing data analysis using aggregate functions
+* Writing business-oriented SQL queries
+
+## Practice Completed
+
+* Displayed all student records
+* Filtered students based on CGPA
+* Retrieved the top 5 students by CGPA
+* Calculated department-wise average CGPA
+* Counted students city-wise and department-wise
+* Used `HAVING` to filter grouped results
+* Found highest and lowest CGPA using aggregate functions
+
+## Difficulty
+
+⭐⭐⭐⭐☆

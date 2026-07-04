@@ -273,3 +273,36 @@ print("\n--- City-wise Student Distribution ---")
 # Function used: value_counts()
 city_dist = df['City'].value_counts()
 print(city_dist)
+
+total_students = len(df)
+avg_cgpa = df['CGPA'].mean()
+highest_cgpa = df['CGPA'].max()
+lowest_cgpa = df['CGPA'].min()
+
+# Top & Bottom 5
+top_5 = df.nlargest(5, 'CGPA')[['Name', 'CGPA']]
+bottom_5 = df.nsmallest(5, 'CGPA')[['Name', 'CGPA']]
+
+# Groupings
+dept_avg = df.groupby('Department')['CGPA'].mean()
+city_count = df['City'].value_counts()
+
+# Conditions
+above_9 = len(df[df['CGPA'] > 9])
+below_7 = len(df[df['CGPA'] < 7])
+
+# Missing Values
+missing_report = df.isnull().sum()
+
+# Print Results
+print(f"Total Students: {total_students}")
+print(f"Average CGPA: {avg_cgpa:.2f}")
+print(f"Highest CGPA: {highest_cgpa}")
+print(f"Lowest CGPA: {lowest_cgpa}")
+print(f"\n--- Top 5 Students ---\n{top_5}")
+print(f"\n--- Bottom 5 Students ---\n{bottom_5}")
+print(f"\n--- Department-wise Average CGPA ---\n{dept_avg}")
+print(f"\n--- City-wise Student Count ---\n{city_count}")
+print(f"\nStudents with CGPA > 9: {above_9}")
+print(f"Students with CGPA < 7: {below_7}")
+print(f"\n--- Missing Value Report ---\n{missing_report}")
