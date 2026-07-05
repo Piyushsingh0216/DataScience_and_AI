@@ -1,8 +1,9 @@
-Name,Age,Course,Marks
-Piyush,21,CSE,88
-Rahul,20,IT,75
-Aman,,CSE,91
-Sneha,19,,85
-Riya,23,CSE,95
-Kabir,22,ECE,
-Zara,,,
+ID,Name,Age,Course,Marks
+1,Piyush,21,CSE,88
+2,Rahul,20,IT,75
+2,Rahul,20,IT,75
+3,Aman,,CSE,91
+4,Sneha,19,,85
+5,Riya,23,CSE,95
+6,Kabir,22,ECE,
+7,Zara,,,
