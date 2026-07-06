@@ -16,3 +16,33 @@ print(sum_of_numbers)
 names = ["Alice", "Bob", "Charlie"]
 uppercase_names = list(map(lambda name: name.upper(), names))
 print(uppercase_names)
+
+# Create squares from 1–20 using list comprehension
+squares = [x**2 for x in range(1, 21)]
+
+print(squares)
+
+# Create a list of even numbers from 1–100
+evens = list(range(2, 101, 2))
+
+print(evens)
+
+# Create a dictionary mapping numbers to their squares
+square_dict = {x: x**2 for x in range(1, 11)}
+
+print(square_dict)
+
+# Remove duplicate words from a list using a set
+words = ['apple', 'banana', 'orange', 'apple', 'grape', 'banana']
+
+# Convert the list to a set to remove duplicates, then back to a list
+unique_words = list(set(words))
+
+print(unique_words)
+
+# Convert a list of names to lowercase using list comprehension
+names = ['Alice', 'BOB', 'Charlie', 'dAvId']
+
+lowercase_names = [name.lower() for name in names]
+
+print(lowercase_names)

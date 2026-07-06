@@ -139,3 +139,59 @@
 ## Difficulty
 
 ⭐⭐⭐⭐☆
+# SQL Day 6
+
+## Topics Covered
+
+* INNER JOIN
+* LEFT JOIN
+* RIGHT JOIN
+* FULL OUTER JOIN (Concept)
+
+## Concepts Learned
+
+* Combining data from multiple tables
+* Understanding relationships between tables
+* Retrieving matching and non-matching records
+* Primary Key & Foreign Key relationships
+
+## Practice Completed
+
+* Created `Students` and `Departments` tables
+* Retrieved student details with department names using `INNER JOIN`
+* Practiced `LEFT JOIN` to display all students
+* Practiced `RIGHT JOIN` to display all departments
+* Understood the concept of `FULL OUTER JOIN`
+
+## Difficulty
+
+⭐⭐⭐⭐☆
+# SQL Day 7
+
+## Topics Covered
+
+* JOIN Practice
+* Aggregate Functions with JOIN
+* GROUP BY with JOIN
+* HAVING with JOIN
+* Aliases (`AS`)
+
+## Concepts Learned
+
+* Performing analysis across multiple tables
+* Department-wise student statistics
+* Combining JOIN with aggregate functions
+* Writing business-oriented SQL queries
+
+## Practice Completed
+
+* Displayed student names with department names
+* Counted students in each department
+* Calculated department-wise average CGPA
+* Filtered grouped data using `HAVING`
+* Practiced SQL interview-style JOIN queries
+
+## Difficulty
+
+⭐⭐⭐⭐☆
+

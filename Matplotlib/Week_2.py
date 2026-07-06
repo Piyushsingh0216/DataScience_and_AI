@@ -41,3 +41,47 @@ plt.ylabel('CGPA')
 plt.title('Top 5 Students by CGPA')
 plt.xticks(rotation=45)
 plt.show()
+
+# CGPA vs Age Scatter Plot
+Age = df['Age']
+CGPA = df['CGPA']
+plt.scatter(Age, CGPA, color='blue', alpha=0.7)
+
+plt.title('CGPA vs Age Scatter Plot')
+plt.xlabel('Age (Years)')
+plt.ylabel('Cumulative Grade Point Average (CGPA)')
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.show()
+
+# Department-wise Average CGPA Bar Chart
+dept_avg = df.groupby('Department')['CGPA'].mean()
+
+plt.bar(dept_avg.index, dept_avg.values, color='skyblue', edgecolor='black')
+plt.title('Average CGPA by Department')
+plt.xlabel('Department')
+plt.ylabel('Average CGPA')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# Histogram of CGPA
+cgpa = df['CGPA']
+plt.hist(cgpa, bins=10, color='lightgreen', edgecolor='black')
+plt.title('Distribution of CGPA')
+plt.xlabel('CGPA')
+plt.ylabel('Number of Students')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+# Pie Chart of Department Distribution
+dept_counts = df['Department'].value_counts()
+plt.pie(
+    dept_counts.values, 
+    labels=dept_counts.index, 
+    autopct='%1.1f%%', 
+    startangle=140, 
+    colors=plt.cm.Paired.colors # Uses a built-in color palette
+)
+plt.title('Student Distribution by Department')
+plt.axis('equal')
+plt.show()
