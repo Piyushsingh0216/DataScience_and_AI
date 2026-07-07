@@ -195,3 +195,32 @@
 
 ⭐⭐⭐⭐☆
 
+# SQL Day 8
+
+## Topics Covered
+
+* CROSS JOIN
+* SELF JOIN (Concept)
+* UNION
+* UNION ALL
+* JOIN Revision
+
+## Concepts Learned
+
+* Combining every record from two tables using `CROSS JOIN`
+* Understanding relationships within the same table using `SELF JOIN`
+* Merging results from multiple queries using `UNION`
+* Difference between `UNION` and `UNION ALL`
+* Strengthening SQL JOIN concepts
+
+## Practice Completed
+
+* Practiced `CROSS JOIN`
+* Understood `SELF JOIN` through examples
+* Compared `UNION` and `UNION ALL`
+* Revised `INNER JOIN`, `LEFT JOIN`, and `RIGHT JOIN`
+* Solved interview-style SQL JOIN queries
+
+## Difficulty
+
+⭐⭐⭐⭐☆

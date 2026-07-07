@@ -56,3 +56,59 @@ dept_performance = dept_performance.round(2)
 
 print("--- Department Performance Summary ---")
 print(dept_performance)
+
+# Create a sample DataFrame
+data = {
+    'Roll Number': [1001, 1002, 1003, 1004, 1005],
+    'Name': ['Aarav', 'Priya', 'Rahul', 'Neha', 'Vikram'],
+    'City': ['Mumbai', 'Delhi', 'Mumbai', 'Bangalore', 'Delhi'],
+    'Department': ['Computer Science', 'Mechanical', 'Electrical', 'Civil', 'Computer Science'],
+    'CGPA': [8.5, 7.2, 9.1, 6.8, 8.8]
+}
+
+df = pd.DataFrame(data)
+
+# Filter for students from 'Mumbai'
+mumbai_students = df[df['City'] == 'Mumbai']
+
+print("--- Students from Mumbai ---")
+print(mumbai_students)
+
+# Filter for CGPA greater than 8.0
+high_achievers = df[df['CGPA'] > 8.0]
+
+print("--- Students with CGPA > 8.0 ---")
+print(high_achievers)
+
+# Define the function that assigns the grade
+def calculate_grade(cgpa):
+    if cgpa >= 9.0:
+        return 'A+'
+    elif cgpa >= 8.0:
+        return 'A'
+    elif cgpa >= 7.0:
+        return 'B'
+    else:
+        return 'C'
+
+# Apply the function to the CGPA column and assign it to a new 'Grade' column
+df['Grade'] = df['CGPA'].apply(calculate_grade)
+
+print("--- DataFrame with New Grade Column ---")
+print(df)
+
+# Filter using a query string (e.g., CGPA > 8 AND from Delhi)
+# Note: String values inside the query need their own quotes
+filtered_students = df.query("CGPA > 8.0 and City == 'Delhi'")
+
+print("--- Filtered using query() ---")
+print(filtered_students)
+
+# Define the list of departments we care about
+target_departments = ['Computer Science', 'Electrical']
+
+# Use isin() to keep rows where the Department is in our target list
+selected_departments = df[df['Department'].isin(target_departments)]
+
+print("--- CS and Electrical Students ---")
+print(selected_departments)
