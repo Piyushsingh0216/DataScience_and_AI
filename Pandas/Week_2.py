@@ -112,3 +112,32 @@ selected_departments = df[df['Department'].isin(target_departments)]
 
 print("--- CS and Electrical Students ---")
 print(selected_departments)
+
+#1. Number of students
+num_students = df.shape[0]
+print(f"Number of students: {num_students}")
+
+#2. Average CGPA
+avg_cgpa = df['CGPA'].mean()
+print(f"Average CGPA: {avg_cgpa}")
+
+#3. Highest & Lowest CGPA
+highest_cgpa = df['CGPA'].max()
+lowest_cgpa = df['CGPA'].min()
+
+print(f"Highest: {highest_cgpa}, Lowest: {lowest_cgpa}")
+
+# To find the student with the highest CGPA:
+top_student = df.loc[df['CGPA'].idxmax(), 'Name']
+
+#4. Department-wise averages
+dept_avg = df.groupby('Department')['CGPA'].mean()
+print(dept_avg)
+
+#5. Missing values
+missing_data = df.isnull().sum()
+print(missing_data)
+
+#6. City-wise student count
+city_counts = df['City'].value_counts()
+print(city_counts)

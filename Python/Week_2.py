@@ -148,3 +148,96 @@ def simple_calculator():
 
 # Run the calculator
 # simple_calculator()
+
+# Create:
+#Student class
+#Car class
+#BankAccount class
+#Employee class
+class Student:
+    # Constructor
+    def __init__(self, name, student_id, major):
+        # Attributes
+        self.name = name
+        self.student_id = student_id
+        self.major = major
+        self.grades = []
+
+    # Method 1
+    def add_grade(self, grade):
+        self.grades.append(grade)
+        print(f"Grade {grade} added for {self.name}.")
+
+    # Method 2
+    def get_average(self):
+        if not self.grades:
+            return 0.0
+        return sum(self.grades) / len(self.grades)
+        
+    # Method 3
+    def display_info(self):
+        print(f"Student: {self.name} (ID: {self.student_id}) - Major: {self.major}")
+
+class Car:
+    # Constructor
+    def __init__(self, make, model, year):
+        # Attributes
+        self.make = make
+        self.model = model
+        self.year = year
+        self.speed = 0
+
+    # Method 1
+    def accelerate(self, increment):
+        self.speed += increment
+        print(f"The {self.year} {self.make} {self.model} accelerates to {self.speed} mph.")
+
+    # Method 2
+    def brake(self, decrement):
+        # Prevents speed from dropping below 0
+        self.speed = max(0, self.speed - decrement)
+        print(f"The {self.make} {self.model} slows down to {self.speed} mph.")
+
+class BankAccount:
+    # Constructor
+    def __init__(self, account_holder, account_number, initial_balance=0.0):
+        # Attributes
+        self.account_holder = account_holder
+        self.account_number = account_number
+        self.balance = initial_balance
+
+    # Method 1
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            print(f"Deposited ${amount:.2f}. New balance: ${self.balance:.2f}")
+        else:
+            print("Deposit amount must be positive.")
+
+    # Method 2
+    def withdraw(self, amount):
+        if 0 < amount <= self.balance:
+            self.balance -= amount
+            print(f"Withdrew ${amount:.2f}. New balance: ${self.balance:.2f}")
+        else:
+            print("Insufficient funds or invalid withdrawal amount.")
+
+class Employee:
+    # Constructor
+    def __init__(self, name, employee_id, position, salary):
+        # Attributes
+        self.name = name
+        self.employee_id = employee_id
+        self.position = position
+        self.salary = salary
+
+    # Method 1
+    def give_raise(self, percent_increase):
+        raise_amount = self.salary * (percent_increase / 100)
+        self.salary += raise_amount
+        print(f"{self.name} received a {percent_increase}% raise. New salary: ${self.salary:.2f}")
+
+    # Method 2
+    def promote(self, new_position):
+        self.position = new_position
+        print(f"{self.name} has been promoted to {self.position}.")

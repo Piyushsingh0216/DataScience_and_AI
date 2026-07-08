@@ -224,3 +224,33 @@
 ## Difficulty
 
 ⭐⭐⭐⭐☆
+
+# SQL Day 9
+
+## Topics Covered
+
+* Subqueries
+* Single-Row Subqueries
+* Multi-Row Subqueries
+* IN Operator
+* EXISTS (Concept)
+
+## Concepts Learned
+
+* Writing queries inside another query
+* Filtering data using subqueries
+* Comparing values with aggregate functions
+* Using `IN` to match multiple values
+* Understanding when `EXISTS` is useful for checking related records
+
+## Practice Completed
+
+* Found students with above-average CGPA
+* Retrieved students having the maximum CGPA
+* Found departments with more than a specified number of students
+* Used `IN` with subqueries
+* Understood the working of `EXISTS` through examples
+
+## Difficulty
+
+⭐⭐⭐⭐☆
