@@ -141,3 +141,24 @@ print(missing_data)
 #6. City-wise student count
 city_counts = df['City'].value_counts()
 print(city_counts)
+
+# 1. Detect duplicates
+duplicate_count = df.duplicated().sum()
+print(f"Total duplicate rows: {duplicate_count}")
+
+# 2. Remove duplicates
+df_cleaned = df.drop_duplicates()
+print(f"Rows after removing duplicates: {len(df_cleaned)}")
+
+# 3. Identify missing values
+print("\nMissing values per column:")
+missing_data = df_cleaned.isnull().sum()
+print(missing_data[missing_data > 0]) # Only print columns that actually have missing data
+
+# 4. Find correlations
+# Exclude non-numeric columns and ID column to compute a meaningful correlation matrix
+numeric_cols = df_cleaned.select_dtypes(include=[np.number]).drop(columns=['Student_ID'])
+correlation_matrix = numeric_cols.corr()
+
+print("\nCorrelation Matrix:")
+print(correlation_matrix)

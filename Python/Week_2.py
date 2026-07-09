@@ -241,3 +241,85 @@ class Employee:
     def promote(self, new_position):
         self.position = new_position
         print(f"{self.name} has been promoted to {self.position}.")
+
+#1. Library Class
+class Library:
+    def __init__(self):
+        # Initialize an empty list to store books
+        self.books = []
+
+    def add_book(self, title):
+        self.books.append(title)
+        print(f"Added: '{title}'")
+
+    def display_books(self):
+        if not self.books:
+            print("The library is currently empty.")
+        else:
+            print("Library Books:")
+            for book in self.books:
+                print(f"- {book}")
+
+#2. Rectangle Class
+class Rectangle:
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def get_area(self):
+        return self.length * self.width
+
+    def get_perimeter(self):
+        return 2 * (self.length + self.width)
+
+    def display_info(self):
+        print(f"Rectangle[Length: {self.length}, Width: {self.width}]")
+        print(f"Area: {self.get_area()}, Perimeter: {self.get_perimeter()}")
+
+#3. Employee Class (with Class Variables)
+class Employee:
+    # Class variables: Shared by all instances of Employee
+    company_name = "Global Tech Corp"
+    total_employees = 0
+
+    def __init__(self, name, salary):
+        # Instance variables: Unique to each employee
+        self.name = name
+        self.salary = salary
+        
+        # Increment the class variable when a new employee is created
+        Employee.total_employees += 1
+
+    def display_details(self):
+        print(f"Employee: {self.name}, Salary: ${self.salary}")
+        print(f"Company: {Employee.company_name}")
+
+#4. Student Class (Encapsulation with Getters/Setters)
+class Student:
+    def __init__(self, name, grade):
+        # Private attributes
+        self.__name = name
+        self.__grade = grade
+
+    # Getter for name
+    def get_name(self):
+        return self.__name
+
+    # Setter for name
+    def set_name(self, name):
+        if isinstance(name, str) and len(name) > 0:
+            self.__name = name
+        else:
+            print("Invalid name provided.")
+
+    # Getter for grade
+    def get_grade(self):
+        return self.__grade
+
+    # Setter for grade (includes validation logic)
+    def set_grade(self, grade):
+        if 0 <= grade <= 100:
+            self.__grade = grade
+        else:
+            print("Error: Grade must be between 0 and 100.")
+

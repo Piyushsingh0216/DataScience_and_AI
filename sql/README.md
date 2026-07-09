@@ -254,3 +254,34 @@
 ## Difficulty
 
 ⭐⭐⭐⭐☆
+
+# SQL Day 10
+
+## Topics Covered
+
+* Correlated Subqueries
+* ANY Operator
+* ALL Operator
+* Nested Subqueries
+* Subquery Practice
+
+## Concepts Learned
+
+* Understanding correlated subqueries
+* Comparing values using `ANY` and `ALL`
+* Writing nested SQL queries
+* Filtering records based on aggregate results
+* Solving interview-oriented SQL problems
+
+## Practice Completed
+
+* Retrieved students with CGPA above their department average
+* Found the department with the highest average CGPA
+* Retrieved students with the second-highest CGPA
+* Practiced queries using `ANY`
+* Practiced queries using `ALL`
+* Solved nested subquery questions
+
+## Difficulty
+
+⭐⭐⭐⭐⭐
