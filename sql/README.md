@@ -285,3 +285,33 @@
 ## Difficulty
 
 ⭐⭐⭐⭐⭐
+
+# SQL Day 11
+
+## Topics Covered
+
+* CREATE VIEW
+* Updating Views (Concept)
+* Common Table Expressions (CTEs)
+* WITH Clause
+* CTE Practice
+
+## Concepts Learned
+
+* Creating reusable virtual tables using `VIEW`
+* Understanding when to use Views
+* Simplifying complex queries using CTEs
+* Improving query readability and maintainability
+* Comparing CTEs with Subqueries
+
+## Practice Completed
+
+* Created a view for students with CGPA greater than 8
+* Retrieved data using the created view
+* Wrote CTEs for department-wise average CGPA
+* Displayed students above department average using CTE
+* Converted previous subqueries into CTEs
+
+## Difficulty
+
+⭐⭐⭐⭐⭐

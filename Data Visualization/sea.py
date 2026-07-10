@@ -141,3 +141,77 @@ plt.xlabel('City')
 plt.ylabel('Number of Students')
 plt.tight_layout()
 plt.show()
+
+# ---------------------------------------------------------
+# 1. Create a Mock Student Dataset
+# ---------------------------------------------------------
+np.random.seed(42)
+n = 100
+data = {
+    'Student_ID': range(1, n+1),
+    'Department': np.random.choice(['Computer Science', 'Physics', 'Mathematics', 'Biology'], n),
+    'Attendance': np.random.uniform(60, 100, n),
+    'Study_Hours': np.random.uniform(5, 40, n)
+}
+
+# Generate a CGPA that correlates somewhat with Attendance and Study Hours
+data['CGPA'] = 1.0 + (data['Attendance']/100)*1.5 + (data['Study_Hours']/40)*1.5 + np.random.normal(0, 0.2, n)
+data['CGPA'] = np.clip(data['CGPA'], 0.0, 4.0) # Ensure CGPA stays within 0 to 4.0
+
+df = pd.DataFrame(data)
+
+# Set the visual style for seaborn
+sns.set_theme(style="whitegrid")
+
+# ---------------------------------------------------------
+# 2. CGPA vs Attendance Regression Plot
+# ---------------------------------------------------------
+plt.figure(figsize=(8, 6))
+# Using regplot to plot data and a linear regression model fit
+sns.regplot(x='Attendance', y='CGPA', data=df, 
+            scatter_kws={'alpha': 0.6}, line_kws={'color': 'red'})
+
+plt.title('Regression Plot: CGPA vs Attendance', fontsize=14)
+plt.xlabel('Attendance (%)', fontsize=12)
+plt.ylabel('CGPA', fontsize=12)
+plt.tight_layout()
+
+# Save the chart
+plt.savefig('cgpa_vs_attendance_regplot.png')
+plt.close() # Close to prevent overlap with the next plot
+
+# ---------------------------------------------------------
+# 3. Department Comparison using catplot()
+# ---------------------------------------------------------
+# catplot is a figure-level function, so we assign it to 'g' to tweak titles/labels
+g = sns.catplot(x='Department', y='CGPA', data=df, kind='box', 
+                height=6, aspect=1.2, palette='Set2')
+
+# Adding a title slightly higher up (y=1.02) to avoid overlapping
+g.fig.suptitle('Department Comparison by CGPA', y=1.02, fontsize=14)
+g.set_axis_labels('Academic Department', 'CGPA', fontsize=12)
+
+# Rotate x-axis labels if department names are long
+g.tick_params(axis='x', rotation=0) 
+plt.tight_layout()
+
+# Save the chart
+g.savefig('department_comparison_catplot.png')
+plt.close('all')
+
+# ---------------------------------------------------------
+# 4. Jointplot for two numeric variables (Study Hours & CGPA)
+# ---------------------------------------------------------
+# jointplot shows bivariate relationship and univariate distributions (histograms on the edges)
+jp = sns.jointplot(x='Study_Hours', y='CGPA', data=df, kind='hex', 
+                   height=7, color="#4CB391")
+
+jp.fig.suptitle('Jointplot: Study Hours vs CGPA', y=1.02, fontsize=14)
+jp.set_axis_labels('Study Hours (per week)', 'CGPA', fontsize=12)
+plt.tight_layout()
+
+# Save the chart
+jp.savefig('study_hours_cgpa_jointplot.png')
+plt.close('all')
+
+print("All charts have been generated and saved successfully!")

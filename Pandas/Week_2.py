@@ -162,3 +162,60 @@ correlation_matrix = numeric_cols.corr()
 
 print("\nCorrelation Matrix:")
 print(correlation_matrix)
+
+# ---------------------------------------------------------
+# 0. Mock Dataset Creation (Messy strings & varied CGPAs)
+# ---------------------------------------------------------
+data = {
+    'student_name': ['  aLiCe smiTH  ', 'BOB jones\n', ' charlie BROWN', 'DaVid WilliAMS ', 'eve davis'],
+    'major': ['  ComPuter ScIence ', 'mAth', '  PHYSICS', 'biology  ', 'ART history'],
+    'CGPA': [3.8, 2.4, 3.1, 1.8, 3.9]
+}
+df = pd.DataFrame(data)
+
+print("--- Original DataFrame ---")
+print(df)
+print("\n" + "="*50 + "\n")
+
+# ---------------------------------------------------------
+# 1. Create a Grade column from CGPA
+# ---------------------------------------------------------
+# Using a custom function and .apply() to assign letter grades
+def assign_grade(cgpa):
+    if cgpa >= 3.5: return 'A'
+    elif cgpa >= 3.0: return 'B'
+    elif cgpa >= 2.0: return 'C'
+    else: return 'F'
+
+df['Grade'] = df['CGPA'].apply(assign_grade)
+
+# ---------------------------------------------------------
+# 2. Create a Pass/Fail column
+# ---------------------------------------------------------
+# Using np.where() for a fast, vectorized conditional assignment
+df['Status'] = np.where(df['CGPA'] >= 2.0, 'Pass', 'Fail')
+
+# ---------------------------------------------------------
+# 3. Categorize CGPA into ranges using cut()
+# ---------------------------------------------------------
+# cut() assigns data to specific, fixed bins that you define
+bins = [0, 2.0, 3.0, 3.5, 4.0]
+labels = ['Needs Work', 'Average', 'Good', 'Excellent']
+df['CGPA_Range'] = pd.cut(df['CGPA'], bins=bins, labels=labels, include_lowest=True)
+
+# ---------------------------------------------------------
+# 4. Create quartiles using qcut()
+# ---------------------------------------------------------
+# qcut() divides the data into buckets based on sample quantiles (equal-sized groups)
+df['CGPA_Quartile'] = pd.qcut(df['CGPA'], q=4, labels=['Q1 (Lowest)', 'Q2', 'Q3', 'Q4 (Highest)'])
+
+# ---------------------------------------------------------
+# 5. Clean and standardize string columns
+# ---------------------------------------------------------
+# Dynamically select all string ('object') columns, strip whitespace, and apply Title Case
+string_cols = df.select_dtypes(include=['object']).columns
+for col in string_cols:
+    df[col] = df[col].str.strip().str.title()
+
+print("--- Cleaned and Processed DataFrame ---")
+print(df.to_string())

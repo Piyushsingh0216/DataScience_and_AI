@@ -323,3 +323,111 @@ class Student:
         else:
             print("Error: Grade must be between 0 and 100.")
 
+#1. Person → Student
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def introduce(self):
+        return f"Hi, I'm {self.name} and I am {self.age} years old."
+
+class Student(Person):
+    def __init__(self, name, age, student_id):
+        # super() usage to initialize parent attributes
+        super().__init__(name, age)
+        self.student_id = student_id
+
+    # Overridden method
+    def introduce(self):
+        # Using super() to extend the parent's method rather than completely replacing it
+        base_intro = super().introduce()
+        return f"{base_intro} My student ID is {self.student_id}."
+
+# Example Usage
+student = Student("Alice", 20, "S1045")
+print(student.introduce()) 
+# Output: Hi, I'm Alice and I am 20 years old. My student ID is S1045.
+
+#2. Vehicle → Car
+class Vehicle:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+
+    def start_engine(self):
+        return f"The {self.brand} {self.model}'s engine is starting."
+
+class Car(Vehicle):
+    def __init__(self, brand, model, num_doors):
+        # super() usage
+        super().__init__(brand, model)
+        self.num_doors = num_doors
+
+    # Overridden method
+    def start_engine(self):
+        return f"Vroom! The {self.num_doors}-door {self.brand} {self.model} roars to life."
+
+# Example Usage
+my_car = Car("Toyota", "Corolla", 4)
+print(my_car.start_engine())
+# Output: Vroom! The 4-door Toyota Corolla roars to life.
+
+#3. Animal → Dog → Labrador
+class Animal:
+    def __init__(self, species):
+        self.species = species
+
+    def make_sound(self):
+        return "Some generic animal sound..."
+
+class Dog(Animal):
+    def __init__(self, name):
+        # super() usage: hardcoding the species for this specific child class
+        super().__init__("Canine")
+        self.name = name
+
+    # Overridden method
+    def make_sound(self):
+        return "Woof! Woof!"
+
+class Labrador(Dog):
+    def __init__(self, name, color):
+        # super() usage: passing the name up to Dog's constructor
+        super().__init__(name)
+        self.color = color
+
+    # Overridden method
+    def make_sound(self):
+        base_sound = super().make_sound()
+        return f"{base_sound} (A friendly bark from a {self.color} lab!)"
+
+# Example Usage
+my_dog = Labrador("Buddy", "Golden")
+print(f"{my_dog.name} the {my_dog.species} says: {my_dog.make_sound()}")
+# Output: Buddy the Canine says: Woof! Woof! (A friendly bark from a Golden lab!)
+
+#4. Employee → Manager
+class Employee:
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def get_details(self):
+        return f"Employee: {self.name}, Salary: ${self.salary}"
+
+class Manager(Employee):
+    def __init__(self, name, salary, department):
+        # super() usage
+        super().__init__(name, salary)
+        self.department = department
+
+    # Overridden method
+    def get_details(self):
+        return f"Manager: {self.name}, Department: {self.department}, Salary: ${self.salary}"
+
+# Example Usage
+manager = Manager("Diana", 120000, "IT")
+print(manager.get_details())
+# Output: Manager: Diana, Department: IT, Salary: $120000
+
