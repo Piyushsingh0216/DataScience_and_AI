@@ -219,3 +219,72 @@ for col in string_cols:
 
 print("--- Cleaned and Processed DataFrame ---")
 print(df.to_string())
+
+# ==========================================
+# 0. Mock Data Setup
+# ==========================================
+# Creating a messy dataset with duplicates, inconsistent cases, and whitespaces
+csv_data = """StudentID,Name,Department,CGPA,Age
+101,Alice, comp sci ,9.2,20
+102,Bob,math,8.5,21
+103,Charlie,COMP SCI,7.8,22
+104,Diana, physics ,9.5,20
+101,Alice, comp sci ,9.2,20  
+105,Eve,MATH,6.5,21
+106,Frank,Physics,8.8,19
+107,Grace, Comp Sci ,7.2,23
+108,Hank,math,9.8,20
+109,Ivy,  physics,5.9,21
+110,Jack,comp sci,8.1,22
+111,Karen,Math,7.5,20
+112,Leo,Physics,9.1,21
+113,Mona,comp sci,6.8,22
+114,Nina, Biology ,8.4,20
+115,Oscar,biology,6.1,23
+"""
+
+# Load the data into a DataFrame
+df = pd.read_csv(io.StringIO(csv_data.strip()))
+print("--- Original DataFrame Shape ---")
+print(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}\n")
+
+# ==========================================
+# 1. Standardize Department Names
+# ==========================================
+# Strip leading/trailing whitespaces and convert to Title Case
+df['Department'] = df['Department'].str.strip().str.title()
+
+# ==========================================
+# 2. Remove Duplicate Records
+# ==========================================
+# Drops exact duplicate rows (keeps the first occurrence by default)
+df = df.drop_duplicates()
+
+# ==========================================
+# 3. Convert Numeric Columns to Appropriate Types
+# ==========================================
+# Enforce float for CGPA and integer for Age. 
+# 'errors='coerce'' turns unparseable values into NaN.
+df['CGPA'] = pd.to_numeric(df['CGPA'], errors='coerce')
+df['Age'] = pd.to_numeric(df['Age'], errors='coerce').astype('Int64') 
+
+print("--- Cleaned DataFrame Info ---")
+df.info()
+print("\n")
+
+# ==========================================
+# 4. Display Top 10 Students by CGPA
+# ==========================================
+# nlargest is highly optimized for finding top values
+top_10 = df.nlargest(10, 'CGPA')
+print("--- Top 10 Students by CGPA ---")
+print(top_10[['Name', 'Department', 'CGPA']].to_string(index=False))
+print("\n")
+
+# ==========================================
+# 5. Display Bottom 10 Students
+# ==========================================
+# nsmallest is highly optimized for finding bottom values
+bottom_10 = df.nsmallest(10, 'CGPA')
+print("--- Bottom 10 Students by CGPA ---")
+print(bottom_10[['Name', 'Department', 'CGPA']].to_string(index=False))

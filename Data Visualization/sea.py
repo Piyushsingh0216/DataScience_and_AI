@@ -215,3 +215,92 @@ jp.savefig('study_hours_cgpa_jointplot.png')
 plt.close('all')
 
 print("All charts have been generated and saved successfully!")
+
+import io
+# ==========================================
+# 0. Mock Data Setup
+# ==========================================
+csv_data = """Name,Department,CGPA,City
+Alice,Computer Science,9.2,New York
+Bob,Mathematics,8.5,Los Angeles
+Charlie,Computer Science,7.8,New York
+Diana,Physics,9.5,Chicago
+Eve,Mathematics,6.5,Los Angeles
+Frank,Physics,8.8,Chicago
+Grace,Computer Science,7.2,New York
+Hank,Mathematics,9.8,Boston
+Ivy,Physics,5.9,Boston
+Jack,Computer Science,8.1,Los Angeles
+Karen,Mathematics,7.5,New York
+Leo,Physics,9.1,Boston
+Mona,Computer Science,6.8,Chicago
+Nina,Biology,8.4,New York
+Oscar,Biology,6.1,Boston
+"""
+
+# Load data into DataFrame
+df = pd.read_csv(io.StringIO(csv_data.strip()))
+
+# ==========================================
+# 1. Dashboard Layout Setup
+# ==========================================
+# Set the visual style of the dashboard
+sns.set_theme(style="whitegrid")
+
+# Create a 2x2 grid of subplots (4 charts in one image)
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle('Student Performance & Demographics Dashboard', fontsize=18, fontweight='bold', y=0.98)
+
+# ==========================================
+# 2. Chart 1: CGPA Distribution (Top Left)
+# ==========================================
+sns.histplot(data=df, x='CGPA', kde=True, bins=6, color='skyblue', ax=axes[0, 0])
+axes[0, 0].set_title('CGPA Distribution', fontsize=14)
+axes[0, 0].set_xlabel('CGPA')
+axes[0, 0].set_ylabel('Number of Students')
+
+# ==========================================
+# 3. Chart 2: Department-wise Average CGPA (Top Right)
+# ==========================================
+# Calculate averages and sort for a cleaner chart
+dept_avg = df.groupby('Department')['CGPA'].mean().reset_index().sort_values('CGPA', ascending=False)
+sns.barplot(data=dept_avg, x='Department', y='CGPA', palette='viridis', ax=axes[0, 1])
+axes[0, 1].set_title('Department-wise Average CGPA', fontsize=14)
+axes[0, 1].set_xlabel('Department')
+axes[0, 1].set_ylabel('Average CGPA')
+# Ensure y-axis starts reasonably for CGPA to highlight differences
+axes[0, 1].set_ylim(0, 10) 
+
+# ==========================================
+# 4. Chart 3: City-wise Student Count (Bottom Left)
+# ==========================================
+# Count plot automatically aggregates the counts of categorical data
+sns.countplot(data=df, x='City', palette='magma', order=df['City'].value_counts().index, ax=axes[1, 0])
+axes[1, 0].set_title('City-wise Student Count', fontsize=14)
+axes[1, 0].set_xlabel('City')
+axes[1, 0].set_ylabel('Number of Students')
+
+# ==========================================
+# 5. Chart 4: Top 5 Performers (Bottom Right)
+# ==========================================
+# Extract top 5 students
+top_performers = df.nlargest(5, 'CGPA')
+# Horizontal bar chart is best for reading names
+sns.barplot(data=top_performers, x='CGPA', y='Name', palette='crest', ax=axes[1, 1])
+axes[1, 1].set_title('Top 5 Performers by CGPA', fontsize=14)
+axes[1, 1].set_xlabel('CGPA')
+axes[1, 1].set_ylabel('Student Name')
+axes[1, 1].set_xlim(0, 10)
+
+# ==========================================
+# 6. Final Rendering
+# ==========================================
+# Adjust spacing between plots to prevent labels from overlapping
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+# Save the dashboard as an image file (optional but recommended)
+plt.savefig('student_dashboard.png', dpi=300)
+print("Dashboard successfully generated and saved as 'student_dashboard.png'.")
+
+# Display the dashboard in a popup window
+plt.show()

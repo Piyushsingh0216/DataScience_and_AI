@@ -431,3 +431,114 @@ manager = Manager("Diana", 120000, "IT")
 print(manager.get_details())
 # Output: Manager: Diana, Department: IT, Salary: $120000
 
+from abc import ABC, abstractmethod
+import math
+
+# ==========================================
+# 1. Shape -> Circle and Rectangle
+# ==========================================
+class Shape(ABC):
+    @abstractmethod
+    def calculate_area(self):
+        """Abstract method to calculate the area of a shape."""
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    # Overriding the abstract method
+    def calculate_area(self):
+        return math.pi * (self.radius ** 2)
+
+class Rectangle(Shape):
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    # Overriding the abstract method
+    def calculate_area(self):
+        return self.length * self.width
+
+
+# ==========================================
+# 2. Payment -> UPI, Card, NetBanking
+# ==========================================
+class Payment(ABC):
+    @abstractmethod
+    def process_payment(self, amount):
+        """Abstract method to process a transaction."""
+        pass
+
+class UPI(Payment):
+    def __init__(self, upi_id):
+        self.upi_id = upi_id
+
+    # Overriding the abstract method
+    def process_payment(self, amount):
+        return f"Processing ₹{amount} via UPI (ID: {self.upi_id})"
+
+class Card(Payment):
+    def __init__(self, card_number):
+        # Storing only the last 4 digits for display purposes
+        self.last_four = str(card_number)[-4:]
+
+    # Overriding the abstract method
+    def process_payment(self, amount):
+        return f"Processing ₹{amount} via Credit/Debit Card ending in {self.last_four}"
+
+class NetBanking(Payment):
+    def __init__(self, bank_name):
+        self.bank_name = bank_name
+
+    # Overriding the abstract method
+    def process_payment(self, amount):
+        return f"Processing ₹{amount} via {self.bank_name} Secure NetBanking"
+
+
+# ==========================================
+# 3. Animal -> Multiple Implementations
+# ==========================================
+class Animal(ABC):
+    @abstractmethod
+    def make_sound(self):
+        """Abstract method representing the sound an animal makes."""
+        pass
+
+class Dog(Animal):
+    # Overriding the abstract method
+    def make_sound(self):
+        return "Woof! Woof!"
+
+class Cat(Animal):
+    # Overriding the abstract method
+    def make_sound(self):
+        return "Meow!"
+
+class Cow(Animal):
+    # Overriding the abstract method
+    def make_sound(self):
+        return "Moo!"
+
+
+# ==========================================
+# Driver Code to Demonstrate Execution
+# ==========================================
+if __name__ == "__main__":
+    
+    print("--- Shape Abstraction ---")
+    # You cannot instantiate Shape() directly because it has an abstract method.
+    # We must use its implementations.
+    shapes = [Circle(5), Rectangle(4, 6)]
+    for shape in shapes:
+        print(f"{shape.__class__.__name__} Area: {shape.calculate_area():.2f}")
+
+    print("\n--- Payment Abstraction ---")
+    payments = [UPI("user@okhdfc"), Card("4111222233334444"), NetBanking("State Bank of India")]
+    for payment in payments:
+        print(payment.process_payment(1500.00))
+
+    print("\n--- Animal Abstraction ---")
+    animals = [Dog(), Cat(), Cow()]
+    for animal in animals:
+        print(f"The {animal.__class__.__name__} says: {animal.make_sound()}")

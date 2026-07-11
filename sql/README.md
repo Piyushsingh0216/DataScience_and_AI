@@ -1,317 +1,36 @@
-# SQL Day 1
+# 🗄️ SQL Practice Journey
 
-## Topics Covered
-- CREATE DATABASE
-- CREATE TABLE
-- INSERT
-- SELECT
+This repository documents my SQL learning journey for Data Analyst, Data Science, and AI placements.
 
-## Concepts Learned
-- Primary Key
-- Data Types
+## ✅ Progress
 
-## Practice Completed
-- Student Database
+### Completed
+- SQL Basics
+- Database & Tables
+- CRUD Operations
+- Filtering Data
+- Sorting Data
+- Aggregate Functions
+- GROUP BY & HAVING
+- Joins
+- Subqueries
+- Views
+- Indexes
+- Constraints
+- Normalization (1NF, 2NF, 3NF)
 
-## Difficulty
-⭐☆☆☆☆
+## 📅 Current Status
 
-# SQL Day 2
+- ✅ SQL Fundamentals Completed
+- 🔄 Moving towards Advanced SQL and Interview Questions
+- 🎯 Next: CTEs, Window Functions, Stored Procedures, Triggers, Transactions, and LeetCode SQL
 
-## Topics Covered
+## 🛠️ Tools Used
 
-* WHERE Clause
-* ORDER BY
-* LIMIT
-* Comparison Operators
-* Logical Operators (AND, OR, NOT)
+- MySQL
+- MySQL Workbench
+- VS Code
 
-## Concepts Learned
+## 🎯 Goal
 
-* Filtering Records
-* Sorting Data
-* Limiting Query Results
-* Conditional Retrieval
-
-## Practice Completed
-
-* Retrieved specific records using `WHERE`
-* Sorted data in ascending and descending order
-* Applied logical conditions using `AND`, `OR`, and `NOT`
-* Limited output using `LIMIT`
-
-## Difficulty
-
-⭐⭐☆☆☆
-
-# SQL Day 3
-
-## Topics Covered
-
-* UPDATE
-* DELETE
-* COUNT()
-* SUM()
-* AVG()
-* MAX()
-* MIN()
-
-## Concepts Learned
-
-* Updating Existing Records
-* Deleting Records
-* Aggregate Functions
-* Data Analysis Using SQL
-
-## Practice Completed
-
-* Updated records using `UPDATE`
-* Deleted records using `DELETE`
-* Counted total records using `COUNT()`
-* Calculated total using `SUM()`
-* Calculated average using `AVG()`
-* Found maximum and minimum values using `MAX()` and `MIN()`
-
-## Difficulty
-
-⭐⭐⭐☆☆
-
-# SQL Day 4
-
-## Topics Covered
-
-* DISTINCT
-* GROUP BY
-* HAVING
-* AS (Alias)
-
-## Concepts Learned
-
-* Retrieving Unique Records
-* Grouping Data
-* Aggregate Analysis
-* Filtering Groups
-* Using Aliases for Better Readability
-
-## Practice Completed
-
-* Retrieved unique departments using `DISTINCT`
-* Counted students department-wise using `GROUP BY`
-* Calculated average CGPA department-wise
-* Filtered grouped data using `HAVING`
-* Used aliases with `AS` for meaningful output
-
-## Difficulty
-
-⭐⭐⭐☆☆
-
-# SQL Day 5
-
-## Topics Covered
-
-* SELECT
-* WHERE
-* ORDER BY
-* LIMIT
-* DISTINCT
-* GROUP BY
-* HAVING
-* Aggregate Functions (`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`)
-
-## Concepts Learned
-
-* Retrieving and filtering data
-* Sorting query results
-* Grouping records
-* Performing data analysis using aggregate functions
-* Writing business-oriented SQL queries
-
-## Practice Completed
-
-* Displayed all student records
-* Filtered students based on CGPA
-* Retrieved the top 5 students by CGPA
-* Calculated department-wise average CGPA
-* Counted students city-wise and department-wise
-* Used `HAVING` to filter grouped results
-* Found highest and lowest CGPA using aggregate functions
-
-## Difficulty
-
-⭐⭐⭐⭐☆
-# SQL Day 6
-
-## Topics Covered
-
-* INNER JOIN
-* LEFT JOIN
-* RIGHT JOIN
-* FULL OUTER JOIN (Concept)
-
-## Concepts Learned
-
-* Combining data from multiple tables
-* Understanding relationships between tables
-* Retrieving matching and non-matching records
-* Primary Key & Foreign Key relationships
-
-## Practice Completed
-
-* Created `Students` and `Departments` tables
-* Retrieved student details with department names using `INNER JOIN`
-* Practiced `LEFT JOIN` to display all students
-* Practiced `RIGHT JOIN` to display all departments
-* Understood the concept of `FULL OUTER JOIN`
-
-## Difficulty
-
-⭐⭐⭐⭐☆
-# SQL Day 7
-
-## Topics Covered
-
-* JOIN Practice
-* Aggregate Functions with JOIN
-* GROUP BY with JOIN
-* HAVING with JOIN
-* Aliases (`AS`)
-
-## Concepts Learned
-
-* Performing analysis across multiple tables
-* Department-wise student statistics
-* Combining JOIN with aggregate functions
-* Writing business-oriented SQL queries
-
-## Practice Completed
-
-* Displayed student names with department names
-* Counted students in each department
-* Calculated department-wise average CGPA
-* Filtered grouped data using `HAVING`
-* Practiced SQL interview-style JOIN queries
-
-## Difficulty
-
-⭐⭐⭐⭐☆
-
-# SQL Day 8
-
-## Topics Covered
-
-* CROSS JOIN
-* SELF JOIN (Concept)
-* UNION
-* UNION ALL
-* JOIN Revision
-
-## Concepts Learned
-
-* Combining every record from two tables using `CROSS JOIN`
-* Understanding relationships within the same table using `SELF JOIN`
-* Merging results from multiple queries using `UNION`
-* Difference between `UNION` and `UNION ALL`
-* Strengthening SQL JOIN concepts
-
-## Practice Completed
-
-* Practiced `CROSS JOIN`
-* Understood `SELF JOIN` through examples
-* Compared `UNION` and `UNION ALL`
-* Revised `INNER JOIN`, `LEFT JOIN`, and `RIGHT JOIN`
-* Solved interview-style SQL JOIN queries
-
-## Difficulty
-
-⭐⭐⭐⭐☆
-
-# SQL Day 9
-
-## Topics Covered
-
-* Subqueries
-* Single-Row Subqueries
-* Multi-Row Subqueries
-* IN Operator
-* EXISTS (Concept)
-
-## Concepts Learned
-
-* Writing queries inside another query
-* Filtering data using subqueries
-* Comparing values with aggregate functions
-* Using `IN` to match multiple values
-* Understanding when `EXISTS` is useful for checking related records
-
-## Practice Completed
-
-* Found students with above-average CGPA
-* Retrieved students having the maximum CGPA
-* Found departments with more than a specified number of students
-* Used `IN` with subqueries
-* Understood the working of `EXISTS` through examples
-
-## Difficulty
-
-⭐⭐⭐⭐☆
-
-# SQL Day 10
-
-## Topics Covered
-
-* Correlated Subqueries
-* ANY Operator
-* ALL Operator
-* Nested Subqueries
-* Subquery Practice
-
-## Concepts Learned
-
-* Understanding correlated subqueries
-* Comparing values using `ANY` and `ALL`
-* Writing nested SQL queries
-* Filtering records based on aggregate results
-* Solving interview-oriented SQL problems
-
-## Practice Completed
-
-* Retrieved students with CGPA above their department average
-* Found the department with the highest average CGPA
-* Retrieved students with the second-highest CGPA
-* Practiced queries using `ANY`
-* Practiced queries using `ALL`
-* Solved nested subquery questions
-
-## Difficulty
-
-⭐⭐⭐⭐⭐
-
-# SQL Day 11
-
-## Topics Covered
-
-* CREATE VIEW
-* Updating Views (Concept)
-* Common Table Expressions (CTEs)
-* WITH Clause
-* CTE Practice
-
-## Concepts Learned
-
-* Creating reusable virtual tables using `VIEW`
-* Understanding when to use Views
-* Simplifying complex queries using CTEs
-* Improving query readability and maintainability
-* Comparing CTEs with Subqueries
-
-## Practice Completed
-
-* Created a view for students with CGPA greater than 8
-* Retrieved data using the created view
-* Wrote CTEs for department-wise average CGPA
-* Displayed students above department average using CTE
-* Converted previous subqueries into CTEs
-
-## Difficulty
-
-⭐⭐⭐⭐⭐
+Master SQL for placements, real-world data analysis, and machine learning projects.
