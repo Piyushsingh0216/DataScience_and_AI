@@ -304,3 +304,43 @@ print("Dashboard successfully generated and saved as 'student_dashboard.png'.")
 
 # Display the dashboard in a popup window
 plt.show()
+
+
+# Load your dataset (assuming it is saved as 'student_viz_data.csv')
+df = pd.read_csv('student_viz_data.csv')
+
+# ---------------------------------------------------------
+# 1. Correlation Heatmap
+# ---------------------------------------------------------
+plt.figure(figsize=(8, 6))
+# Select only numeric columns for correlation
+numeric_cols = df[['Attendance', 'Study_Hours', 'CGPA']]
+sns.heatmap(numeric_cols.corr(), annot=True, cmap='coolwarm', fmt=".2f", vmin=-1, vmax=1)
+plt.title('Correlation Heatmap of Numeric Features')
+plt.tight_layout()
+plt.savefig('heatmap.png')
+plt.close()
+
+# ---------------------------------------------------------
+# 2. Scatter Plot (CGPA vs Attendance)
+# ---------------------------------------------------------
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=df, x='Attendance', y='CGPA', hue='Department', alpha=0.7)
+plt.title('Scatter Plot: CGPA vs Attendance')
+plt.xlabel('Attendance (%)')
+plt.ylabel('CGPA')
+plt.tight_layout()
+plt.savefig('scatter.png')
+plt.close()
+
+# ---------------------------------------------------------
+# 3. Box Plot (Grouped by Department)
+# ---------------------------------------------------------
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df, x='Department', y='CGPA', palette='Set2')
+plt.title('Box Plot: CGPA Distribution by Department')
+plt.xlabel('Department')
+plt.ylabel('CGPA')
+plt.tight_layout()
+plt.savefig('boxplot.png')
+plt.close()

@@ -34,3 +34,30 @@ This repository documents my SQL learning journey for Data Analyst, Data Science
 ## 🎯 Goal
 
 Master SQL for placements, real-world data analysis, and machine learning projects.
+
+# 📅 Day 8 – SQL Journey
+
+## ✅ Today's Progress
+
+Today I focused on strengthening my SQL problem-solving skills by practicing different types of queries and improving my understanding of relational databases.
+
+### Topics Covered
+
+* Practiced SQL queries on LeetCode
+* Solved filtering and sorting problems
+* Worked with aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`)
+* Used `GROUP BY` and `HAVING`
+* Improved query-writing speed and accuracy
+* Analyzed solutions to understand optimized approaches
+
+### Key Learnings
+
+* Writing SQL becomes easier with regular practice.
+* There are often multiple ways to solve the same problem, but some are more efficient.
+* Understanding query logic is more important than memorizing syntax.
+
+## 🚀 Progress
+
+Every day of SQL practice is improving my confidence in writing clean, optimized, and interview-ready queries.
+
+**Status:** ✅ Day 8 Completed
