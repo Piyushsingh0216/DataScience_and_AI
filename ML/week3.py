@@ -45,3 +45,42 @@ print(f"Students allocated to Testing Data (X_test): {len(X_test)}\n")
 
 print("--- Sample of Training Features (X_train) ---")
 print(X_train)
+
+
+from sklearn.linear_model import LinearRegression
+
+# 1. Import the dataset 
+# (Creating a mock dataset here so the script runs instantly in your terminal)
+data = {
+    'Hours_Studied': [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    'Attendance_Pct': [70, 75, 80, 85, 90, 92, 95, 98, 99, 100],
+    'Exam_Score': [55, 60, 68, 72, 78, 82, 88, 92, 95, 99]
+}
+df = pd.DataFrame(data)
+
+# 2. Select feature columns
+# Using hours studied and attendance to predict the final score
+X = df[['Hours_Studied', 'Attendance_Pct']]
+
+# 3. Select one target column
+y = df['Exam_Score']
+
+# 4. Split data into training and testing sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 5. Train a simple Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# 6. Make predictions
+predictions = model.predict(X_test)
+
+# 7. Print required outputs
+print("--- MODEL PIPELINE RESULTS ---")
+print(f"Training size: {len(X_train)} samples")
+print(f"Testing size: {len(X_test)} samples")
+
+print("\nSample predictions (Actual vs Predicted):")
+# Zipping the actual test values with our predictions for a clean comparison
+for actual, pred in zip(y_test, predictions):
+    print(f"Actual Score: {actual} | Predicted Score: {pred:.2f}")

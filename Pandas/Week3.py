@@ -60,3 +60,39 @@ print(y.head(), "\n")
 # index=False ensures Pandas doesn't save the row numbers (0, 1, 2, 3...) as a new column
 df_cleaned.to_csv('student_cleaned.csv', index=False)
 print("✅ Cleaned dataset successfully saved as 'student_cleaned.csv'!")
+
+
+
+# Creating a mock dataset with duplicates, missing values, and categories
+data = {
+    'Student_ID': [1, 2, 3, 4, 5, 5, 6, 7, 8], # Note the duplicate '5'
+    'Hours_Studied': [2.5, 3.0, np.nan, 5.0, 6.5, 6.5, 8.0, np.nan, 10.0],
+    'Major': ['Science', 'Arts', 'Science', 'Math', 'Arts', 'Arts', 'Math', 'Science', 'Math'],
+    'Exam_Score': [55, 60, 68, 72, 78, 78, 88, 92, 95]
+}
+df = pd.DataFrame(data)
+
+print("--- 1. ORIGINAL DATASET ---")
+print(df)
+print("\n")
+
+# --- Step 1: Remove duplicates ---
+# Drops rows that are exact copies of another row
+df_cleaned = df.drop_duplicates()
+
+# --- Step 2: Fill missing values ---
+# Filling missing 'Hours_Studied' with the average (mean) of that column
+mean_hours = df_cleaned['Hours_Studied'].mean()
+df_cleaned['Hours_Studied'] = df_cleaned['Hours_Studied'].fillna(mean_hours)
+
+# --- Step 3: Encode one categorical column ---
+# Converting the text-based 'Major' column into numerical format (One-Hot Encoding)
+df_encoded = pd.get_dummies(df_cleaned, columns=['Major'], dtype=int)
+
+# --- Step 4: Save the processed dataset ---
+output_filename = 'student_ml_ready.csv'
+df_encoded.to_csv(output_filename, index=False)
+
+print("--- 2. PROCESSED DATASET ---")
+print(df_encoded)
+print(f"\n✓ Success: Dataset processed and saved as '{output_filename}'")

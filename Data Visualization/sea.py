@@ -344,3 +344,55 @@ plt.ylabel('CGPA')
 plt.tight_layout()
 plt.savefig('boxplot.png')
 plt.close()
+
+
+
+# --- 1. PREPARE MOCK DATASET ---
+np.random.seed(42)
+data = {
+    'Student_ID': range(1, 101),
+    'CGPA': np.random.normal(7.5, 1.2, 100).clip(4.0, 10.0),
+    'Study_Hours': np.random.normal(20, 5, 100),
+    'Department': np.random.choice(['Computer Science', 'Mechanical', 'Electrical', 'Civil'], 100)
+}
+df = pd.DataFrame(data)
+# Adding a correlated numeric feature for better visuals
+df['Exam_Score'] = df['CGPA'] * 8 + np.random.normal(0, 5, 100) 
+
+
+# --- 2. CORRELATION HEATMAP ---
+# Shows how strongly the numeric features are related to one another
+# (We filter for only numeric columns to avoid errors)
+numeric_df = df[['CGPA', 'Study_Hours', 'Exam_Score']]
+
+plt.title('Correlation Heatmap')
+sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1)
+plt.savefig('1_correlation_heatmap.png', bbox_inches='tight')
+plt.clf() # Clears the plot for the next one
+
+
+# --- 3. HISTOGRAM OF CGPA ---
+# Shows the distribution/frequency of different CGPA scores
+plt.title('Histogram of CGPA')
+sns.histplot(df['CGPA'], bins=15, kde=True, color='skyblue')
+plt.xlabel('CGPA')
+plt.savefig('2_histogram_cgpa.png', bbox_inches='tight')
+plt.clf()
+
+
+# --- 4. BOX PLOT BY DEPARTMENT ---
+# Shows the spread, median, and outliers of CGPAs across different departments
+plt.title('Box Plot of CGPA by Department')
+sns.boxplot(x='Department', y='CGPA', data=df, palette='Set2')
+plt.savefig('3_boxplot_department.png', bbox_inches='tight')
+plt.clf()
+
+
+# --- 5. SCATTER PLOT OF TWO NUMERIC FEATURES ---
+# Shows the relationship between Study Hours and CGPA, color-coded by Department
+plt.title('Scatter Plot: Study Hours vs CGPA')
+sns.scatterplot(x='Study_Hours', y='CGPA', hue='Department', data=df)
+plt.savefig('4_scatter_plot.png', bbox_inches='tight')
+plt.clf()
+
+print("✓ Success: All 4 data visualizations have been generated and saved as PNG files!")

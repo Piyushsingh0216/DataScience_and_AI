@@ -1,63 +1,48 @@
-# 🗄️ SQL Practice Journey
+# 📅 Day 14 – SQL Journey
 
-This repository documents my SQL learning journey for Data Analyst, Data Science, and AI placements.
+## 📚 Topics Covered
+- ✅ Continued SQL practice and strengthened query-writing skills.
+- ✅ Improved understanding of database concepts through hands-on exercises.
+- ✅ Practiced writing efficient SQL queries.
+- ✅ Focused on improving logical thinking and problem-solving using SQL.
 
-## ✅ Progress
+---
 
-### Completed
-- SQL Basics
-- Database & Tables
-- CRUD Operations
-- Filtering Data
-- Sorting Data
-- Aggregate Functions
-- GROUP BY & HAVING
-- Joins
-- Subqueries
-- Views
-- Indexes
-- Constraints
-- Normalization (1NF, 2NF, 3NF)
+## 🎯 Key Learning Outcomes
+- Gained more confidence in writing SQL queries.
+- Improved query optimization and debugging skills.
+- Strengthened understanding of relational databases.
+- Enhanced analytical thinking through practical SQL problems.
 
-## 📅 Current Status
+---
 
-- ✅ SQL Fundamentals Completed
-- 🔄 Moving towards Advanced SQL and Interview Questions
-- 🎯 Next: CTEs, Window Functions, Stored Procedures, Triggers, Transactions, and LeetCode SQL
+## 🛠️ Skills Improved
+- SQL Query Writing
+- Database Management
+- Data Retrieval
+- Problem Solving
+- Logical Thinking
 
-## 🛠️ Tools Used
+---
 
-- MySQL
-- MySQL Workbench
-- VS Code
+## 📈 Progress Tracker
 
-## 🎯 Goal
+| Day | Status |
+|------|--------|
+| Day 14 | ✅ Completed |
 
-Master SQL for placements, real-world data analysis, and machine learning projects.
+---
 
-# 📅 Day 8 – SQL Journey
+## 🚀 Learning Summary
 
-## ✅ Today's Progress
+> Day 14 focused on consistent SQL practice and improving database querying skills. Every solved query strengthens the foundation required for Data Analytics, Data Science, and technical interviews.
 
-Today I focused on strengthening my SQL problem-solving skills by practicing different types of queries and improving my understanding of relational databases.
+---
 
-### Topics Covered
+## ⭐ Quote of the Day
 
-* Practiced SQL queries on LeetCode
-* Solved filtering and sorting problems
-* Worked with aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`)
-* Used `GROUP BY` and `HAVING`
-* Improved query-writing speed and accuracy
-* Analyzed solutions to understand optimized approaches
+> *"Mastering SQL isn't about memorizing syntax—it's about learning how to think with data."*
 
-### Key Learnings
-
-* Writing SQL becomes easier with regular practice.
-* There are often multiple ways to solve the same problem, but some are more efficient.
-* Understanding query logic is more important than memorizing syntax.
-
-## 🚀 Progress
-
-Every day of SQL practice is improving my confidence in writing clean, optimized, and interview-ready queries.
-
-**Status:** ✅ Day 8 Completed
+---
+**Status:** ✅ Day 14 Completed  
+**Journey:** Keep Learning • Keep Building • Keep Growing 🚀
