@@ -46,3 +46,24 @@
 ---
 **Status:** ✅ Day 14 Completed  
 **Journey:** Keep Learning • Keep Building • Keep Growing 🚀
+
+# ✅ Day 15 - SQL Journey Completed
+
+## 📅 Date
+14 July 2026
+
+## 📚 Topics Covered
+- Compared values with the previous row using SQL window functions.
+- Solved SQL comparison problems using `LAG()`.
+- Practiced identifying differences between current and previous records.
+- Worked on LeetCode SQL Problem **197 - Rising Temperature**.
+- Improved understanding of row-wise comparisons and analytical SQL functions.
+
+## 🧠 Key Learnings
+- Learned how `LAG()` accesses previous row values.
+- Understood how to compare sequential records.
+- Improved analytical thinking for SQL interview questions.
+- Strengthened SQL problem-solving skills.
+
+## 🎯 Status
+✅ Day 15 Completed

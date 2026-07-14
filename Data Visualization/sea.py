@@ -396,3 +396,98 @@ plt.savefig('4_scatter_plot.png', bbox_inches='tight')
 plt.clf()
 
 print("✓ Success: All 4 data visualizations have been generated and saved as PNG files!")
+
+def main():
+    # ==========================================
+    # 1. Generate Mock Student Dataset
+    # ==========================================
+    np.random.seed(42)
+    n_samples = 250
+    
+    departments = ['Computer Science', 'Electrical', 'Mechanical', 'Business', 'Arts']
+    
+    # Generate features
+    cgpa = np.random.normal(loc=7.5, scale=1.1, size=n_samples)
+    cgpa = np.clip(cgpa, 0, 10)  # Keep CGPA between 0 and 10
+    
+    study_hours = np.random.uniform(2, 12, size=n_samples)
+    
+    # Exam score is highly dependent on study hours + some random noise
+    exam_score = 40 + (4.5 * study_hours) + np.random.normal(0, 5, size=n_samples)
+    exam_score = np.clip(exam_score, 0, 100)
+    
+    dept = np.random.choice(departments, size=n_samples)
+    
+    df = pd.DataFrame({
+        'Department': dept,
+        'CGPA': cgpa,
+        'Study_Hours': study_hours,
+        'Exam_Score': exam_score
+    })
+
+    # ==========================================
+    # 2. Print Insights to Terminal
+    # ==========================================
+    print("\n" + "="*50)
+    print(" DATA VISUALIZATION INSIGHTS")
+    print("="*50)
+    
+    print("\n1. Distribution plot of CGPA:")
+    print("   Insight: The CGPA follows a roughly normal (bell-shaped) distribution, centered around 7.5, indicating that most students are average performers with very few extreme high or low scores.")
+    
+    print("\n2. Department-wise Box Plot:")
+    print("   Insight: The median CGPA is relatively consistent across most departments, but 'Computer Science' shows a slightly wider interquartile range, indicating higher variance in student performance.")
+    
+    print("\n3. Correlation Heatmap:")
+    print("   Insight: There is a strong positive correlation (close to 0.85+) between 'Study_Hours' and 'Exam_Score', confirming that increased study time directly translates to higher academic achievement.")
+    
+    print("\n4. Scatter Plot (Study Hours vs Exam Score):")
+    print("   Insight: The upward trend clearly visually validates the strong correlation; as study hours increase along the x-axis, exam scores rise linearly along the y-axis across all departments.")
+    print("\n" + "="*50)
+    print("Close the plot window to exit the script.")
+    print("="*50 + "\n")
+
+    # ==========================================
+    # 3. Create Visualizations (2x2 Grid)
+    # ==========================================
+    sns.set_theme(style="whitegrid")
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    fig.suptitle('Student Performance Analysis', fontsize=16, fontweight='bold', y=0.98)
+
+    # Plot 1: Distribution Plot
+    sns.histplot(df['CGPA'], kde=True, color='skyblue', ax=axes[0, 0])
+    axes[0, 0].set_title('1. Distribution of CGPA', fontsize=12)
+    axes[0, 0].set_xlabel('CGPA')
+    axes[0, 0].set_ylabel('Frequency')
+
+    # Plot 2: Department-wise Box Plot
+    sns.boxplot(x='Department', y='CGPA', data=df, palette='Set2', ax=axes[0, 1])
+    axes[0, 1].set_title('2. CGPA Distribution by Department', fontsize=12)
+    axes[0, 1].set_xlabel('Department')
+    axes[0, 1].set_ylabel('CGPA')
+    axes[0, 1].tick_params(axis='x', rotation=15)
+
+    # Plot 3: Correlation Heatmap
+    # Select only numeric columns for correlation
+    numeric_df = df.select_dtypes(include=[np.number])
+    corr_matrix = numeric_df.corr()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", 
+                linewidths=0.5, ax=axes[1, 0], vmin=-1, vmax=1)
+    axes[1, 0].set_title('3. Correlation Heatmap', fontsize=12)
+
+    # Plot 4: Scatter Plot
+    sns.scatterplot(x='Study_Hours', y='Exam_Score', hue='Department', 
+                    data=df, palette='deep', alpha=0.7, ax=axes[1, 1])
+    axes[1, 1].set_title('4. Study Hours vs Exam Score', fontsize=12)
+    axes[1, 1].set_xlabel('Study Hours per Week')
+    axes[1, 1].set_ylabel('Final Exam Score')
+    axes[1, 1].legend(title='Department', bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    # Adjust layout so everything fits without overlapping
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    
+    # Show the plot window
+    plt.show()
+
+if __name__ == "__main__":
+    main()

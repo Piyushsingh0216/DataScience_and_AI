@@ -96,3 +96,77 @@ df_encoded.to_csv(output_filename, index=False)
 print("--- 2. PROCESSED DATASET ---")
 print(df_encoded)
 print(f"\n✓ Success: Dataset processed and saved as '{output_filename}'")
+
+def main():
+    print("="*50)
+    print("  STUDENT DATASET: FEATURE ENGINEERING & OUTLIERS")
+    print("="*50)
+
+    # 1. Load / Generate Dataset
+    # Generating 100 mock students. Normal CGPA around 7.2.
+    np.random.seed(42)
+    cgpa_scores = np.random.normal(loc=7.2, scale=1.2, size=100)
+    
+    df = pd.DataFrame({
+        'Student_ID': range(101, 201),
+        'Name': [f"Student_{i}" for i in range(101, 201)],
+        'CGPA': cgpa_scores
+    })
+
+    # Injecting intentional outliers for demonstration purposes
+    df.loc[12, 'CGPA'] = 1.2   # Extremely low outlier
+    df.loc[45, 'CGPA'] = 3.4   # Low outlier
+    df.loc[88, 'CGPA'] = 11.5  # Impossible high outlier (data entry error)
+
+    # 2. Create a Performance Category Column
+    # Using pandas.cut to bin the continuous CGPA into discrete categories
+    bins = [0, 5.0, 7.0, 8.5, 10.0, float('inf')]
+    labels = ['Needs Improvement', 'Average', 'Good', 'Excellent', 'Invalid Data']
+    
+    df['Performance_Category'] = pd.cut(
+        df['CGPA'], 
+        bins=bins, 
+        labels=labels, 
+        right=False # Defines intervals as [lower, upper)
+    )
+    print("\n[+] Created 'Performance_Category' column successfully.")
+
+    # 3. Detect Potential Outliers in CGPA (Using IQR Method)
+    Q1 = df['CGPA'].quantile(0.25)
+    Q3 = df['CGPA'].quantile(0.75)
+    IQR = Q3 - Q1
+    
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Create a boolean column tagging the outliers
+    df['CGPA_Outlier'] = (df['CGPA'] < lower_bound) | (df['CGPA'] > upper_bound)
+    
+    outliers_df = df[df['CGPA_Outlier']]
+    print(f"[+] Detected {len(outliers_df)} potential outliers in CGPA.")
+
+    # 4. Save the updated dataset
+    output_filename = 'student_features.csv'
+    df.to_csv(output_filename, index=False)
+    print(f"[+] Saved updated dataset to '{output_filename}'.")
+
+    # 5. Display the Results
+    print("\n" + "-"*50)
+    print("FIRST 5 ROWS OF UPDATED DATASET:")
+    print("-"*50)
+    print(df[['Student_ID', 'CGPA', 'Performance_Category', 'CGPA_Outlier']].head())
+
+    print("\n" + "-"*50)
+    print("DETECTED OUTLIERS:")
+    print("-"*50)
+    if not outliers_df.empty:
+        print(outliers_df[['Student_ID', 'Name', 'CGPA', 'Performance_Category']].to_string(index=False))
+    else:
+        print("No outliers detected.")
+    
+    print("\n" + "-"*50)
+    print(f"IQR BOUNDARIES -> Lower: {lower_bound:.2f} | Upper: {upper_bound:.2f}")
+    print("-"*50 + "\n")
+
+if __name__ == "__main__":
+    main()
