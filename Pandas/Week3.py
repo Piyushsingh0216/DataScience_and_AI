@@ -170,3 +170,53 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ==========================================
+# 0. Mock Dataset Generation (Updated)
+# ==========================================
+# Adding Department and CGPA to match your new requirements
+np.random.seed(42)
+departments = ['Computer Science', 'Mechanical', 'Electrical', 'Civil']
+data = {
+    'Student_ID': range(1, 101),
+    'Department': np.random.choice(departments, 100),
+    'CGPA': np.round(np.random.uniform(5.0, 10.0, 100), 2) 
+}
+df = pd.DataFrame(data)
+
+# ==========================================
+# 1. Create a Grade Column
+# ==========================================
+# Using pd.cut to map CGPA ranges to letter grades
+bins = [0, 6.0, 7.0, 8.0, 9.0, 10.0]
+labels = ['F', 'D', 'C', 'B', 'A']
+df['Grade'] = pd.cut(df['CGPA'], bins=bins, labels=labels, include_lowest=True)
+
+# ==========================================
+# 2. Calculate Department-wise Average CGPA
+# ==========================================
+# .transform('mean') calculates the group average and aligns it with every row
+df['Dept_Avg_CGPA'] = df.groupby('Department')['CGPA'].transform('mean').round(2)
+
+# Printing just the summary table for your terminal output
+print("--- Department-wise Average CGPA ---\n")
+summary_df = df.groupby('Department')['CGPA'].mean().round(2).reset_index()
+print(summary_df.to_string(index=False))
+print("\n" + "-"*35 + "\n")
+
+# ==========================================
+# 3. Add column for difference from Department Average
+# ==========================================
+df['CGPA_Diff_From_Dept'] = (df['CGPA'] - df['Dept_Avg_CGPA']).round(2)
+
+print("--- Preview of Processed Dataset ---\n")
+print(df.head())
+print("\n" + "-"*35 + "\n")
+
+# ==========================================
+# 4. Save the processed dataset
+# ==========================================
+filename = 'processed_students.csv'
+df.to_csv(filename, index=False)
+print(f"Success: Processed dataset saved locally as '{filename}'.")

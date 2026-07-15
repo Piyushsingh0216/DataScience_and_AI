@@ -1,69 +1,154 @@
-# 📅 Day 14 – SQL Journey
+# 🗄️ SQL Learning Journey
 
-## 📚 Topics Covered
-- ✅ Continued SQL practice and strengthened query-writing skills.
-- ✅ Improved understanding of database concepts through hands-on exercises.
-- ✅ Practiced writing efficient SQL queries.
-- ✅ Focused on improving logical thinking and problem-solving using SQL.
+> This repository documents my SQL learning journey through theory, hands-on practice, and LeetCode problem solving.
 
 ---
 
-## 🎯 Key Learning Outcomes
-- Gained more confidence in writing SQL queries.
-- Improved query optimization and debugging skills.
-- Strengthened understanding of relational databases.
-- Enhanced analytical thinking through practical SQL problems.
+# 📌 About
+
+The purpose of this repository is to build a strong foundation in SQL for Data Analytics, Data Science, and technical interviews.
+
+I solve SQL problems regularly while learning database concepts and writing efficient queries.
 
 ---
 
-## 🛠️ Skills Improved
-- SQL Query Writing
-- Database Management
-- Data Retrieval
-- Problem Solving
-- Logical Thinking
+# 📚 Topics Covered So Far
+
+## SQL Basics
+
+* ✅ SELECT
+* ✅ DISTINCT
+* ✅ WHERE
+* ✅ LIMIT
+* ✅ ORDER BY
+* ✅ Aliases
+
+## Aggregate Functions
+
+* ✅ COUNT()
+* ✅ SUM()
+* ✅ AVG()
+* ✅ MIN()
+* ✅ MAX()
+
+## Filtering
+
+* ✅ AND
+* ✅ OR
+* ✅ NOT
+* ✅ BETWEEN
+* ✅ IN
+* ✅ LIKE
+
+## Grouping
+
+* ✅ GROUP BY
+* ✅ HAVING
+
+## String Functions
+
+* ✅ LENGTH()
+* ✅ CONCAT()
+* ✅ UPPER()
+* ✅ LOWER()
+* ✅ TRIM()
+
+## Date Functions
+
+* ✅ Basic Date Operations
+
+## Sorting
+
+* ✅ ASC
+* ✅ DESC
+* ✅ Multiple Column Sorting
+
+## NULL Handling
+
+* ✅ IS NULL
+* ✅ IS NOT NULL
+
+## Joins
+
+* ✅ Introduction to Joins
+* ✅ Basic INNER JOIN Practice
 
 ---
 
-## 📈 Progress Tracker
+# 💻 LeetCode Problems Solved
 
-| Day | Status |
-|------|--------|
-| Day 14 | ✅ Completed |
+Examples include:
+
+* 197 – Rising Temperature
+* 1581 – Customer Who Visited but Did Not Make Any Transactions
+* 1661 – Average Time of Process per Machine
+* 1378 – Replace Employee ID With The Unique Identifier
+
+…and many additional daily SQL practice problems.
+
+---
+
+# 🎯 Skills Developed
+
+* SQL Query Writing
+* Data Filtering
+* Sorting Records
+* Aggregation
+* Database Analysis
+* Problem Solving
+* Query Optimization (Basic)
+* Relational Database Fundamentals
 
 ---
 
-## 🚀 Learning Summary
+# 📁 Repository Structure
 
-> Day 14 focused on consistent SQL practice and improving database querying skills. Every solved query strengthens the foundation required for Data Analytics, Data Science, and technical interviews.
+```
+SQL/
+
+├── Day-01/
+├── Day-02/
+├── Day-03/
+├── ...
+├── LeetCode/
+├── Notes/
+└── README.md
+```
 
 ---
 
-## ⭐ Quote of the Day
+# 📈 Current Progress
 
-> *"Mastering SQL isn't about memorizing syntax—it's about learning how to think with data."*
+| Topic               | Status     |
+| ------------------- | ---------- |
+| SQL Basics          | ✅          |
+| Aggregate Functions | ✅          |
+| Filtering           | ✅          |
+| Grouping            | ✅          |
+| String Functions    | ✅          |
+| Sorting             | ✅          |
+| NULL Handling       | ✅          |
+| Basic Joins         | ✅          |
+| LeetCode SQL        | 🔄 Ongoing |
 
 ---
-**Status:** ✅ Day 14 Completed  
-**Journey:** Keep Learning • Keep Building • Keep Growing 🚀
 
-# ✅ Day 15 - SQL Journey Completed
+# 🎯 Next Learning Goals
 
-## 📅 Date
-14 July 2026
+* LEFT JOIN
+* RIGHT JOIN
+* FULL OUTER JOIN
+* SELF JOIN
+* UNION & UNION ALL
+* CASE WHEN
+* Subqueries
+* CTE (Common Table Expressions)
+* Window Functions
+* Ranking Functions
+* Advanced Interview Questions
 
-## 📚 Topics Covered
-- Compared values with the previous row using SQL window functions.
-- Solved SQL comparison problems using `LAG()`.
-- Practiced identifying differences between current and previous records.
-- Worked on LeetCode SQL Problem **197 - Rising Temperature**.
-- Improved understanding of row-wise comparisons and analytical SQL functions.
+---
 
-## 🧠 Key Learnings
-- Learned how `LAG()` accesses previous row values.
-- Understood how to compare sequential records.
-- Improved analytical thinking for SQL interview questions.
-- Strengthened SQL problem-solving skills.
+## 🚀 Goal
 
-## 🎯 Status
-✅ Day 15 Completed
+Build strong SQL skills for Data Analytics, Data Science, Machine Learning, and software engineering interviews through consistent daily practice and real-world problem solving.

@@ -147,3 +147,61 @@ print("2. The MAE shows that, on average, our model's predictions are off by abo
 print("3. The RMSE is slightly higher than the MAE, which is expected as it more heavily penalizes larger prediction errors.")
 print("4. Looking at the sample outputs, the predicted scores closely track the actual scores, validating the linear assumption.")
 print("5. Overall, the evaluation metrics confirm a strong, reliable positive linear relationship between study time and academic performance in this dataset.\n")
+
+
+# ==========================================
+# 0. Mock Student Dataset Generation
+# ==========================================
+# Generating reproducible random data for 100 students
+np.random.seed(42)
+data = {
+    'Hours_Studied': np.random.randint(1, 10, 100),
+    'Attendance_Percentage': np.random.randint(50, 100, 100),
+    'Previous_Score': np.random.randint(40, 100, 100)
+}
+df = pd.DataFrame(data)
+
+# Creating a mock 'Final_Score' based on the features
+df['Final_Score'] = (df['Hours_Studied'] * 2) + (df['Attendance_Percentage'] * 0.5) + (df['Previous_Score'] * 0.3) + np.random.randint(-5, 5, 100)
+
+# ==========================================
+# 1. Create a Pass/Fail target
+# ==========================================
+# Assuming a Final Score of 70 or higher is a Pass (1), otherwise Fail (0)
+df['Target_Pass'] = (df['Final_Score'] >= 70).astype(int)
+
+# Define our features (X) and our target label (y)
+X = df[['Hours_Studied', 'Attendance_Percentage', 'Previous_Score']]
+y = df['Target_Pass']
+
+# ==========================================
+# 2. Split the dataset into training and testing sets
+# ==========================================
+# 80% of data for training, 20% for testing
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# ==========================================
+# 3. Train a Logistic Regression classifier
+# ==========================================
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# ==========================================
+# 4. Make predictions
+# ==========================================
+y_pred = model.predict(X_test)
+
+# ==========================================
+# 5. Print Output Metrics
+# ==========================================
+print("--- Logistic Regression Model Evaluation ---\n")
+
+print("1. ACCURACY:")
+print(f"{accuracy_score(y_test, y_pred) * 100:.2f}%\n")
+
+print("2. CONFUSION MATRIX:")
+print(confusion_matrix(y_test, y_pred))
+print("(Format: [[True Negatives, False Positives], [False Negatives, True Positives]])\n")
+
+print("3. CLASSIFICATION REPORT:")
+print(classification_report(y_test, y_pred, target_names=['Fail (0)', 'Pass (1)']))

@@ -491,3 +491,79 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# ==========================================
+# 0. Mock Dataset Generation
+# ==========================================
+np.random.seed(42)
+n_students = 200
+departments = ['Computer Science', 'Mechanical', 'Electrical', 'Civil']
+hours_studied = np.random.randint(2, 12, n_students)
+attendance = np.random.randint(60, 100, n_students)
+
+# Create a realistic CGPA that correlates with study hours and attendance
+cgpa = (hours_studied * 0.4) + (attendance * 0.05) + np.random.normal(0, 0.5, n_students)
+cgpa = np.clip(cgpa, 4.0, 10.0)
+
+df = pd.DataFrame({
+    'Student_ID': range(1, n_students + 1),
+    'Department': np.random.choice(departments, n_students),
+    'Hours_Studied': hours_studied,
+    'Attendance_Percentage': attendance,
+    'CGPA': np.round(cgpa, 2)
+})
+
+bins = [0, 6.0, 7.0, 8.0, 9.0, 10.0]
+labels = ['F', 'D', 'C', 'B', 'A']
+df['Grade'] = pd.cut(df['CGPA'], bins=bins, labels=labels, include_lowest=True)
+
+print("Dataset generated. Creating visualizations...\n")
+
+# ==========================================
+# 1. Correlation Heatmap
+# ==========================================
+plt.figure(figsize=(8, 6))
+numeric_cols = df[['Hours_Studied', 'Attendance_Percentage', 'CGPA']]
+sns.heatmap(numeric_cols.corr(), annot=True, cmap='coolwarm', fmt=".2f", vmin=-1, vmax=1)
+plt.title('Correlation Heatmap of Student Metrics')
+plt.tight_layout()
+plt.savefig('1_correlation_heatmap.png')
+print("Saved: 1_correlation_heatmap.png")
+plt.close()
+
+# ==========================================
+# 2. Box Plot
+# ==========================================
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Department', y='CGPA', data=df, palette='Set2')
+plt.title('CGPA Distribution by Department')
+plt.tight_layout()
+plt.savefig('2_boxplot.png')
+print("Saved: 2_boxplot.png")
+plt.close()
+
+# ==========================================
+# 3. Count Plot
+# ==========================================
+plt.figure(figsize=(8, 6))
+sns.countplot(x='Grade', data=df, order=['A', 'B', 'C', 'D', 'F'], palette='viridis')
+plt.title('Count of Students per Grade')
+plt.tight_layout()
+plt.savefig('3_countplot.png')
+print("Saved: 3_countplot.png")
+plt.close()
+
+# ==========================================
+# 4. Scatter Plot
+# ==========================================
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x='Hours_Studied', y='CGPA', hue='Department', data=df, alpha=0.7)
+plt.title('CGPA vs Hours Studied')
+plt.tight_layout()
+plt.savefig('4_scatterplot.png')
+print("Saved: 4_scatterplot.png")
+plt.close()
+
+print("\nAll visualizations have been successfully saved to your current directory!")
