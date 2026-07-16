@@ -205,3 +205,102 @@ print("(Format: [[True Negatives, False Positives], [False Negatives, True Posit
 
 print("3. CLASSIFICATION REPORT:")
 print(classification_report(y_test, y_pred, target_names=['Fail (0)', 'Pass (1)']))
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import r2_score, accuracy_score
+
+def main():
+    # ==========================================
+    # 1. LOAD THE CLEANED DATASET (Mock Data)
+    # ==========================================
+    np.random.seed(42)
+    data_size = 500
+
+    study_hours = np.random.uniform(1, 10, data_size)
+    attendance = np.random.uniform(50, 100, data_size)
+    previous_score = np.random.uniform(300, 1000, data_size)
+
+    final_score = (study_hours * 5) + (attendance * 0.5) + (previous_score * 0.05) + np.random.normal(0, 5, data_size)
+    pass_fail = (final_score > 115).astype(int)
+
+    df = pd.DataFrame({
+        'Study_Hours': study_hours,
+        'Attendance_Percentage': attendance,
+        'Previous_Score': previous_score,
+        'Final_Score': final_score,
+        'Pass_Fail': pass_fail
+    })
+
+    print("\n" + "="*40)
+    print("DATASET PREVIEW")
+    print("="*40)
+    print(df.head())
+
+    # ==========================================
+    # 2. SPLIT INTO TRAIN/TEST SETS
+    # ==========================================
+    X = df[['Study_Hours', 'Attendance_Percentage', 'Previous_Score']]
+    y_reg = df['Final_Score']
+    y_clf = df['Pass_Fail']
+
+    X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(X, y_reg, test_size=0.2, random_state=42)
+    X_train_clf, X_test_clf, y_train_clf, y_test_clf = train_test_split(X, y_clf, test_size=0.2, random_state=42)
+
+    # ==========================================
+    # 3. TRAIN BEFORE SCALING
+    # ==========================================
+    lr_unscaled = LinearRegression()
+    lr_unscaled.fit(X_train_reg, y_train_reg)
+    r2_unscaled = r2_score(y_test_reg, lr_unscaled.predict(X_test_reg))
+
+    log_reg_unscaled = LogisticRegression(max_iter=1000) 
+    log_reg_unscaled.fit(X_train_clf, y_train_clf)
+    acc_unscaled = accuracy_score(y_test_clf, log_reg_unscaled.predict(X_test_clf))
+
+    print("\n" + "="*40)
+    print("RESULTS: BEFORE SCALING")
+    print("="*40)
+    print(f"Linear Regression R2:        {r2_unscaled:.4f}")
+    print(f"Logistic Regression Accuracy:{acc_unscaled:.4f}")
+
+    # ==========================================
+    # 4. APPLY FEATURE SCALING & RETRAIN
+    # ==========================================
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train_reg) 
+    X_test_scaled = scaler.transform(X_test_reg) 
+
+    lr_scaled = LinearRegression()
+    lr_scaled.fit(X_train_scaled, y_train_reg)
+    r2_scaled = r2_score(y_test_reg, lr_scaled.predict(X_test_scaled))
+
+    log_reg_scaled = LogisticRegression()
+    log_reg_scaled.fit(X_train_scaled, y_train_clf)
+    acc_scaled = accuracy_score(y_test_clf, log_reg_scaled.predict(X_test_scaled))
+
+    print("\n" + "="*40)
+    print("RESULTS: AFTER SCALING")
+    print("="*40)
+    print(f"Linear Regression R2:        {r2_scaled:.4f}")
+    print(f"Logistic Regression Accuracy:{acc_scaled:.4f}")
+
+    # ==========================================
+    # 5. TERMINAL OBSERVATIONS
+    # ==========================================
+    print("\n" + "="*40)
+    print("OBSERVATIONS ON FEATURE SCALING")
+    print("="*40)
+    print("1. Linear Regression:")
+    print("   - Result: R-squared remains identical.")
+    print("   - Why: Standard linear regression has an analytical solution without default regularization. Scaling simply adjusts the coefficients proportionally; the mathematical predictions do not change.\n")
+    
+    print("2. Logistic Regression:")
+    print("   - Result: Accuracy and model stability often improve (depending on dataset spread).")
+    print("   - Why: Scikit-learn's LogisticRegression uses L2 regularization by default, which penalizes large coefficients. Unscaled features with large ranges are unfairly penalized. Scaling ensures all features are treated equally by the regularization math, and helps the gradient descent optimizer converge faster.")
+    print("="*40 + "\n")
+
+if __name__ == "__main__":
+    main()

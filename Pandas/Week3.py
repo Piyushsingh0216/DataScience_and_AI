@@ -220,3 +220,90 @@ print("\n" + "-"*35 + "\n")
 filename = 'processed_students.csv'
 df.to_csv(filename, index=False)
 print(f"Success: Processed dataset saved locally as '{filename}'.")
+
+
+def main():
+    # ==========================================
+    # 0. SETUP: LOAD (OR MOCK) THE DATASET
+    # ==========================================
+    # Replace this block with: df = pd.read_csv('your_dataset.csv')
+    np.random.seed(42)
+    departments = ['Computer Science', 'Mechanical', 'Electrical', 'Civil']
+    
+    # Generating mock data
+    data = {
+        'Student_ID': range(101, 201),
+        'Name': [f"Student_{i}" for i in range(1, 101)],
+        'Department': np.random.choice(departments, 100),
+        # Normal CGPA around 7.5
+        'CGPA': np.random.normal(7.5, 1.2, 100) 
+    }
+    df = pd.DataFrame(data)
+    
+    # Inject a few intentional outliers for the exercise
+    df.loc[10, 'CGPA'] = 1.5 
+    df.loc[45, 'CGPA'] = 9.9 
+    
+    # Clip to ensure valid CGPA range (0 to 10)
+    df['CGPA'] = df['CGPA'].clip(0, 10)
+
+    print("="*50)
+    print("INITIAL DATASET PREVIEW (First 5 rows):")
+    print("="*50)
+    print(df.head(), "\n")
+
+    # ==========================================
+    # 1. DEPARTMENT-WISE SUMMARY STATISTICS
+    # ==========================================
+    print("="*50)
+    print("1. DEPARTMENT-WISE CGPA SUMMARY STATISTICS:")
+    print("="*50)
+    dept_summary = df.groupby('Department')['CGPA'].describe()
+    print(dept_summary, "\n")
+
+    # ==========================================
+    # 2. TOP 5 STUDENTS IN EACH DEPARTMENT
+    # ==========================================
+    print("="*50)
+    print("2. TOP 5 STUDENTS PER DEPARTMENT:")
+    print("="*50)
+    # Group by department, get the top 5 by CGPA, and drop the extra index
+    top_5_students = df.groupby('Department', group_keys=False).apply(lambda x: x.nlargest(5, 'CGPA'))
+    print(top_5_students[['Department', 'Name', 'CGPA']], "\n")
+
+    # ==========================================
+    # 3. FLAG POTENTIAL OUTLIERS IN CGPA
+    # ==========================================
+    # We will use the Interquartile Range (IQR) method to find outliers
+    Q1 = df['CGPA'].quantile(0.25)
+    Q3 = df['CGPA'].quantile(0.75)
+    IQR = Q3 - Q1
+    
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Create a new column flagging True if outside the bounds, False otherwise
+    df['Is_Outlier'] = (df['CGPA'] < lower_bound) | (df['CGPA'] > upper_bound)
+    
+    print("="*50)
+    print("3. OUTLIERS FLAGGED (Showing only outliers):")
+    print("="*50)
+    outliers = df[df['Is_Outlier'] == True]
+    if not outliers.empty:
+        print(outliers[['Student_ID', 'Name', 'Department', 'CGPA', 'Is_Outlier']], "\n")
+    else:
+        print("No outliers detected based on the IQR method.\n")
+
+    # ==========================================
+    # 4. SAVE THE PROCESSED DATASET
+    # ==========================================
+    output_file = 'student_analysis.csv'
+    df.to_csv(output_file, index=False)
+    
+    print("="*50)
+    print(f"4. DATA SAVED SUCCESSFULLY!")
+    print("="*50)
+    print(f"Processed dataset saved as: {output_file}")
+
+if __name__ == "__main__":
+    main()

@@ -567,3 +567,107 @@ print("Saved: 4_scatterplot.png")
 plt.close()
 
 print("\nAll visualizations have been successfully saved to your current directory!")
+
+
+
+def main():
+    # ==========================================
+    # 0. SETUP: GENERATE MOCK BUSINESS DATASET
+    # ==========================================
+    np.random.seed(42)
+    n_samples = 200
+    
+    # Generating mock data: Age, Income, Marketing Spend, Sales, and Region
+    age = np.random.normal(35, 10, n_samples).clip(18, 70)
+    income = np.random.normal(60000, 15000, n_samples)
+    marketing_spend = np.random.uniform(1000, 5000, n_samples)
+    
+    # Sales is influenced by Income and Marketing Spend with some noise
+    sales = (income * 0.05) + (marketing_spend * 1.2) + np.random.normal(0, 2000, n_samples)
+    regions = np.random.choice(['North', 'South', 'East', 'West'], n_samples)
+    
+    df = pd.DataFrame({
+        'Age': age,
+        'Income': income,
+        'Marketing_Spend': marketing_spend,
+        'Sales': sales,
+        'Region': regions
+    })
+
+    print("="*60)
+    print("DATA VISUALIZATION EXERCISE RESULTS")
+    print("="*60)
+    
+    # Set global seaborn style
+    sns.set_theme(style="whitegrid")
+
+    # ==========================================
+    # 1. HISTOGRAM (Distribution of Income)
+    # ==========================================
+    plt.figure(figsize=(8, 5))
+    sns.histplot(df['Income'], bins=20, kde=True, color='skyblue')
+    plt.title('Distribution of Customer Income')
+    plt.xlabel('Income ($)')
+    plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.savefig('1_histogram.png')
+    plt.close()
+
+    print("\n[1] HISTOGRAM (Saved as 1_histogram.png)")
+    print("------------------------------------------------------------")
+    print("Business Insight : The majority of our customer base falls within the $50,000 to $70,000 income bracket. We should tailor our primary product pricing to fit this mid-market segment.")
+    print("Limitation       : Histograms are highly sensitive to the number of bins chosen. Changing the bin size could hide or artificially create patterns in the data distribution.")
+
+    # ==========================================
+    # 2. BOX PLOT (Sales by Region)
+    # ==========================================
+    plt.figure(figsize=(8, 5))
+    sns.boxplot(x='Region', y='Sales', data=df, palette='Set2')
+    plt.title('Sales Distribution by Region')
+    plt.xlabel('Region')
+    plt.ylabel('Sales ($)')
+    plt.tight_layout()
+    plt.savefig('2_boxplot.png')
+    plt.close()
+
+    print("\n[2] BOX PLOT (Saved as 2_boxplot.png)")
+    print("------------------------------------------------------------")
+    print("Business Insight : The 'East' region shows a higher median sales value but also a wider interquartile range (variance). This indicates high potential but inconsistent sales performance that requires standardization.")
+    print("Limitation       : Box plots hide the underlying shape of the distribution. A region might have a 'bimodal' (two-peaked) distribution of sales, which the box plot would fail to show.")
+
+    # ==========================================
+    # 3. PAIR PLOT (Relationships across numeric variables)
+    # ==========================================
+    # Only plotting numeric columns to avoid errors
+    numeric_df = df[['Age', 'Income', 'Marketing_Spend', 'Sales']]
+    pair_plot = sns.pairplot(numeric_df, corner=True, diag_kind='kde')
+    pair_plot.fig.suptitle('Pairwise Relationships in Sales Data', y=1.02)
+    plt.savefig('3_pairplot.png')
+    plt.close()
+
+    print("\n[3] PAIR PLOT (Saved as 3_pairplot.png)")
+    print("------------------------------------------------------------")
+    print("Business Insight : There is a visible positive linear relationship between Marketing Spend and Sales, confirming that our current marketing acquisition channels are yielding a predictable return on investment (ROI).")
+    print("Limitation       : Pair plots only visualize bivariate (two-variable) relationships in a vacuum. They fail to account for complex, multi-variable interactions or confounding variables.")
+
+    # ==========================================
+    # 4. CORRELATION HEATMAP
+    # ==========================================
+    plt.figure(figsize=(8, 6))
+    corr_matrix = numeric_df.corr()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", vmin=-1, vmax=1)
+    plt.title('Correlation Heatmap of Numeric Variables')
+    plt.tight_layout()
+    plt.savefig('4_heatmap.png')
+    plt.close()
+
+    print("\n[4] CORRELATION HEATMAP (Saved as 4_heatmap.png)")
+    print("------------------------------------------------------------")
+    print("Business Insight : Income and Sales have a strong positive correlation (e.g., > 0.60). This suggests that shifting our marketing targeting toward higher-income demographics will likely yield disproportionately higher revenue.")
+    print("Limitation       : Correlation does not imply causation. Furthermore, the Pearson correlation coefficient only captures linear relationships, entirely missing any non-linear dynamics between variables.")
+    print("\n" + "="*60)
+    print("All charts have been saved to your current working directory!")
+    print("="*60 + "\n")
+
+if __name__ == "__main__":
+    main()

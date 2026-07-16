@@ -152,3 +152,35 @@ SQL/
 ## 🚀 Goal
 
 Build strong SQL skills for Data Analytics, Data Science, Machine Learning, and software engineering interviews through consistent daily practice and real-world problem solving.
+
+SQL Day 17
+
+Topics Covered
+
+- SQL Window Functions (Advanced Practice)
+- ROW_NUMBER()
+- RANK()
+- DENSE_RANK()
+- PARTITION BY
+- Common Table Expressions (CTEs)
+- SQL Interview Questions
+
+Concepts Learned
+
+- Solving ranking problems using Window Functions
+- Ranking records within departments using PARTITION BY
+- Choosing between ROW_NUMBER(), RANK(), and DENSE_RANK()
+- Combining CTEs with Window Functions for cleaner queries
+- Writing optimized SQL solutions for interview-style problems
+
+Practice Completed
+
+- Ranked students department-wise using ROW_NUMBER()
+- Compared RANK() and DENSE_RANK() on duplicate values
+- Retrieved the Top 3 students from each department
+- Found students scoring above their department average
+- Solved SQL interview questions using CTEs, Window Functions, and Aggregate Functions
+
+Difficulty
+
+⭐⭐⭐⭐⭐

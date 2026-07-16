@@ -1,45 +1,16 @@
-"""
-Make predictions for new students using the saved Linear Regression model.
-
-This file demonstrates how a beginner can load a trained model and predict
-exam scores for new student records.
-"""
-
-import pickle
-from pathlib import Path
+"""Make predictions for new students using the saved Linear Regression model."""
 
 import pandas as pd
 
-
-BASE_DIR = Path(__file__).resolve().parents[1]
-MODEL_PATH = BASE_DIR / "models" / "linear_regression.pkl"
+from models import load_model_package, predict_exam_score, prepare_new_data
 
 
-def load_model(model_path=MODEL_PATH):
+def load_model():
     """Load the saved model package from disk."""
-    with open(model_path, "rb") as file:
-        return pickle.load(file)
+    return load_model_package()
 
 
-def prepare_new_data(new_data, feature_columns):
-    """Convert new student data into the same format used during training."""
-    new_data_encoded = pd.get_dummies(new_data, drop_first=True)
-    new_data_encoded = new_data_encoded.reindex(columns=feature_columns, fill_value=0)
-    return new_data_encoded
-
-
-def predict_exam_score(new_student_data):
-    """Predict exam scores for one or more new students."""
-    model_package = load_model()
-    model = model_package["model"]
-    feature_columns = model_package["feature_columns"]
-
-    prepared_data = prepare_new_data(new_student_data, feature_columns)
-    predictions = model.predict(prepared_data)
-    return predictions
-
-
-def main():
+def main() -> None:
     """Run a sample prediction for new students."""
     new_students = pd.DataFrame(
         [

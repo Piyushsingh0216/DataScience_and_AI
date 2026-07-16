@@ -1,118 +1,82 @@
-"""
-Train and evaluate a Linear Regression model for student score prediction.
-
-This file loads the cleaned dataset, prepares features and target, splits the
-data, trains LinearRegression, evaluates it, and saves the model with pickle.
-"""
-
-import pickle
-from pathlib import Path
+"""Backward-compatible model training script."""
 
 import numpy as np
 import pandas as pd
+
+from config import DATA_PATH, LINEAR_MODEL_PATH
+from data_loader import load_dataset
+from downloads import save_predictions as export_predictions
+from evaluation import evaluate_regression_model
+from models import save_model_package
+from pipeline import run_pipeline
+from preprocessing import prepare_features, split_dataset
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from sklearn.model_selection import train_test_split
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
-DATA_PATH = BASE_DIR / "data" / "students.csv"
-MODEL_PATH = BASE_DIR / "models" / "linear_regression.pkl"
-PREDICTIONS_PATH = BASE_DIR / "outputs" / "predictions.csv"
-RANDOM_STATE = 42
-
-
-FEATURE_COLUMNS = [
-    "Hours_Studied",
-    "Attendance",
-    "Sleep_Hours",
-    "Previous_Score",
-    "Assignments_Completed",
-    "Internet_Access",
-    "Family_Income",
-]
-TARGET_COLUMN = "Exam_Score"
-
-
-def load_data():
+def load_data() -> pd.DataFrame:
     """Load the cleaned student dataset."""
-    return pd.read_csv(DATA_PATH)
+    return load_dataset(DATA_PATH)
 
 
-def prepare_features(data):
-    """
-    Separate X and y, then convert categorical columns into numeric columns.
-
-    Linear Regression needs numeric values, so Pandas get_dummies is used for
-    Internet_Access and Family_Income.
-    """
-    x = data[FEATURE_COLUMNS]
-    y = data[TARGET_COLUMN]
-    x_encoded = pd.get_dummies(x, drop_first=True)
-    return x_encoded, y
-
-
-def split_data(x, y):
+def split_data(
+    x: pd.DataFrame,
+    y: pd.Series,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Split the data into training and testing sets."""
-    return train_test_split(x, y, test_size=0.2, random_state=RANDOM_STATE)
+    return split_dataset(x, y)
 
 
-def train_model(x_train, y_train):
+def train_model(x_train: pd.DataFrame, y_train: pd.Series) -> LinearRegression:
     """Train a Linear Regression model."""
     model = LinearRegression()
     model.fit(x_train, y_train)
     return model
 
 
-def evaluate_model(model, x_test, y_test):
-    """Evaluate the model using common regression metrics."""
+def evaluate_model(
+    model: LinearRegression,
+    x_test: pd.DataFrame,
+    y_test: pd.Series,
+) -> tuple[np.ndarray, dict[str, float]]:
+    """Evaluate a model using common regression metrics."""
     predictions = model.predict(x_test)
-
-    mae = mean_absolute_error(y_test, predictions)
-    mse = mean_squared_error(y_test, predictions)
-    rmse = np.sqrt(mse)
-    r2 = r2_score(y_test, predictions)
-
-    print("\nModel Evaluation Results")
-    print(f"MAE: {mae:.2f} - Average absolute prediction error.")
-    print(f"MSE: {mse:.2f} - Average squared prediction error.")
-    print(f"RMSE: {rmse:.2f} - Error in the same unit as Exam_Score.")
-    print(f"R2 Score: {r2:.2f} - Percentage of score variation explained.")
-
-    return predictions, {"MAE": mae, "MSE": mse, "RMSE": rmse, "R2": r2}
+    metrics = evaluate_regression_model("Linear Regression", y_test, predictions, 0.0)
+    legacy_metrics = {
+        "MAE": float(metrics["MAE"]),
+        "MSE": float(metrics["MSE"]),
+        "RMSE": float(metrics["RMSE"]),
+        "R2": float(metrics["R2 Score"]),
+    }
+    return predictions, legacy_metrics
 
 
-def save_model(model, feature_columns, model_path=MODEL_PATH):
+def save_model(
+    model: LinearRegression,
+    feature_columns: pd.Index,
+    model_path=LINEAR_MODEL_PATH,
+) -> None:
     """Save the trained model and feature column order using pickle."""
-    model_path.parent.mkdir(parents=True, exist_ok=True)
-    model_package = {"model": model, "feature_columns": list(feature_columns)}
-
-    with open(model_path, "wb") as file:
-        pickle.dump(model_package, file)
-
-    print(f"\nModel saved at: {model_path}")
+    save_model_package(model, feature_columns, model_path, "Linear Regression")
 
 
-def save_predictions(x_test, y_test, predictions):
+def save_predictions(
+    x_test: pd.DataFrame,
+    y_test: pd.Series,
+    predictions: np.ndarray,
+) -> None:
     """Save actual and predicted scores to a CSV file."""
-    results = x_test.copy()
-    results["Actual_Exam_Score"] = y_test.values
-    results["Predicted_Exam_Score"] = predictions.round(2)
-
-    PREDICTIONS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    results.to_csv(PREDICTIONS_PATH, index=False)
-    print(f"Predictions saved at: {PREDICTIONS_PATH}")
+    export_predictions(x_test, y_test, predictions)
 
 
-def main():
-    """Run the full model training workflow."""
-    data = load_data()
-    x, y = prepare_features(data)
-    x_train, x_test, y_train, y_test = split_data(x, y)
-    model = train_model(x_train, y_train)
-    predictions, _ = evaluate_model(model, x_test, y_test)
-    save_model(model, x.columns)
-    save_predictions(x_test, y_test, predictions)
+def main() -> None:
+    """Run the full model training and comparison workflow."""
+    results = run_pipeline(create_graphs=True)
+    comparison_data = results["comparison_data"]
+
+    print("\nModel Comparison Results")
+    print(comparison_data.round(4).to_string(index=False))
+    print(f"\nBest model based on R2 Score: {results['best_model_name']}")
+    print("\nOutputs saved in the outputs/ folder.")
 
 
 if __name__ == "__main__":
