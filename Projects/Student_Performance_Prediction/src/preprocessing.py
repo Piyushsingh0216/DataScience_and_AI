@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -25,13 +26,80 @@ class PreprocessingSummary:
     missing_values_before: int
     missing_values_after: int
     duplicate_rows_removed: int
+    missing_values_handled: str
+    duplicate_rows_status: str
+    columns_encoded: str
+    columns_scaled: str
+    features_selected: str
+    final_dataset_shape: str
     number_of_features: int
     target_column: str
     train_test_split_ratio: str
 
 
+def validate_dataset_columns(data: pd.DataFrame) -> None:
+    """Validate that the dataset contains every required project column."""
+    required_columns = FEATURE_COLUMNS + [TARGET_COLUMN]
+    missing_columns = [
+        column for column in required_columns if column not in data.columns
+    ]
+
+    if missing_columns:
+        missing_list = ", ".join(missing_columns)
+        raise ValueError(f"Missing required dataset columns: {missing_list}.")
+
+
+def get_dataset_overview(data: pd.DataFrame) -> dict[str, object]:
+    """Return high-level dataset statistics for dashboard display."""
+    numeric_count = int(data.select_dtypes(include=[np.number]).shape[1])
+    categorical_count = int(
+        data.select_dtypes(include=["object", "category", "bool"]).shape[1]
+    )
+    memory_mb = data.memory_usage(deep=True).sum() / (1024**2)
+
+    return {
+        "Total Rows": len(data),
+        "Total Columns": len(data.columns),
+        "Number of Numerical Features": numeric_count,
+        "Number of Categorical Features": categorical_count,
+        "Target Column": TARGET_COLUMN,
+        "Dataset Memory Usage": f"{memory_mb:.3f} MB",
+        "Missing Values": int(data.isna().sum().sum()),
+        "Duplicate Rows": int(data.duplicated().sum()),
+    }
+
+
+def get_numeric_statistics(data: pd.DataFrame) -> pd.DataFrame:
+    """Build a compact numeric statistics table."""
+    numeric_data = data.select_dtypes(include=[np.number])
+    if numeric_data.empty:
+        return pd.DataFrame(
+            columns=[
+                "Feature",
+                "Mean",
+                "Median",
+                "Standard Deviation",
+                "Minimum",
+                "Maximum",
+            ]
+        )
+
+    statistics = pd.DataFrame(
+        {
+            "Feature": numeric_data.columns,
+            "Mean": numeric_data.mean().values,
+            "Median": numeric_data.median().values,
+            "Standard Deviation": numeric_data.std().values,
+            "Minimum": numeric_data.min().values,
+            "Maximum": numeric_data.max().values,
+        }
+    )
+    return statistics.round(3)
+
+
 def clean_dataset(data: pd.DataFrame) -> tuple[pd.DataFrame, PreprocessingSummary]:
     """Clean missing values, duplicate rows, and data types."""
+    validate_dataset_columns(data)
     cleaned_data = data.copy()
     missing_before = int(cleaned_data.isna().sum().sum())
 
@@ -51,13 +119,32 @@ def clean_dataset(data: pd.DataFrame) -> tuple[pd.DataFrame, PreprocessingSummar
     cleaned_data["Assignments_Completed"] = cleaned_data[
         "Assignments_Completed"
     ].astype(int)
+    missing_after = int(cleaned_data.isna().sum().sum())
+    encoded_columns = (
+        ", ".join(CATEGORICAL_COLUMNS) if CATEGORICAL_COLUMNS else "Not Required"
+    )
+    selected_features = (
+        ", ".join(FEATURE_COLUMNS) if FEATURE_COLUMNS else "Not Required"
+    )
 
     summary = PreprocessingSummary(
         total_rows=len(cleaned_data),
         total_columns=len(cleaned_data.columns),
         missing_values_before=missing_before,
-        missing_values_after=int(cleaned_data.isna().sum().sum()),
+        missing_values_after=missing_after,
         duplicate_rows_removed=duplicate_rows_removed,
+        missing_values_handled="Yes" if missing_before else "Not Required",
+        duplicate_rows_status=(
+            f"{duplicate_rows_removed} removed"
+            if duplicate_rows_removed
+            else "Not Required"
+        ),
+        columns_encoded=encoded_columns,
+        columns_scaled="Not Required",
+        features_selected=selected_features,
+        final_dataset_shape=(
+            f"{len(cleaned_data)} rows x {len(cleaned_data.columns)} columns"
+        ),
         number_of_features=len(FEATURE_COLUMNS),
         target_column=TARGET_COLUMN,
         train_test_split_ratio=format_ratio(TEST_SIZE),
@@ -67,6 +154,7 @@ def clean_dataset(data: pd.DataFrame) -> tuple[pd.DataFrame, PreprocessingSummar
 
 def prepare_features(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     """Separate features and target, then one-hot encode categorical values."""
+    validate_dataset_columns(data)
     features = data[FEATURE_COLUMNS]
     target = data[TARGET_COLUMN]
     encoded_features = pd.get_dummies(features, drop_first=True)

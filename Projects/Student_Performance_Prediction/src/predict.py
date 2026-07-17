@@ -12,34 +12,37 @@ def load_model():
 
 def main() -> None:
     """Run a sample prediction for new students."""
-    new_students = pd.DataFrame(
-        [
-            {
-                "Hours_Studied": 7.5,
-                "Attendance": 88,
-                "Sleep_Hours": 7,
-                "Previous_Score": 76,
-                "Assignments_Completed": 9,
-                "Internet_Access": "Yes",
-                "Family_Income": "Medium",
-            },
-            {
-                "Hours_Studied": 3,
-                "Attendance": 62,
-                "Sleep_Hours": 5.5,
-                "Previous_Score": 55,
-                "Assignments_Completed": 4,
-                "Internet_Access": "No",
-                "Family_Income": "Low",
-            },
-        ]
-    )
+    try:
+        new_students = pd.DataFrame(
+            [
+                {
+                    "Hours_Studied": 7.5,
+                    "Attendance": 88,
+                    "Sleep_Hours": 7,
+                    "Previous_Score": 76,
+                    "Assignments_Completed": 9,
+                    "Internet_Access": "Yes",
+                    "Family_Income": "Medium",
+                },
+                {
+                    "Hours_Studied": 3,
+                    "Attendance": 62,
+                    "Sleep_Hours": 5.5,
+                    "Previous_Score": 55,
+                    "Assignments_Completed": 4,
+                    "Internet_Access": "No",
+                    "Family_Income": "Low",
+                },
+            ]
+        )
 
-    predictions = predict_exam_score(new_students)
-    new_students["Predicted_Exam_Score"] = predictions.round(2)
+        predictions = predict_exam_score(new_students)
+        new_students["Predicted_Exam_Score"] = predictions.round(2)
 
-    print("\nPredictions for new students:")
-    print(new_students)
+        print("\nPredictions for new students:")
+        print(new_students)
+    except Exception as exc:
+        print(f"Prediction failed: {exc}")
 
 
 if __name__ == "__main__":

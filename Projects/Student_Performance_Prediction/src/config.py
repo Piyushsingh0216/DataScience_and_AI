@@ -8,6 +8,7 @@ DATA_DIR = BASE_DIR / "data"
 MODEL_DIR = BASE_DIR / "models"
 OUTPUT_DIR = BASE_DIR / "outputs"
 GRAPH_DIR = OUTPUT_DIR / "graphs"
+LOG_DIR = BASE_DIR / "logs"
 
 DATA_PATH = DATA_DIR / "students.csv"
 LINEAR_MODEL_PATH = MODEL_DIR / "linear_regression.pkl"
@@ -19,6 +20,7 @@ TEST_DATA_PATH = OUTPUT_DIR / "test_data.csv"
 PREDICTIONS_PATH = OUTPUT_DIR / "predictions.csv"
 MODEL_COMPARISON_PATH = OUTPUT_DIR / "model_comparison.csv"
 MODEL_COMPARISON_GRAPH_PATH = GRAPH_DIR / "model_comparison.png"
+APP_LOG_PATH = LOG_DIR / "app.log"
 
 RANDOM_STATE = 42
 TEST_SIZE = 0.2

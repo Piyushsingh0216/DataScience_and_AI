@@ -671,3 +671,74 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# ==========================================
+# 1. Generate Synthetic Platform Data
+# ==========================================
+np.random.seed(42)
+n_users = 200
+
+# Generating realistic distributions
+hours_logged = np.random.normal(25, 8, n_users)
+modules_completed = (hours_logged * 0.4) + np.random.normal(0, 2, n_users)
+
+# Base score tied to modules, with some random variance
+quiz_score = (modules_completed * 3.5) + np.random.normal(40, 10, n_users)
+tier = np.random.choice(['Free', 'Pro'], n_users, p=[0.6, 0.4])
+
+# Give 'Pro' users a slight artificial bump in scores to simulate premium resources
+quiz_score += np.where(tier == 'Pro', 8, 0)
+quiz_score = np.clip(quiz_score, 0, 100) # Cap scores at 100
+
+df = pd.DataFrame({
+    'Hours_Logged': hours_logged.round(1),
+    'Modules_Completed': np.maximum(0, modules_completed).round(0), # No negative modules
+    'Quiz_Score': quiz_score.round(1),
+    'Tier': tier
+})
+
+# ==========================================
+# 2. Set Up the Dashboard Grid
+# ==========================================
+# Using a 2x2 grid to show all plots in one terminal run
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle('Learning Platform - Student Engagement Analysis', fontsize=16, fontweight='bold')
+sns.set_theme(style="whitegrid")
+
+# ==========================================
+# Plot 1: Histogram (Distribution)
+# ==========================================
+sns.histplot(df['Hours_Logged'], bins=20, kde=True, ax=axes[0, 0], color='teal')
+axes[0, 0].set_title('Histogram: Distribution of Hours Logged')
+axes[0, 0].set_xlabel('Hours Logged')
+axes[0, 0].set_ylabel('Number of Students')
+
+# ==========================================
+# Plot 2: Box Plot (Categorical vs Continuous)
+# ==========================================
+sns.boxplot(x='Tier', y='Quiz_Score', data=df, ax=axes[0, 1], palette='Set2')
+axes[0, 1].set_title('Box Plot: Quiz Scores by Account Tier')
+axes[0, 1].set_xlabel('Account Tier')
+axes[0, 1].set_ylabel('Quiz Score')
+
+# ==========================================
+# Plot 3: Scatter Plot (Relationship)
+# ==========================================
+sns.scatterplot(x='Hours_Logged', y='Modules_Completed', hue='Tier', data=df, ax=axes[1, 0], palette='Set1', alpha=0.7)
+axes[1, 0].set_title('Scatter Plot: Time Spent vs. Progress')
+axes[1, 0].set_xlabel('Hours Logged')
+axes[1, 0].set_ylabel('Modules Completed')
+
+# ==========================================
+# Plot 4: Correlation Heatmap
+# ==========================================
+numeric_df = df.select_dtypes(include=[np.number])
+corr_matrix = numeric_df.corr()
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', ax=axes[1, 1], vmin=-1, vmax=1, center=0, fmt=".2f")
+axes[1, 1].set_title('Correlation Heatmap')
+
+# Render the plots
+plt.tight_layout()
+plt.show()

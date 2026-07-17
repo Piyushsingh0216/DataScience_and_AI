@@ -184,3 +184,35 @@ Practice Completed
 Difficulty
 
 ⭐⭐⭐⭐⭐
+
+# SQL Day 18
+
+## Topics Covered
+
+* SQL Interview Practice
+* Common Table Expressions (CTEs)
+* Window Functions
+* Aggregate Functions
+* JOIN Practice
+* Subqueries
+
+## Concepts Learned
+
+* Solving interview-oriented SQL problems
+* Using CTEs to simplify complex queries
+* Applying Window Functions for ranking and analysis
+* Combining JOINs with Aggregate Functions
+* Improving query readability and optimization
+
+## Practice Completed
+
+* Retrieved Top 3 records using Window Functions
+* Solved department-wise ranking queries
+* Found records above average using Subqueries
+* Practiced JOIN-based interview questions
+* Used CTEs to simplify nested queries
+* Wrote optimized Aggregate Function queries
+
+## Difficulty
+
+⭐⭐⭐⭐⭐

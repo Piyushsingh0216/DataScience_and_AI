@@ -1,11 +1,14 @@
 """Dataset loading and sample data generation."""
 
+import logging
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 from config import DATA_PATH, RANDOM_STATE
+
+logger = logging.getLogger(__name__)
 
 
 def generate_student_dataset(file_path: Path = DATA_PATH, rows: int = 1200) -> None:
@@ -82,7 +85,33 @@ def generate_student_dataset(file_path: Path = DATA_PATH, rows: int = 1200) -> N
 
 def load_dataset(file_path: Path = DATA_PATH) -> pd.DataFrame:
     """Load the student dataset, generating it first when needed."""
-    if not file_path.exists():
-        generate_student_dataset(file_path)
+    try:
+        if not file_path.exists():
+            logger.warning(
+                "Dataset missing at %s. Generating sample dataset.",
+                file_path,
+            )
+            generate_student_dataset(file_path)
 
-    return pd.read_csv(file_path)
+        data = pd.read_csv(file_path)
+    except pd.errors.EmptyDataError as exc:
+        logger.exception("Dataset file is empty: %s", file_path)
+        raise ValueError(
+            "The dataset file is empty. Please add valid student data."
+        ) from exc
+    except pd.errors.ParserError as exc:
+        logger.exception("CSV parsing failed for %s", file_path)
+        raise ValueError(
+            "The dataset CSV could not be loaded. Please check its format."
+        ) from exc
+    except OSError as exc:
+        logger.exception("Dataset file could not be opened: %s", file_path)
+        raise ValueError(
+            "The dataset file could not be opened. Please check the file path."
+        ) from exc
+
+    if data.empty:
+        logger.error("Loaded dataset has no rows: %s", file_path)
+        raise ValueError("The dataset has no rows. Please provide at least one record.")
+
+    return data

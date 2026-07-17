@@ -21,6 +21,32 @@ If the dataset does not exist, the project automatically generates a realistic C
 - Saves processed, train, test, prediction, and model comparison CSV files in `outputs/`
 - Provides a dashboard with preprocessing cards, charts, tables, and download buttons
 
+## Today's Improvements
+
+### Model Evaluation Cards
+
+The dashboard now includes best-model evaluation cards near the prediction and results area. The cards show Model Name, R2 Score, MAE, MSE, RMSE, and Training Time with values formatted to 3 decimal places. The best model is highlighted automatically whenever the pipeline retrains.
+
+### Dataset Statistics Panel
+
+The dashboard now displays a Dataset Overview panel with total rows, total columns, numerical feature count, categorical feature count, target column, memory usage, missing values, and duplicate rows. It also includes a Numeric Statistics table with mean, median, standard deviation, minimum, and maximum values.
+
+### Preprocessing Summary
+
+The preprocessing section now shows missing values handled, duplicate rows removed, columns encoded, columns scaled, selected features, final dataset shape, and train/test split ratio. Steps that are not needed display `Not Required`.
+
+### Responsive Dashboard
+
+The dashboard layout was refined with equal-sized cards, consistent spacing, improved section headers, uniform fonts, responsive card grids, and scroll-friendly tables for smaller screens.
+
+### Error Handling
+
+The project now handles missing datasets, CSV load failures, empty datasets, missing required columns, missing or corrupted model files, invalid prediction input, download read errors, and prediction failures with user-friendly messages. Detailed diagnostics are logged internally in `logs/app.log`.
+
+### Prediction Input & Validation
+
+The dashboard now includes a guided prediction form so users can test the saved model with new student profiles while receiving clear validation messages for missing or invalid inputs.
+
 ## Folder Structure
 
 ```text
@@ -68,16 +94,16 @@ Student_Performance_Prediction/
 
 The dataset contains the following columns:
 
-| Column | Description |
-| --- | --- |
-| `Hours_Studied` | Number of hours the student studies per day |
-| `Attendance` | Attendance percentage |
-| `Sleep_Hours` | Average sleep hours per night |
-| `Previous_Score` | Student's previous exam score |
-| `Assignments_Completed` | Number of assignments completed |
-| `Internet_Access` | Whether the student has internet access |
-| `Family_Income` | Family income category: Low, Medium, or High |
-| `Exam_Score` | Final exam score to be predicted |
+| Column                  | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| `Hours_Studied`         | Number of hours the student studies per day  |
+| `Attendance`            | Attendance percentage                        |
+| `Sleep_Hours`           | Average sleep hours per night                |
+| `Previous_Score`        | Student's previous exam score                |
+| `Assignments_Completed` | Number of assignments completed              |
+| `Internet_Access`       | Whether the student has internet access      |
+| `Family_Income`         | Family income category: Low, Medium, or High |
+| `Exam_Score`            | Final exam score to be predicted             |
 
 ## Technologies Used
 

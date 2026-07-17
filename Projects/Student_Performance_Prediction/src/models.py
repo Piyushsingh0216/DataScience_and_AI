@@ -1,5 +1,6 @@
 """Model training, comparison, prediction, and persistence."""
 
+import logging
 import pickle
 import time
 from pathlib import Path
@@ -12,6 +13,8 @@ from sklearn.tree import DecisionTreeRegressor
 
 from config import BEST_MODEL_PATH, LINEAR_MODEL_PATH, RANDOM_STATE
 from evaluation import evaluate_regression_model, get_best_model_name
+
+logger = logging.getLogger(__name__)
 
 
 def build_models() -> dict[str, object]:
@@ -99,21 +102,77 @@ def save_compatible_models(
 
 def load_model_package(model_path: Path = LINEAR_MODEL_PATH) -> dict[str, object]:
     """Load a saved model package from disk."""
-    with open(model_path, "rb") as file:
-        return pickle.load(file)
+    if not model_path.exists():
+        logger.error("Model file is missing: %s", model_path)
+        raise FileNotFoundError(
+            "The model file is missing. Please retrain the model first."
+        )
+
+    try:
+        with open(model_path, "rb") as file:
+            model_package = pickle.load(file)
+    except (pickle.UnpicklingError, EOFError, AttributeError, ImportError) as exc:
+        logger.exception("Model file is corrupted or incompatible: %s", model_path)
+        raise ValueError(
+            "The saved model file could not be loaded. Please retrain the model."
+        ) from exc
+    except OSError as exc:
+        logger.exception("Model file could not be opened: %s", model_path)
+        raise ValueError("The model file could not be opened.") from exc
+
+    if not isinstance(model_package, dict):
+        logger.error("Model package is not a dictionary: %s", model_path)
+        raise ValueError("The saved model package is invalid. Please retrain it.")
+
+    required_keys = {"model", "model_name", "feature_columns"}
+    if not required_keys.issubset(model_package):
+        logger.error("Model package missing required keys: %s", model_path)
+        raise ValueError("The saved model package is incomplete. Please retrain it.")
+
+    return model_package
 
 
-def prepare_new_data(new_data: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
+def prepare_new_data(
+    new_data: pd.DataFrame,
+    feature_columns: list[str],
+) -> pd.DataFrame:
     """Convert new student data into the same format used during training."""
+    if not isinstance(new_data, pd.DataFrame):
+        raise TypeError("Prediction input must be a pandas DataFrame.")
+
+    if new_data.empty:
+        raise ValueError("Prediction input is empty. Please provide student data.")
+
+    required_columns = [
+        "Hours_Studied",
+        "Attendance",
+        "Sleep_Hours",
+        "Previous_Score",
+        "Assignments_Completed",
+        "Internet_Access",
+        "Family_Income",
+    ]
+    missing_columns = [column for column in required_columns if column not in new_data.columns]
+    if missing_columns:
+        missing_list = ", ".join(missing_columns)
+        raise ValueError(f"Prediction input is missing required columns: {missing_list}.")
+
+    if new_data.isna().any().any():
+        raise ValueError("Prediction input contains missing values. Please fill all fields.")
+
     new_data_encoded = pd.get_dummies(new_data, drop_first=True)
     return new_data_encoded.reindex(columns=feature_columns, fill_value=0)
 
 
 def predict_exam_score(new_student_data: pd.DataFrame) -> np.ndarray:
     """Predict exam scores for one or more new students."""
-    model_package = load_model_package()
-    prepared_data = prepare_new_data(
-        new_student_data,
-        model_package["feature_columns"],
-    )
-    return model_package["model"].predict(prepared_data)
+    try:
+        model_package = load_model_package()
+        prepared_data = prepare_new_data(
+            new_student_data,
+            model_package["feature_columns"],
+        )
+        return model_package["model"].predict(prepared_data)
+    except Exception:
+        logger.exception("Prediction failed.")
+        raise

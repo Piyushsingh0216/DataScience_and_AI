@@ -307,3 +307,72 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# ==========================================
+# 1. Generate Synthetic Student Dataset
+# ==========================================
+np.random.seed(42)
+departments = ['Computer Science', 'Mechanical', 'Electrical', 'Civil']
+data = {
+    'Student_ID': range(101, 151),
+    'Name': [f'Student_{i}' for i in range(1, 51)],
+    'Department': np.random.choice(departments, 50),
+    'Score': np.random.uniform(55, 100, 50).round(1)
+}
+df = pd.DataFrame(data)
+
+print("--- Sample of Raw Data ---")
+print(df.head(), "\n")
+
+# ==========================================
+# 2. Build a Department Summary Table
+# ==========================================
+# Grouping by department to get average score and student count
+dept_summary = df.groupby('Department').agg(
+    Student_Count=('Student_ID', 'count'),
+    Average_Score=('Score', 'mean')
+).round(2).reset_index()
+
+print("--- Department Summary Table ---")
+print(dept_summary.to_string(index=False), "\n")
+
+# ==========================================
+# 3. Find Top-Performing Students
+# ==========================================
+# Identifying the top 5 students overall
+top_students = df.sort_values(by='Score', ascending=False).head(5)
+
+print("--- Top 5 Performing Students Overall ---")
+print(top_students.to_string(index=False), "\n")
+
+# Identifying the top student within each department
+top_per_dept = df.loc[df.groupby('Department')['Score'].idxmax()]
+
+print("--- Top Student per Department ---")
+print(top_per_dept.to_string(index=False), "\n")
+
+# ==========================================
+# 4. Create a Pivot Table for Department Statistics
+# ==========================================
+# Calculating mean, min, max, and count of scores per department
+pivot_stats = pd.pivot_table(
+    df, 
+    values='Score', 
+    index='Department', 
+    aggfunc=['mean', 'min', 'max', 'count']
+).round(2)
+
+# Flattening the multi-level columns created by pivot_table for cleaner CSV export
+pivot_stats.columns = ['Mean_Score', 'Min_Score', 'Max_Score', 'Student_Count']
+
+print("--- Department Pivot Table ---")
+print(pivot_stats, "\n")
+
+# ==========================================
+# 5. Save Results to CSV
+# ==========================================
+file_name = 'department_summary.csv'
+pivot_stats.to_csv(file_name)
+print(f"[+] Success: Department statistics have been saved to '{file_name}'")

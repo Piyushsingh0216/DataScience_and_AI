@@ -304,3 +304,60 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+# 1. Load (Simulate) the cleaned dataset
+# Generating realistic student data: Hours Studied, Attendance -> Final Score
+np.random.seed(42)
+n_samples = 300
+hours_studied = np.random.uniform(1, 10, n_samples)
+attendance = np.random.uniform(50, 100, n_samples)
+
+# Creating a linear relationship with some realistic noise (random variance)
+final_score = 10 + (4.5 * hours_studied) + (0.4 * attendance) + np.random.normal(0, 4, n_samples)
+
+df = pd.DataFrame({
+    'Hours_Studied': hours_studied,
+    'Attendance': attendance,
+    'Final_Score': final_score
+})
+
+X = df[['Hours_Studied', 'Attendance']]
+y = df['Final_Score']
+
+def train_and_evaluate(test_size_ratio):
+    """Splits data, trains model, and prints evaluation metrics."""
+    # 2. Split into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size_ratio, random_state=42
+    )
+    
+    # 3. Train a Linear Regression model
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    
+    # Generate predictions
+    y_pred = model.predict(X_test)
+    
+    # 4. Evaluate using standard metrics
+    mae = mean_absolute_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, y_pred)
+    
+    train_pct = int((1 - test_size_ratio) * 100)
+    test_pct = int(test_size_ratio * 100)
+    
+    print(f"--- Performance for {train_pct}/{test_pct} Split ---")
+    print(f"MAE:  {mae:.2f} points")
+    print(f"MSE:  {mse:.2f}")
+    print(f"RMSE: {rmse:.2f} points")
+    print(f"R²:   {r2:.4f}\n")
+
+# Execute for standard 80/20 split
+train_and_evaluate(0.20)
+
+# Bonus: Execute for 70/30 split to compare
+train_and_evaluate(0.30)
