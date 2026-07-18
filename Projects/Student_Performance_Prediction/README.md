@@ -47,6 +47,14 @@ The project now handles missing datasets, CSV load failures, empty datasets, mis
 
 The dashboard now includes a guided prediction form so users can test the saved model with new student profiles while receiving clear validation messages for missing or invalid inputs.
 
+## Latest Dashboard Enhancements
+
+- **Feature Engineering Summary**: Adds a dedicated dashboard section showing original and final dataset shape, training features, target column, encoded categorical columns, scaled numerical columns, missing value handling, duplicate removal, feature selection method, and train/test split ratio.
+- **Model Evaluation Metrics**: Adds responsive cards for Model Name, R2 Score, MAE, MSE, and RMSE with values formatted to 3 decimal places and automatic best-model highlighting.
+- **Improved Responsive Layout**: Refines spacing, card consistency, section headers, typography, table scrolling, and responsive grid behavior.
+- **Better Error Handling**: Improves validation and user-friendly errors for dataset loading, empty data, missing columns, invalid prediction inputs, model loading, preprocessing, and exports.
+- **Processed Dataset Download**: Adds a `Download Processed Dataset` option that exports the cleaned/preprocessed CSV to the existing `outputs/` folder and confirms successful export.
+
 ## Folder Structure
 
 ```text

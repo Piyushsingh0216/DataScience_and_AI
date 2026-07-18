@@ -21,6 +21,8 @@ from utils import format_ratio
 class PreprocessingSummary:
     """Beginner-friendly summary of the preprocessing workflow."""
 
+    original_dataset_shape: str
+    final_dataset_shape: str
     total_rows: int
     total_columns: int
     missing_values_before: int
@@ -31,7 +33,7 @@ class PreprocessingSummary:
     columns_encoded: str
     columns_scaled: str
     features_selected: str
-    final_dataset_shape: str
+    feature_selection_method: str
     number_of_features: int
     target_column: str
     train_test_split_ratio: str
@@ -39,6 +41,12 @@ class PreprocessingSummary:
 
 def validate_dataset_columns(data: pd.DataFrame) -> None:
     """Validate that the dataset contains every required project column."""
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("Dataset must be a pandas DataFrame.")
+
+    if data.empty:
+        raise ValueError("The dataset is empty. Please provide valid student data.")
+
     required_columns = FEATURE_COLUMNS + [TARGET_COLUMN]
     missing_columns = [
         column for column in required_columns if column not in data.columns
@@ -101,6 +109,7 @@ def clean_dataset(data: pd.DataFrame) -> tuple[pd.DataFrame, PreprocessingSummar
     """Clean missing values, duplicate rows, and data types."""
     validate_dataset_columns(data)
     cleaned_data = data.copy()
+    original_shape = f"{len(cleaned_data)} rows x {len(cleaned_data.columns)} columns"
     missing_before = int(cleaned_data.isna().sum().sum())
 
     for column in NUMERIC_COLUMNS:
@@ -108,10 +117,19 @@ def clean_dataset(data: pd.DataFrame) -> tuple[pd.DataFrame, PreprocessingSummar
 
     for column in NUMERIC_COLUMNS:
         median_value = cleaned_data[column].median()
+        if pd.isna(median_value):
+            raise ValueError(
+                f"Column '{column}' has no valid numeric values after conversion."
+            )
         cleaned_data[column] = cleaned_data[column].fillna(median_value)
 
     for column in CATEGORICAL_COLUMNS:
-        mode_value = cleaned_data[column].mode()[0]
+        mode_values = cleaned_data[column].mode(dropna=True)
+        if mode_values.empty:
+            raise ValueError(
+                f"Column '{column}' has no valid categorical values to fill."
+            )
+        mode_value = mode_values.iloc[0]
         cleaned_data[column] = cleaned_data[column].fillna(mode_value)
 
     duplicate_rows_removed = int(cleaned_data.duplicated().sum())
@@ -120,31 +138,36 @@ def clean_dataset(data: pd.DataFrame) -> tuple[pd.DataFrame, PreprocessingSummar
         "Assignments_Completed"
     ].astype(int)
     missing_after = int(cleaned_data.isna().sum().sum())
+
+    if cleaned_data.empty:
+        raise ValueError("Preprocessing removed every row from the dataset.")
+
     encoded_columns = (
-        ", ".join(CATEGORICAL_COLUMNS) if CATEGORICAL_COLUMNS else "Not Required"
+        ", ".join(CATEGORICAL_COLUMNS) if CATEGORICAL_COLUMNS else "Not Applied"
     )
     selected_features = (
-        ", ".join(FEATURE_COLUMNS) if FEATURE_COLUMNS else "Not Required"
+        ", ".join(FEATURE_COLUMNS) if FEATURE_COLUMNS else "Not Applied"
     )
+    final_shape = f"{len(cleaned_data)} rows x {len(cleaned_data.columns)} columns"
 
     summary = PreprocessingSummary(
+        original_dataset_shape=original_shape,
+        final_dataset_shape=final_shape,
         total_rows=len(cleaned_data),
         total_columns=len(cleaned_data.columns),
         missing_values_before=missing_before,
         missing_values_after=missing_after,
         duplicate_rows_removed=duplicate_rows_removed,
-        missing_values_handled="Yes" if missing_before else "Not Required",
+        missing_values_handled="Yes" if missing_before else "Not Applied",
         duplicate_rows_status=(
             f"{duplicate_rows_removed} removed"
             if duplicate_rows_removed
-            else "Not Required"
+            else "Not Applied"
         ),
         columns_encoded=encoded_columns,
-        columns_scaled="Not Required",
+        columns_scaled="Not Applied",
         features_selected=selected_features,
-        final_dataset_shape=(
-            f"{len(cleaned_data)} rows x {len(cleaned_data.columns)} columns"
-        ),
+        feature_selection_method="Not Applied",
         number_of_features=len(FEATURE_COLUMNS),
         target_column=TARGET_COLUMN,
         train_test_split_ratio=format_ratio(TEST_SIZE),
@@ -158,6 +181,12 @@ def prepare_features(data: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
     features = data[FEATURE_COLUMNS]
     target = data[TARGET_COLUMN]
     encoded_features = pd.get_dummies(features, drop_first=True)
+
+    if encoded_features.empty or target.empty:
+        raise ValueError("Feature preparation produced empty training data.")
+    if encoded_features.isna().any().any() or target.isna().any():
+        raise ValueError("Feature preparation produced invalid missing values.")
+
     return encoded_features, target
 
 
@@ -166,6 +195,9 @@ def split_dataset(
     target: pd.Series,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Split features and target into training and testing sets."""
+    if len(features) < 2:
+        raise ValueError("At least two records are required for train/test split.")
+
     return train_test_split(
         features,
         target,

@@ -742,3 +742,104 @@ axes[1, 1].set_title('Correlation Heatmap')
 # Render the plots
 plt.tight_layout()
 plt.show()
+
+
+
+
+# ==========================================
+# 1. Create the Simulated Dataset
+# ==========================================
+np.random.seed(42)
+n_samples = 500
+
+# Features
+hours = np.random.uniform(1, 10, n_samples)
+attendance = np.random.uniform(50, 100, n_samples)
+prev_score = np.random.uniform(40, 100, n_samples)
+
+# Adding a categorical variable for better Box/Pair plots
+tutoring_program = np.random.choice(['Enrolled', 'Not Enrolled'], n_samples, p=[0.4, 0.6])
+
+# Calculate Final Grade with a boost for tutoring
+base_grade = (3.2 * hours) + (0.4 * attendance) + (0.5 * prev_score) + np.random.normal(0, 4, n_samples)
+tutoring_boost = np.where(tutoring_program == 'Enrolled', 8.0, 0.0) # 8 point boost for tutoring
+final_grade = base_grade + tutoring_boost
+
+# Compile into DataFrame
+df = pd.DataFrame({
+    'Hours_Studied': hours,
+    'Attendance': attendance,
+    'Previous_Score': prev_score,
+    'Tutoring_Program': tutoring_program,
+    'Final_Grade': final_grade
+})
+
+# Set visual style
+sns.set_theme(style="whitegrid")
+
+# ==========================================
+# 2. Correlation Heatmap
+# ==========================================
+print("\n" + "="*50)
+print("CHART 1: CORRELATION HEATMAP")
+print("="*50)
+print("Insight: The heatmap reveals which numerical factors have the strongest linear relationship with the Final Grade. You will see that 'Hours_Studied' and 'Previous_Score' show high positive correlation coefficients.")
+print("Improvement: Since 'Previous_Score' strongly dictates future success, the institution should implement a mandatory 'bridge course' or summer prep session for incoming students whose previous scores fall below a certain threshold.")
+
+plt.figure(figsize=(8, 6))
+# Calculate correlation only for numeric columns
+corr_matrix = df.select_dtypes(include=[np.number]).corr()
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5)
+plt.title("Correlation Heatmap of Student Performance")
+print("\n>>> Displaying Heatmap... (Close the window to continue to the next chart) <<<")
+plt.show()
+
+# ==========================================
+# 3. Pair Plot
+# ==========================================
+print("\n" + "="*50)
+print("CHART 2: PAIR PLOT")
+print("="*50)
+print("Insight: The pair plot shows the multidimensional distribution of the data. When colored by 'Tutoring_Program', we can see clear clusters showing that enrolled students consistently map to the higher end of the Final Grade axis across all other variables.")
+print("Improvement: The institution should use the lower-left quadrant clusters (low attendance, low hours studied) to create an early-warning dashboard. If a student falls into these metrics by week 3, an automatic alert should trigger an advisor intervention.")
+
+pair_fig = sns.pairplot(df, hue='Tutoring_Program', palette='husl', corner=True)
+pair_fig.fig.suptitle("Pair Plot of All Features by Tutoring Enrollment", y=1.02)
+print("\n>>> Displaying Pair Plot... (Close the window to continue to the next chart) <<<")
+plt.show()
+
+# ==========================================
+# 4. Box Plot
+# ==========================================
+print("\n" + "="*50)
+print("CHART 3: BOX PLOT")
+print("="*50)
+print("Insight: The box plot clearly contrasts the median Final Grade and overall score spread between students who took tutoring and those who didn't. Enrolled students have a noticeably higher median and fewer extreme low outliers.")
+print("Improvement: The data justifies institutional funding to expand the tutoring program capacity. The institution should heavily market this program during orientation and offer incentives (like course credit or priority registration) to increase enrollment.")
+
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Tutoring_Program', y='Final_Grade', data=df, palette='Set2')
+plt.title("Final Grade Distribution by Tutoring Program Enrollment")
+plt.xlabel("Tutoring Program Status")
+plt.ylabel("Final Grade")
+print("\n>>> Displaying Box Plot... (Close the window to continue to the next chart) <<<")
+plt.show()
+
+# ==========================================
+# 5. Histogram
+# ==========================================
+print("\n" + "="*50)
+print("CHART 4: HISTOGRAM")
+print("="*50)
+print("Insight: The histogram shows a normal (bell-curve) distribution of Final Grades across the student body, with the majority of students scoring in the middle range and fewer at the extreme high or low ends.")
+print("Improvement: If the center of the bell curve (the mean) falls below the institution's target academic standard, the curriculum committee should evaluate if the course pacing is too fast or if the grading rubrics need recalibration to support broader student comprehension.")
+
+plt.figure(figsize=(8, 6))
+sns.histplot(df['Final_Grade'], bins=20, kde=True, color='purple')
+plt.title("Distribution of Final Grades")
+plt.xlabel("Final Grade")
+plt.ylabel("Frequency (Number of Students)")
+print("\n>>> Displaying Histogram... (Close the window to finish) <<<")
+plt.show()
+
+print("\nAll visualizations complete!")

@@ -17,6 +17,7 @@ from config import (
     TEST_DATA_PATH,
     TRAIN_DATA_PATH,
 )
+from downloads import save_processed_data
 from models import predict_exam_score
 from pipeline import run_pipeline
 from utils import ensure_directory
@@ -261,7 +262,7 @@ def render_model_evaluation_cards(
     best_model = comparison_data.loc[
         comparison_data["Model"] == best_model_name
     ].iloc[0]
-    metric_names = ["R2 Score", "MAE", "MSE", "RMSE", "Training Time"]
+    metric_names = ["R2 Score", "MAE", "MSE", "RMSE"]
     cards = [
         {
             "label": "Model Name",
@@ -289,22 +290,25 @@ def render_model_evaluation_cards(
 
 
 def render_preprocessing_summary(summary: dict[str, object]) -> None:
-    """Render the detailed preprocessing summary."""
+    """Render the detailed feature engineering summary."""
     summary_items = [
+        ("Original dataset shape", summary["original_dataset_shape"]),
+        ("Final dataset shape", summary["final_dataset_shape"]),
+        ("Features used for training", summary["features_selected"]),
+        ("Target column", summary["target_column"]),
+        ("Categorical columns encoded", summary["columns_encoded"]),
+        ("Numerical columns scaled", summary["columns_scaled"]),
         ("Missing values handled", summary["missing_values_handled"]),
         ("Duplicate rows removed", summary["duplicate_rows_status"]),
-        ("Columns encoded", summary["columns_encoded"]),
-        ("Columns scaled", summary["columns_scaled"]),
-        ("Features selected", summary["features_selected"]),
-        ("Final dataset shape", summary["final_dataset_shape"]),
-        ("Train/Test Split ratio", summary["train_test_split_ratio"]),
+        ("Feature selection method", summary["feature_selection_method"]),
+        ("Train/Test split ratio", summary["train_test_split_ratio"]),
     ]
     cards = [
         {
             "label": label,
-            "value": str(value) if value else "Not Required",
-            "status": "good" if value != "Not Required" else "neutral",
-            "status_label": "Done" if value != "Not Required" else "Not Required",
+            "value": str(value) if value else "Not Applied",
+            "status": "neutral" if value == "Not Applied" else "good",
+            "status_label": "Info" if value != "Not Applied" else "Not Applied",
         }
         for label, value in summary_items
     ]
@@ -337,6 +341,27 @@ def render_download_button(label: str, file_path: Path, file_name: str) -> None:
     except OSError:
         logging.exception("Download file could not be read: %s", file_path)
         st.button(label, disabled=True, use_container_width=True)
+
+
+def render_processed_dataset_download(cleaned_data: pd.DataFrame) -> None:
+    """Export and download the processed dataset with user feedback."""
+    try:
+        save_processed_data(cleaned_data)
+        csv_data = read_csv_file(str(PROCESSED_DATA_PATH))
+        downloaded = st.download_button(
+            label="Download Processed Dataset",
+            data=csv_data,
+            file_name="processed_data.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+        if downloaded:
+            st.success(
+                f"Processed dataset exported successfully to {PROCESSED_DATA_PATH}."
+            )
+    except Exception:
+        logging.exception("Processed dataset export failed.")
+        st.error("The processed dataset could not be exported. Please check the logs.")
 
 
 def render_error_message(error: Exception) -> None:
@@ -397,6 +422,10 @@ def render_prediction_form() -> None:
         submitted = st.form_submit_button("Predict Score")
         if submitted:
             try:
+                if not 0 <= assignments_completed <= 20:
+                    raise ValueError(
+                        "Assignments Completed must be between 0 and 20."
+                    )
                 prediction_input = pd.DataFrame(
                     [
                         {
@@ -447,10 +476,10 @@ def main() -> None:
         hide_index=True,
     )
 
-    render_section_header("Data Preprocessing Summary")
+    render_section_header("Feature Engineering Summary")
     render_preprocessing_summary(results["preprocessing_summary"])
 
-    render_section_header("Model Evaluation Cards")
+    render_section_header("Model Evaluation")
     st.caption(f"Best model by highest R2 Score: {results['best_model_name']}")
     render_model_evaluation_cards(
         results["comparison_data"],
@@ -490,16 +519,21 @@ def main() -> None:
     render_section_header("Download CSV Outputs")
     download_columns = st.columns(5)
     download_items = [
-        ("Cleaned Dataset", PROCESSED_DATA_PATH, "processed_data.csv"),
+        ("Download Processed Dataset", PROCESSED_DATA_PATH, "processed_data.csv"),
         ("Train Dataset", TRAIN_DATA_PATH, "train_data.csv"),
         ("Test Dataset", TEST_DATA_PATH, "test_data.csv"),
         ("Prediction Results", PREDICTIONS_PATH, "predictions.csv"),
         ("Model Comparison", MODEL_COMPARISON_PATH, "model_comparison.csv"),
     ]
 
-    for column, (label, path, file_name) in zip(download_columns, download_items):
+    for index, (column, (label, path, file_name)) in enumerate(
+        zip(download_columns, download_items)
+    ):
         with column:
-            render_download_button(label, path, file_name)
+            if index == 0:
+                render_processed_dataset_download(results["cleaned_data"])
+            else:
+                render_download_button(label, path, file_name)
 
     render_section_header("Cleaned Dataset Preview")
     st.dataframe(

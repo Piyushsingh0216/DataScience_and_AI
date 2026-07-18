@@ -36,21 +36,35 @@ def train_and_compare_models(
     y_test: pd.Series,
 ) -> tuple[dict[str, object], pd.DataFrame, str, np.ndarray]:
     """Train all models, evaluate them, and return the best model details."""
+    if x_train.empty or x_test.empty or y_train.empty or y_test.empty:
+        raise ValueError("Training and testing data must not be empty.")
+
     trained_models = {}
     metrics = []
     predictions_by_model = {}
 
     for model_name, model in build_models().items():
-        start_time = time.perf_counter()
-        model.fit(x_train, y_train)
-        training_time = time.perf_counter() - start_time
+        try:
+            start_time = time.perf_counter()
+            model.fit(x_train, y_train)
+            training_time = time.perf_counter() - start_time
 
-        predictions = model.predict(x_test)
-        trained_models[model_name] = model
-        predictions_by_model[model_name] = predictions
-        metrics.append(
-            evaluate_regression_model(model_name, y_test, predictions, training_time)
-        )
+            predictions = model.predict(x_test)
+            trained_models[model_name] = model
+            predictions_by_model[model_name] = predictions
+            metrics.append(
+                evaluate_regression_model(
+                    model_name,
+                    y_test,
+                    predictions,
+                    training_time,
+                )
+            )
+        except Exception:
+            logger.exception("Model training failed for %s.", model_name)
+
+    if not metrics:
+        raise ValueError("No models could be trained. Please check the dataset.")
 
     comparison_data = pd.DataFrame(metrics).sort_values(
         by="R2 Score",
@@ -152,13 +166,48 @@ def prepare_new_data(
         "Internet_Access",
         "Family_Income",
     ]
-    missing_columns = [column for column in required_columns if column not in new_data.columns]
+    missing_columns = [
+        column for column in required_columns if column not in new_data.columns
+    ]
     if missing_columns:
         missing_list = ", ".join(missing_columns)
-        raise ValueError(f"Prediction input is missing required columns: {missing_list}.")
+        raise ValueError(
+            f"Prediction input is missing required columns: {missing_list}."
+        )
 
     if new_data.isna().any().any():
-        raise ValueError("Prediction input contains missing values. Please fill all fields.")
+        raise ValueError(
+            "Prediction input contains missing values. Please fill all fields."
+        )
+
+    numeric_ranges = {
+        "Hours_Studied": (0, 20),
+        "Attendance": (0, 100),
+        "Sleep_Hours": (0, 12),
+        "Previous_Score": (0, 100),
+        "Assignments_Completed": (0, 20),
+    }
+    for column, (minimum, maximum) in numeric_ranges.items():
+        numeric_values = pd.to_numeric(new_data[column], errors="coerce")
+        if numeric_values.isna().any():
+            raise ValueError(f"Prediction input column '{column}' must be numeric.")
+        if not numeric_values.between(minimum, maximum).all():
+            raise ValueError(
+                f"Prediction input column '{column}' must be between "
+                f"{minimum} and {maximum}."
+            )
+
+    allowed_categories = {
+        "Internet_Access": {"Yes", "No"},
+        "Family_Income": {"Low", "Medium", "High"},
+    }
+    for column, allowed_values in allowed_categories.items():
+        invalid_values = set(new_data[column].astype(str)) - allowed_values
+        if invalid_values:
+            values = ", ".join(sorted(invalid_values))
+            raise ValueError(
+                f"Prediction input column '{column}' has invalid values: {values}."
+            )
 
     new_data_encoded = pd.get_dummies(new_data, drop_first=True)
     return new_data_encoded.reindex(columns=feature_columns, fill_value=0)

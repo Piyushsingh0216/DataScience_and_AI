@@ -216,3 +216,35 @@ Difficulty
 ## Difficulty
 
 ⭐⭐⭐⭐⭐
+
+# SQL Day 19
+
+## Topics Covered
+
+* SQL Window Functions Revision
+* Common Table Expressions (CTEs)
+* CASE Statements
+* Aggregate Functions
+* JOIN Practice
+* SQL Interview Questions
+
+## Concepts Learned
+
+* Solving interview-level SQL problems using Window Functions
+* Using CTEs to simplify complex queries
+* Categorizing records with CASE statements
+* Combining JOINs with Aggregate Functions
+* Writing optimized and readable SQL queries
+
+## Practice Completed
+
+* Ranked students using ROW_NUMBER(), RANK(), and DENSE_RANK()
+* Retrieved the Top 3 students from each department
+* Found students scoring above department average
+* Categorized students based on marks using CASE
+* Solved JOIN and Aggregate Function interview questions
+* Rewrote nested subqueries using CTEs
+
+## Difficulty
+
+⭐⭐⭐⭐⭐
