@@ -76,3 +76,79 @@ print("If the Train/Test Split metrics are noticeably better (lower error, highe
 print("the Cross-Validation metrics, it often means the model got 'lucky' with an easier")
 print("test set during the single split. Cross-Validation provides a more stable, reliable")
 print("estimate of how the model will perform on unseen data because it tests across all data chunks.")
+
+
+
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+# 1. Generate Synthetic Student Performance Dataset
+np.random.seed(42)
+n_samples = 500
+
+# Features
+hours_studied = np.random.uniform(1, 10, n_samples)
+attendance = np.random.uniform(50, 100, n_samples)
+previous_score = np.random.uniform(40, 100, n_samples)
+
+# Target: Final Score (Linear relationship + a non-linear "bonus" for studying > 8 hours + noise)
+final_score = (
+    3 * hours_studied + 
+    0.5 * attendance + 
+    0.4 * previous_score + 
+    np.where(hours_studied > 8, 8, 0) + # Non-linear threshold
+    np.random.normal(0, 4, n_samples)   # Random noise
+)
+final_score = np.clip(final_score, 0, 100) # Keep scores between 0 and 100
+
+data = pd.DataFrame({
+    'Hours_Studied': hours_studied,
+    'Attendance': attendance,
+    'Previous_Score': previous_score,
+    'Final_Score': final_score
+})
+
+# 2. Split the Data
+X = data.drop('Final_Score', axis=1)
+y = data['Final_Score']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 3. Train the Models
+lr_model = LinearRegression()
+lr_model.fit(X_train, y_train)
+
+dt_model = DecisionTreeRegressor(random_state=42, max_depth=5) # Limited depth to prevent severe overfitting
+dt_model.fit(X_train, y_train)
+
+# 4. Evaluation Helper Function
+def evaluate_model(model, X_test, y_test, model_name):
+    y_pred = model.predict(X_test)
+    
+    mae = mean_absolute_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, y_pred)
+    
+    print(f"--- {model_name} ---")
+    print(f"MAE:  {mae:.4f}")
+    print(f"MSE:  {mse:.4f}")
+    print(f"RMSE: {rmse:.4f}")
+    print(f"R²:   {r2:.4f}\n")
+    
+    return r2
+
+# 5. Evaluate and Compare
+print("Model Evaluation Results:\n" + "="*25)
+lr_r2 = evaluate_model(lr_model, X_test, y_test, "Linear Regression")
+dt_r2 = evaluate_model(dt_model, X_test, y_test, "Decision Tree Regressor")
+
+# 6. Identify the Winner
+print("--- Conclusion ---")
+if lr_r2 > dt_r2:
+    print("Linear Regression performed better.")
+    print("Why: The underlying data likely has a strong, straight-line relationship between the features and the target. Decision Trees tend to overfit training data and create 'blocky' predictions, which hurts performance on smooth, linear trends.")
+elif dt_r2 > lr_r2:
+    print("Decision Tree Regressor performed better.")
+    print("Why: The underlying data likely contains non-linear relationships or complex interactions between features (e.g., a sudden jump in grades if a student studies more than 8 hours) that a simple straight line cannot capture.")
+else:
+    print("Both models performed equally well.")
