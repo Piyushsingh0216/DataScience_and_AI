@@ -152,3 +152,90 @@ elif dt_r2 > lr_r2:
     print("Why: The underlying data likely contains non-linear relationships or complex interactions between features (e.g., a sudden jump in grades if a student studies more than 8 hours) that a simple straight line cannot capture.")
 else:
     print("Both models performed equally well.")
+
+
+
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+# ==========================================
+# 1. Prepare the Dataset
+# ==========================================
+# Generating a synthetic "Student Performance" dataset for standalone execution
+np.random.seed(42)
+n_samples = 1000
+
+# Features: Study Hours, Attendance (%), Previous Score, Sleep Hours
+X_data = {
+    'Study_Hours': np.random.uniform(1, 10, n_samples),
+    'Attendance_pct': np.random.uniform(50, 100, n_samples),
+    'Previous_Score': np.random.uniform(40, 100, n_samples),
+    'Sleep_Hours': np.random.uniform(4, 10, n_samples)
+}
+df = pd.DataFrame(X_data)
+
+# Target: Final Score (Linear combination of features + random noise)
+df['Final_Score'] = (
+    3.5 * df['Study_Hours'] + 
+    0.6 * df['Attendance_pct'] + 
+    0.4 * df['Previous_Score'] + 
+    1.2 * df['Sleep_Hours'] + 
+    np.random.normal(0, 4, n_samples) # Random noise to make it realistic
+)
+
+# Separate features (X) and target (y)
+X = df[['Study_Hours', 'Attendance_pct', 'Previous_Score', 'Sleep_Hours']]
+y = df['Final_Score']
+
+# Split into training and testing sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# ==========================================
+# 2. Initialize Models
+# ==========================================
+models = {
+    "Linear Regression": LinearRegression(),
+    "Decision Tree": DecisionTreeRegressor(random_state=42),
+    "Random Forest": RandomForestRegressor(n_estimators=100, random_state=42)
+}
+
+# ==========================================
+# 3. Train and Evaluate Models
+# ==========================================
+results = []
+
+for name, model in models.items():
+    # Train the model
+    model.fit(X_train, y_train)
+    
+    # Make predictions
+    y_pred = model.predict(X_test)
+    
+    # Calculate metrics
+    mae = mean_absolute_error(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, y_pred)
+    
+    # Store results
+    results.append({
+        "Model": name,
+        "MAE": round(mae, 4),
+        "MSE": round(mse, 4),
+        "RMSE": round(rmse, 4),
+        "R² Score": round(r2, 4)
+    })
+
+# ==========================================
+# 4. Display Comparison Table
+# ==========================================
+results_df = pd.DataFrame(results)
+
+print("\n" + "="*60)
+print(" MODEL EVALUATION COMPARISON: STUDENT PERFORMANCE ")
+print("="*60)
+print(results_df.to_string(index=False))
+print("="*60 + "\n")

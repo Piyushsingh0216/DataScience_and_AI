@@ -843,3 +843,90 @@ print("\n>>> Displaying Histogram... (Close the window to finish) <<<")
 plt.show()
 
 print("\nAll visualizations complete!")
+
+
+
+
+# ==========================================
+# 1. Generate Synthetic Dataset
+# ==========================================
+np.random.seed(42)
+n = 500
+
+# Generating realistic synthetic data
+study_hours = np.random.normal(5, 2, n).clip(1, 12)
+attendance_pct = np.random.normal(80, 15, n).clip(30, 100)
+majors = np.random.choice(['STEM', 'Business', 'Arts'], n, p=[0.4, 0.3, 0.3])
+
+# Calculate scores with some noise and major-specific modifiers
+base_score = 40 + (study_hours * 3) + (attendance_pct * 0.3)
+noise = np.random.normal(0, 5, n)
+
+scores = []
+for i in range(n):
+    if majors[i] == 'STEM':
+        score = base_score[i] + noise[i] - 5  # STEM slightly harder/lower average
+    elif majors[i] == 'Business':
+        score = base_score[i] + noise[i] + 4  # Business slightly higher average
+    else:
+        score = base_score[i] + noise[i]
+    scores.append(min(100, max(0, score))) # Cap between 0 and 100
+
+df = pd.DataFrame({
+    'Study_Hours': study_hours,
+    'Attendance_Pct': attendance_pct,
+    'Major': majors,
+    'Final_Score': scores
+})
+
+# ==========================================
+# 2. Setup Plotting Grid
+# ==========================================
+# Set seaborn style for better aesthetics
+sns.set_theme(style="whitegrid")
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle('Student Performance Analysis Dashboard', fontsize=16, weight='bold')
+
+# ==========================================
+# 3. Correlation Heatmap
+# ==========================================
+ax1 = axes[0, 0]
+# Select only numeric columns for correlation
+numeric_df = df.select_dtypes(include=[np.number])
+corr = numeric_df.corr()
+sns.heatmap(corr, annot=True, cmap='coolwarm', vmin=-1, vmax=1, ax=ax1, square=True)
+ax1.set_title('Correlation Heatmap')
+
+# ==========================================
+# 4. Scatter Plot
+# ==========================================
+ax2 = axes[0, 1]
+sns.scatterplot(data=df, x='Study_Hours', y='Final_Score', hue='Major', alpha=0.7, ax=ax2)
+# Add a trendline for visual clarity
+sns.regplot(data=df, x='Study_Hours', y='Final_Score', scatter=False, ax=ax2, color='black', line_kws={"linestyle": "--"})
+ax2.set_title('Study Hours vs. Final Score')
+
+# ==========================================
+# 5. Box Plot
+# ==========================================
+ax3 = axes[1, 0]
+sns.boxplot(data=df, x='Major', y='Final_Score', palette='Set2', ax=ax3)
+ax3.set_title('Score Distribution by Major')
+
+# ==========================================
+# 6. Bar Chart
+# ==========================================
+ax4 = axes[1, 1]
+avg_scores = df.groupby('Major')['Final_Score'].mean().reset_index()
+sns.barplot(data=avg_scores, x='Major', y='Final_Score', palette='Set2', ax=ax4)
+# Add value labels on top of bars
+for i, v in enumerate(avg_scores['Final_Score']):
+    ax4.text(i, v + 1, f"{v:.1f}", ha='center', fontweight='bold')
+ax4.set_title('Average Final Score by Major')
+ax4.set_ylim(0, 100)
+
+# ==========================================
+# 7. Render Plots
+# ==========================================
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.show()

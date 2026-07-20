@@ -1,250 +1,117 @@
 # 🗄️ SQL Learning Journey
 
-> This repository documents my SQL learning journey through theory, hands-on practice, and LeetCode problem solving.
+Welcome to my SQL learning repository. This repository documents my day-by-day SQL journey as part of my **6-Month AI & Data Science Roadmap**.
+
+## 📅 Current Progress
+
+* **SQL Learning Day:** 21
+* **Status:** Intermediate SQL
+* **Goal:** Become interview-ready for Data Analyst, Data Scientist, and AI Engineer roles.
 
 ---
 
-# 📌 About
+# 📚 Topics Covered
 
-The purpose of this repository is to build a strong foundation in SQL for Data Analytics, Data Science, and technical interviews.
+## SQL Fundamentals
 
-I solve SQL problems regularly while learning database concepts and writing efficient queries.
+* CREATE DATABASE
+* CREATE TABLE
+* INSERT
+* SELECT
+* UPDATE
+* DELETE
+* WHERE
+* ORDER BY
+* LIMIT
+* DISTINCT
+* Aliases
+* Aggregate Functions
+* GROUP BY
+* HAVING
 
----
+## Intermediate SQL
 
-# 📚 Topics Covered So Far
+* INNER JOIN
+* LEFT JOIN
+* RIGHT JOIN
+* CROSS JOIN
+* SELF JOIN (Concept)
+* UNION
+* UNION ALL
 
-## SQL Basics
+## Advanced SQL
 
-* ✅ SELECT
-* ✅ DISTINCT
-* ✅ WHERE
-* ✅ LIMIT
-* ✅ ORDER BY
-* ✅ Aliases
+* Subqueries
+* Correlated Subqueries
+* Nested Queries
+* Views
+* Common Table Expressions (CTEs)
+* Window Functions
+* ROW_NUMBER()
+* RANK()
+* DENSE_RANK()
+* PARTITION BY
+* CASE Statements
+* Running Totals
+* Ranking Queries
 
-## Aggregate Functions
+## Interview Practice
 
-* ✅ COUNT()
-* ✅ SUM()
-* ✅ AVG()
-* ✅ MIN()
-* ✅ MAX()
-
-## Filtering
-
-* ✅ AND
-* ✅ OR
-* ✅ NOT
-* ✅ BETWEEN
-* ✅ IN
-* ✅ LIKE
-
-## Grouping
-
-* ✅ GROUP BY
-* ✅ HAVING
-
-## String Functions
-
-* ✅ LENGTH()
-* ✅ CONCAT()
-* ✅ UPPER()
-* ✅ LOWER()
-* ✅ TRIM()
-
-## Date Functions
-
-* ✅ Basic Date Operations
-
-## Sorting
-
-* ✅ ASC
-* ✅ DESC
-* ✅ Multiple Column Sorting
-
-## NULL Handling
-
-* ✅ IS NULL
-* ✅ IS NOT NULL
-
-## Joins
-
-* ✅ Introduction to Joins
-* ✅ Basic INNER JOIN Practice
-
----
-
-# 💻 LeetCode Problems Solved
-
-Examples include:
-
-* 197 – Rising Temperature
-* 1581 – Customer Who Visited but Did Not Make Any Transactions
-* 1661 – Average Time of Process per Machine
-* 1378 – Replace Employee ID With The Unique Identifier
-
-…and many additional daily SQL practice problems.
-
----
-
-# 🎯 Skills Developed
-
-* SQL Query Writing
-* Data Filtering
-* Sorting Records
-* Aggregation
-* Database Analysis
-* Problem Solving
-* Query Optimization (Basic)
-* Relational Database Fundamentals
+* Department-wise Ranking
+* Second/Third Highest Salary
+* Above Average Queries
+* Customers with No Orders
+* Duplicate Records
+* Monthly Sales Report
+* Running Total
+* Top N Records
+* Query Optimization
 
 ---
 
 # 📁 Repository Structure
 
-```
+```text
 SQL/
-
-├── Day-01/
-├── Day-02/
-├── Day-03/
+│
+├── README.md
+├── Day_01/
+├── Day_02/
+├── Day_03/
 ├── ...
-├── LeetCode/
-├── Notes/
-└── README.md
+├── Day_21/
 ```
 
 ---
 
-# 📈 Current Progress
+# 🎯 Current Goal
 
-| Topic               | Status     |
-| ------------------- | ---------- |
-| SQL Basics          | ✅          |
-| Aggregate Functions | ✅          |
-| Filtering           | ✅          |
-| Grouping            | ✅          |
-| String Functions    | ✅          |
-| Sorting             | ✅          |
-| NULL Handling       | ✅          |
-| Basic Joins         | ✅          |
-| LeetCode SQL        | 🔄 Ongoing |
+* Master SQL Interview Questions
+* Write Optimized Queries
+* Improve Query Performance
+* Build Strong Database Fundamentals
 
 ---
 
-# 🎯 Next Learning Goals
+# 📈 Progress
 
-* LEFT JOIN
-* RIGHT JOIN
-* FULL OUTER JOIN
-* SELF JOIN
-* UNION & UNION ALL
-* CASE WHEN
-* Subqueries
-* CTE (Common Table Expressions)
-* Window Functions
-* Ranking Functions
-* Advanced Interview Questions
+* ✅ SQL Fundamentals Completed
+* ✅ JOINs Completed
+* ✅ Aggregate Functions Completed
+* ✅ Subqueries Completed
+* ✅ Views Completed
+* ✅ CTEs Completed
+* ✅ Window Functions Completed
+* ✅ CASE Statements Completed
+* ✅ SQL Interview Practice Ongoing
 
 ---
 
-## 🚀 Goal
+# 🚀 Next Topics
 
-Build strong SQL skills for Data Analytics, Data Science, Machine Learning, and software engineering interviews through consistent daily practice and real-world problem solving.
-
-SQL Day 17
-
-Topics Covered
-
-- SQL Window Functions (Advanced Practice)
-- ROW_NUMBER()
-- RANK()
-- DENSE_RANK()
-- PARTITION BY
-- Common Table Expressions (CTEs)
-- SQL Interview Questions
-
-Concepts Learned
-
-- Solving ranking problems using Window Functions
-- Ranking records within departments using PARTITION BY
-- Choosing between ROW_NUMBER(), RANK(), and DENSE_RANK()
-- Combining CTEs with Window Functions for cleaner queries
-- Writing optimized SQL solutions for interview-style problems
-
-Practice Completed
-
-- Ranked students department-wise using ROW_NUMBER()
-- Compared RANK() and DENSE_RANK() on duplicate values
-- Retrieved the Top 3 students from each department
-- Found students scoring above their department average
-- Solved SQL interview questions using CTEs, Window Functions, and Aggregate Functions
-
-Difficulty
-
-⭐⭐⭐⭐⭐
-
-# SQL Day 18
-
-## Topics Covered
-
-* SQL Interview Practice
-* Common Table Expressions (CTEs)
-* Window Functions
-* Aggregate Functions
-* JOIN Practice
-* Subqueries
-
-## Concepts Learned
-
-* Solving interview-oriented SQL problems
-* Using CTEs to simplify complex queries
-* Applying Window Functions for ranking and analysis
-* Combining JOINs with Aggregate Functions
-* Improving query readability and optimization
-
-## Practice Completed
-
-* Retrieved Top 3 records using Window Functions
-* Solved department-wise ranking queries
-* Found records above average using Subqueries
-* Practiced JOIN-based interview questions
-* Used CTEs to simplify nested queries
-* Wrote optimized Aggregate Function queries
-
-## Difficulty
-
-⭐⭐⭐⭐⭐
-
-# SQL Day 19
-
-## Topics Covered
-
-* SQL Window Functions Revision
-* Common Table Expressions (CTEs)
-* CASE Statements
-* Aggregate Functions
-* JOIN Practice
-* SQL Interview Questions
-
-## Concepts Learned
-
-* Solving interview-level SQL problems using Window Functions
-* Using CTEs to simplify complex queries
-* Categorizing records with CASE statements
-* Combining JOINs with Aggregate Functions
-* Writing optimized and readable SQL queries
-
-## Practice Completed
-
-* Ranked students using ROW_NUMBER(), RANK(), and DENSE_RANK()
-* Retrieved the Top 3 students from each department
-* Found students scoring above department average
-* Categorized students based on marks using CASE
-* Solved JOIN and Aggregate Function interview questions
-* Rewrote nested subqueries using CTEs
-
-## Difficulty
-
-⭐⭐⭐⭐⭐
+* Stored Procedures
+* Triggers
+* Indexes
+* Transactions
+* Normalization
+* Advanced Query Optimization
