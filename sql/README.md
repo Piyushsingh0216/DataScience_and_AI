@@ -1,12 +1,17 @@
 # 🗄️ SQL Learning Journey
 
-Welcome to my SQL learning repository. This repository documents my day-by-day SQL journey as part of my **6-Month AI & Data Science Roadmap**.
+Welcome to my SQL Learning Repository!
 
-## 📅 Current Progress
+This repository contains my daily SQL practice as part of my **6-Month AI & Data Science Roadmap**. It documents my progress from SQL fundamentals to advanced interview-level concepts.
 
-* **SQL Learning Day:** 21
-* **Status:** Intermediate SQL
-* **Goal:** Become interview-ready for Data Analyst, Data Scientist, and AI Engineer roles.
+---
+
+# 📅 Current Progress
+
+* 📚 SQL Learning Day: **22**
+* 🎯 Goal: Become Interview Ready
+* 💻 Practice Platform: MySQL & LeetCode SQL
+* 📈 Current Level: Intermediate → Advanced
 
 ---
 
@@ -53,18 +58,20 @@ Welcome to my SQL learning repository. This repository documents my day-by-day S
 * PARTITION BY
 * CASE Statements
 * Running Totals
+* Running Averages
 * Ranking Queries
 
 ## Interview Practice
 
+* Highest Salary Problems
 * Department-wise Ranking
-* Second/Third Highest Salary
+* Top N Records
 * Above Average Queries
 * Customers with No Orders
 * Duplicate Records
 * Monthly Sales Report
 * Running Total
-* Top N Records
+* Running Average
 * Query Optimization
 
 ---
@@ -79,39 +86,58 @@ SQL/
 ├── Day_02/
 ├── Day_03/
 ├── ...
-├── Day_21/
+├── Day_22/
 ```
 
 ---
 
-# 🎯 Current Goal
+# 🎯 Skills Gained
 
-* Master SQL Interview Questions
-* Write Optimized Queries
-* Improve Query Performance
-* Build Strong Database Fundamentals
-
----
-
-# 📈 Progress
-
-* ✅ SQL Fundamentals Completed
-* ✅ JOINs Completed
-* ✅ Aggregate Functions Completed
-* ✅ Subqueries Completed
-* ✅ Views Completed
-* ✅ CTEs Completed
-* ✅ Window Functions Completed
-* ✅ CASE Statements Completed
-* ✅ SQL Interview Practice Ongoing
+* SQL Fundamentals
+* Complex JOINs
+* Aggregate Functions
+* Subqueries
+* Window Functions
+* CTEs
+* CASE Statements
+* SQL Interview Question Solving
+* Query Optimization
 
 ---
 
-# 🚀 Next Topics
+# 📈 Current Status
+
+✅ SQL Fundamentals Completed
+
+✅ JOINs Completed
+
+✅ Aggregate Functions Completed
+
+✅ Subqueries Completed
+
+✅ Views Completed
+
+✅ CTEs Completed
+
+✅ Window Functions Completed
+
+✅ CASE Statements Completed
+
+✅ Advanced SQL Interview Practice Ongoing
+
+---
+
+# 🚀 Upcoming Topics
 
 * Stored Procedures
 * Triggers
 * Indexes
 * Transactions
 * Normalization
+* Database Design
 * Advanced Query Optimization
+* SQL Performance Tuning
+
+---
+
+⭐ **Goal:** Solve **200+ SQL Interview Questions** and become confident in writing optimized SQL queries for Data Analyst, Data Scientist, and AI Engineer interviews.

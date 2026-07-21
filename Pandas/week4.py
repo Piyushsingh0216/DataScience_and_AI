@@ -151,3 +151,60 @@ if __name__ == "__main__":
     # 3. Display the result
     print("=== FINAL CLEANED DATA ===")
     print(cleaned_df.to_string())
+
+
+
+
+
+# 1. Generate Base Data (adding 'Department' and 'Final_Score')
+np.random.seed(42)
+n_students = 500
+
+df = pd.DataFrame({
+    'Student_ID': range(1, n_students + 1),
+    'Department': np.random.choice(['Engineering', 'Business', 'Arts', 'Science'], n_students),
+    'Attendance_Rate': np.random.normal(85, 12, n_students).clip(0, 100),
+    'Final_Score': np.random.normal(72, 15, n_students).clip(0, 100)
+})
+
+# 2. Create 'Performance Category'
+# Bins: 0-59 (Fail), 60-74 (Average), 75-89 (Good), 90-100 (Excellent)
+performance_bins = [0, 59, 74, 89, 100]
+performance_labels = ['Fail', 'Average', 'Good', 'Excellent']
+df['Performance_Category'] = pd.cut(
+    df['Final_Score'], 
+    bins=performance_bins, 
+    labels=performance_labels, 
+    include_lowest=True
+)
+
+# 3. Create 'Attendance Percentage Group'
+# Bins: 0-75 (Low), 75-90 (Moderate), 90-100 (High)
+attendance_bins = [0, 75, 90, 100]
+attendance_labels = ['Low (<75%)', 'Moderate (75-90%)', 'High (>90%)']
+df['Attendance_Group'] = pd.cut(
+    df['Attendance_Rate'], 
+    bins=attendance_bins, 
+    labels=attendance_labels, 
+    include_lowest=True
+)
+
+# 4. Create Department Statistics Summary
+# We group by Department to find average scores, average attendance, and student count
+dept_summary = df.groupby('Department').agg(
+    Total_Students=('Student_ID', 'count'),
+    Avg_Score=('Final_Score', 'mean'),
+    Avg_Attendance=('Attendance_Rate', 'mean')
+).round(2).reset_index()
+
+# 5. Save the transformed data
+# Save the main student dataset
+df.to_csv('student_transformed.csv', index=False)
+
+# Optional: Save the department summary to a separate file
+dept_summary.to_csv('department_summary.csv', index=False)
+
+print("✅ Data transformation complete.")
+print("✅ Saved 'student_transformed.csv'.\n")
+print("=== Department Statistics Summary ===")
+print(dept_summary)

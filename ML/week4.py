@@ -239,3 +239,65 @@ print(" MODEL EVALUATION COMPARISON: STUDENT PERFORMANCE ")
 print("="*60)
 print(results_df.to_string(index=False))
 print("="*60 + "\n")
+
+
+
+
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import (
+    accuracy_score, 
+    precision_score, 
+    recall_score, 
+    f1_score, 
+    confusion_matrix
+)
+
+# 1. Generate a Synthetic Student Dataset
+np.random.seed(42)
+n_students = 500
+
+df = pd.DataFrame({
+    'Study_Hours_Per_Week': np.random.normal(12, 4, n_students).clip(0, 40),
+    'Attendance_Rate': np.random.normal(85, 12, n_students).clip(0, 100),
+    'Previous_Test_Score': np.random.normal(70, 15, n_students).clip(0, 100),
+    'Extracurricular_Hours': np.random.normal(5, 3, n_students).clip(0, 20)
+})
+
+# 2. Create Target Column: 'Needs_Intervention' (1 = At-Risk/Fail, 0 = Safe/Pass)
+# We simulate a "true" hidden score based on their habits, adding some random noise
+hidden_score = (
+    (df['Study_Hours_Per_Week'] * 2.5) + 
+    (df['Attendance_Rate'] * 0.4) + 
+    (df['Previous_Test_Score'] * 0.5) + 
+    np.random.normal(0, 5, n_students)
+)
+
+# If the student's hidden score falls in the bottom 30%, they are marked as needing intervention
+threshold = np.percentile(hidden_score, 30)
+df['Needs_Intervention'] = (hidden_score < threshold).astype(int)
+
+# 3. Prepare Data and Train the DecisionTreeClassifier
+X = df.drop('Needs_Intervention', axis=1)
+y = df['Needs_Intervention']
+
+# Split into 70% training and 30% testing
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Initialize and train the model
+# Limiting max_depth prevents the tree from massively overfitting our synthetic data
+clf = DecisionTreeClassifier(max_depth=4, random_state=42)
+clf.fit(X_train, y_train)
+
+# 4. Predict and Evaluate
+y_pred = clf.predict(X_test)
+
+print("=== Student Success Predictor Evaluation ===\n")
+print(f"Accuracy : {accuracy_score(y_test, y_pred):.4f}")
+print(f"Precision: {precision_score(y_test, y_pred):.4f}")
+print(f"Recall   : {recall_score(y_test, y_pred):.4f}")
+print(f"F1-Score : {f1_score(y_test, y_pred):.4f}\n")
+
+print("=== Confusion Matrix ===")
+print("Format: [[True Negatives (TN), False Positives (FP)]")
+print("         [False Negatives (FN), True Positives (TP)]]\n")
+print(confusion_matrix(y_test, y_pred))
