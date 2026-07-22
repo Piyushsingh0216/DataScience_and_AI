@@ -56,3 +56,56 @@ axes[1, 1].set_title('Feature Correlation Matrix')
 
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+from sklearn.ensemble import RandomForestClassifier
+
+# 1. Generate Synthetic Data
+np.random.seed(42)
+n_samples = 500
+data = {
+    'Hours_Studied': np.random.normal(loc=15, scale=5, size=n_samples),
+    'Attendance_Pct': np.random.normal(loc=85, scale=10, size=n_samples).clip(0, 100),
+    'Previous_Scores': np.random.normal(loc=70, scale=15, size=n_samples).clip(0, 100),
+    'Extracurriculars': np.random.randint(0, 4, size=n_samples)
+}
+df = pd.DataFrame(data)
+
+# Target: Pass (1) or Fail (0) based on weighted features
+score = (df['Hours_Studied'] * 2 + df['Attendance_Pct'] * 0.5 + df['Previous_Scores'] * 0.3)
+df['Passed'] = (score > score.median() + np.random.normal(0, 5, n_samples)).astype(int)
+
+# 2. Train Model for Feature Importance
+X = df.drop('Passed', axis=1)
+y = df['Passed']
+rf = RandomForestClassifier(random_state=42, n_estimators=100)
+rf.fit(X, y)
+importances = rf.feature_importances_
+
+# 3. Create Plots
+fig, axes = plt.subplots(2, 2, figsize=(14, 12))
+
+# Plot 1: Feature Importance Bar Chart
+sns.barplot(x=importances, y=X.columns, ax=axes[0, 0], palette='viridis')
+axes[0, 0].set_title('Feature Importance (Predicting Pass/Fail)')
+axes[0, 0].set_xlabel('Relative Importance')
+
+# Plot 2: Correlation Heatmap
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm', ax=axes[0, 1], fmt='.2f')
+axes[0, 1].set_title('Correlation Heatmap')
+
+# Plot 3: Histogram
+sns.histplot(df['Hours_Studied'], bins=20, kde=True, ax=axes[1, 0], color='skyblue')
+axes[1, 0].set_title('Distribution of Hours Studied')
+axes[1, 0].set_xlabel('Hours Studied')
+
+# Plot 4: Scatter Plot
+sns.scatterplot(data=df, x='Hours_Studied', y='Previous_Scores', hue='Passed', 
+                ax=axes[1, 1], palette='Set1', alpha=0.7)
+axes[1, 1].set_title('Scatter Plot: Hours Studied vs Previous Scores')
+
+plt.tight_layout()
+plt.show()

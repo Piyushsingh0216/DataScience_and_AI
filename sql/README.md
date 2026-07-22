@@ -2,13 +2,13 @@
 
 Welcome to my SQL Learning Repository!
 
-This repository contains my daily SQL practice as part of my **6-Month AI & Data Science Roadmap**. It documents my progress from SQL fundamentals to advanced interview-level concepts.
+This repository documents my daily SQL learning as part of my **6-Month AI & Data Science Roadmap**. It covers everything from SQL fundamentals to advanced interview-level query solving.
 
 ---
 
 # 📅 Current Progress
 
-* 📚 SQL Learning Day: **22**
+* 📚 SQL Learning Day: **23**
 * 🎯 Goal: Become Interview Ready
 * 💻 Practice Platform: MySQL & LeetCode SQL
 * 📈 Current Level: Intermediate → Advanced
@@ -17,7 +17,7 @@ This repository contains my daily SQL practice as part of my **6-Month AI & Data
 
 # 📚 Topics Covered
 
-## SQL Fundamentals
+## 🟢 SQL Fundamentals
 
 * CREATE DATABASE
 * CREATE TABLE
@@ -34,7 +34,7 @@ This repository contains my daily SQL practice as part of my **6-Month AI & Data
 * GROUP BY
 * HAVING
 
-## Intermediate SQL
+## 🟡 Intermediate SQL
 
 * INNER JOIN
 * LEFT JOIN
@@ -44,7 +44,7 @@ This repository contains my daily SQL practice as part of my **6-Month AI & Data
 * UNION
 * UNION ALL
 
-## Advanced SQL
+## 🔴 Advanced SQL
 
 * Subqueries
 * Correlated Subqueries
@@ -60,19 +60,21 @@ This repository contains my daily SQL practice as part of my **6-Month AI & Data
 * Running Totals
 * Running Averages
 * Ranking Queries
+* Query Optimization
 
-## Interview Practice
+## 💼 Interview Practice
 
 * Highest Salary Problems
+* Second & Third Highest Salary
 * Department-wise Ranking
-* Top N Records
-* Above Average Queries
-* Customers with No Orders
-* Duplicate Records
-* Monthly Sales Report
 * Running Total
 * Running Average
-* Query Optimization
+* Duplicate Records
+* Monthly Sales Report
+* Customers with No Orders
+* Products Never Ordered
+* Top N Records
+* Above Average Queries
 
 ---
 
@@ -84,60 +86,42 @@ SQL/
 ├── README.md
 ├── Day_01/
 ├── Day_02/
-├── Day_03/
 ├── ...
-├── Day_22/
+├── Day_23/
 ```
 
 ---
 
-# 🎯 Skills Gained
+# 📈 Progress
 
-* SQL Fundamentals
-* Complex JOINs
-* Aggregate Functions
-* Subqueries
-* Window Functions
-* CTEs
-* CASE Statements
-* SQL Interview Question Solving
-* Query Optimization
-
----
-
-# 📈 Current Status
-
-✅ SQL Fundamentals Completed
-
-✅ JOINs Completed
-
-✅ Aggregate Functions Completed
-
-✅ Subqueries Completed
-
-✅ Views Completed
-
-✅ CTEs Completed
-
-✅ Window Functions Completed
-
-✅ CASE Statements Completed
-
-✅ Advanced SQL Interview Practice Ongoing
+| Category                | Status      |
+| ----------------------- | ----------- |
+| SQL Fundamentals        | ✅ Completed |
+| Aggregate Functions     | ✅ Completed |
+| JOINs                   | ✅ Completed |
+| Subqueries              | ✅ Completed |
+| Views                   | ✅ Completed |
+| CTEs                    | ✅ Completed |
+| Window Functions        | ✅ Completed |
+| CASE Statements         | ✅ Completed |
+| SQL Interview Questions | 🔄 Ongoing  |
+| Query Optimization      | 🔄 Ongoing  |
 
 ---
 
-# 🚀 Upcoming Topics
+# 🎯 Upcoming Topics
 
 * Stored Procedures
 * Triggers
 * Indexes
 * Transactions
-* Normalization
-* Database Design
-* Advanced Query Optimization
-* SQL Performance Tuning
+* Database Normalization
+* Performance Tuning
+* Execution Plans
+* Advanced SQL Optimization
 
 ---
 
-⭐ **Goal:** Solve **200+ SQL Interview Questions** and become confident in writing optimized SQL queries for Data Analyst, Data Scientist, and AI Engineer interviews.
+# 🚀 Goal
+
+Solve **250+ SQL Interview Questions** and become confident in writing optimized SQL queries for Data Analyst, Data Scientist, and AI Engineer interviews.

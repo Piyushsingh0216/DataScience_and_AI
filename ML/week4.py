@@ -301,3 +301,95 @@ print("=== Confusion Matrix ===")
 print("Format: [[True Negatives (TN), False Positives (FP)]")
 print("         [False Negatives (FN), True Positives (TP)]]\n")
 print(confusion_matrix(y_test, y_pred))
+
+
+
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (accuracy_score, precision_score, 
+                             recall_score, f1_score, 
+                             confusion_matrix, ConfusionMatrixDisplay)
+
+# ==========================================
+# 1. GENERATE SYNTHETIC STUDENT DATASET
+# ==========================================
+np.random.seed(42)
+n_samples = 500
+
+data = {
+    'Hours_Studied': np.random.normal(loc=15, scale=5, size=n_samples),
+    'Attendance_Pct': np.random.normal(loc=85, scale=10, size=n_samples).clip(0, 100),
+    'Previous_Scores': np.random.normal(loc=70, scale=15, size=n_samples).clip(0, 100),
+    'Extracurricular_Activities': np.random.randint(0, 4, size=n_samples)
+}
+df = pd.DataFrame(data)
+
+# Target: Pass (1) or Fail (0) based on a noisy combination of features
+score = (df['Hours_Studied'] * 2 + df['Attendance_Pct'] * 0.5 + df['Previous_Scores'] * 0.3)
+df['Passed'] = (score > score.median() + np.random.normal(0, 5, n_samples)).astype(int)
+
+X = df.drop('Passed', axis=1)
+y = df['Passed']
+
+# ==========================================
+# 2. SPLIT DATA & TRAIN MODELS
+# ==========================================
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Initialize both classifiers (limiting depth to prevent heavy overfitting on synthetic data)
+dt_model = DecisionTreeClassifier(random_state=42, max_depth=5)
+rf_model = RandomForestClassifier(random_state=42, n_estimators=100, max_depth=5)
+
+# Train both models
+dt_model.fit(X_train, y_train)
+rf_model.fit(X_train, y_train)
+
+# ==========================================
+# 3. EVALUATE METRICS
+# ==========================================
+def evaluate_and_print(name, model, X_test, y_test):
+    y_pred = model.predict(X_test)
+    print(f"--- {name} ---")
+    print(f"Accuracy:  {accuracy_score(y_test, y_pred):.4f}")
+    print(f"Precision: {precision_score(y_test, y_pred):.4f}")
+    print(f"Recall:    {recall_score(y_test, y_pred):.4f}")
+    print(f"F1-Score:  {f1_score(y_test, y_pred):.4f}\n")
+    return y_pred
+
+# Print comparisons to the terminal
+dt_preds = evaluate_and_print("Decision Tree Classifier", dt_model, X_test, y_test)
+rf_preds = evaluate_and_print("Random Forest Classifier", rf_model, X_test, y_test)
+
+# ==========================================
+# 4. DISPLAY CHARTS (Confusion Matrix & Feature Importance)
+# ==========================================
+# Set up a 1x3 grid for our plots
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+# Plot 1: Decision Tree Confusion Matrix
+cm_dt = confusion_matrix(y_test, dt_preds)
+disp_dt = ConfusionMatrixDisplay(confusion_matrix=cm_dt, display_labels=["Fail", "Pass"])
+disp_dt.plot(ax=axes[0], cmap='Blues', colorbar=False)
+axes[0].set_title("Decision Tree\nConfusion Matrix")
+
+# Plot 2: Random Forest Confusion Matrix
+cm_rf = confusion_matrix(y_test, rf_preds)
+disp_rf = ConfusionMatrixDisplay(confusion_matrix=cm_rf, display_labels=["Fail", "Pass"])
+disp_rf.plot(ax=axes[1], cmap='Greens', colorbar=False)
+axes[1].set_title("Random Forest\nConfusion Matrix")
+
+# Plot 3: Random Forest Feature Importances
+importances = rf_model.feature_importances_
+features = X.columns
+indices = np.argsort(importances)
+
+axes[2].barh(range(len(indices)), importances[indices], color='mediumpurple', align='center')
+axes[2].set_yticks(range(len(indices)))
+axes[2].set_yticklabels([features[i] for i in indices])
+axes[2].set_title("Random Forest\nFeature Importances")
+axes[2].set_xlabel("Relative Importance")
+
+plt.tight_layout()
+plt.show()
