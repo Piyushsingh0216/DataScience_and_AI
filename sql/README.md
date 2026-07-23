@@ -2,13 +2,13 @@
 
 Welcome to my SQL Learning Repository!
 
-This repository documents my daily SQL learning as part of my **6-Month AI & Data Science Roadmap**. It covers everything from SQL fundamentals to advanced interview-level query solving.
+This repository documents my daily SQL learning journey as part of my **6-Month AI & Data Science Roadmap**. It covers everything from SQL fundamentals to advanced interview-level query solving through consistent daily practice.
 
 ---
 
 # 📅 Current Progress
 
-* 📚 SQL Learning Day: **23**
+* 📚 SQL Learning Day: **24**
 * 🎯 Goal: Become Interview Ready
 * 💻 Practice Platform: MySQL & LeetCode SQL
 * 📈 Current Level: Intermediate → Advanced
@@ -62,19 +62,21 @@ This repository documents my daily SQL learning as part of my **6-Month AI & Dat
 * Ranking Queries
 * Query Optimization
 
-## 💼 Interview Practice
+## 💼 SQL Interview Practice
 
 * Highest Salary Problems
-* Second & Third Highest Salary
+* Second, Third & Fourth Highest Salary
+* Department-wise Top N Salaries
 * Department-wise Ranking
-* Running Total
-* Running Average
+* Running Totals
+* Running Averages
+* Monthly Sales Reports
+* Revenue Trends
 * Duplicate Records
-* Monthly Sales Report
-* Customers with No Orders
-* Products Never Ordered
-* Top N Records
 * Above Average Queries
+* Customers with No Orders
+* Employees Without Managers
+* Products Never Sold
 
 ---
 
@@ -86,26 +88,27 @@ SQL/
 ├── README.md
 ├── Day_01/
 ├── Day_02/
+├── Day_03/
 ├── ...
-├── Day_23/
+├── Day_24/
 ```
 
 ---
 
-# 📈 Progress
+# 📈 Progress Summary
 
-| Category                | Status      |
-| ----------------------- | ----------- |
-| SQL Fundamentals        | ✅ Completed |
-| Aggregate Functions     | ✅ Completed |
-| JOINs                   | ✅ Completed |
-| Subqueries              | ✅ Completed |
-| Views                   | ✅ Completed |
-| CTEs                    | ✅ Completed |
-| Window Functions        | ✅ Completed |
-| CASE Statements         | ✅ Completed |
-| SQL Interview Questions | 🔄 Ongoing  |
-| Query Optimization      | 🔄 Ongoing  |
+| Module                 | Status      |
+| ---------------------- | ----------- |
+| SQL Fundamentals       | ✅ Completed |
+| Aggregate Functions    | ✅ Completed |
+| JOINs                  | ✅ Completed |
+| Subqueries             | ✅ Completed |
+| Views                  | ✅ Completed |
+| CTEs                   | ✅ Completed |
+| Window Functions       | ✅ Completed |
+| CASE Statements        | ✅ Completed |
+| SQL Interview Practice | 🔄 Ongoing  |
+| Query Optimization     | 🔄 Ongoing  |
 
 ---
 
@@ -116,12 +119,11 @@ SQL/
 * Indexes
 * Transactions
 * Database Normalization
-* Performance Tuning
-* Execution Plans
-* Advanced SQL Optimization
+* Query Execution Plans
+* SQL Performance Tuning
 
 ---
 
 # 🚀 Goal
 
-Solve **250+ SQL Interview Questions** and become confident in writing optimized SQL queries for Data Analyst, Data Scientist, and AI Engineer interviews.
+Solve **250+ SQL Interview Questions** and confidently write optimized SQL queries for Data Analyst, Data Scientist, and AI Engineer interviews.

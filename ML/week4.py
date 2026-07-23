@@ -393,3 +393,76 @@ axes[2].set_xlabel("Relative Importance")
 
 plt.tight_layout()
 plt.show()
+
+
+
+
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# 1. Generate a synthetic Student Performance dataset
+# Features: Attendance (%), Study Hours/Week, Previous Grade (%), Sleep Hours/Night
+# Target: Passed (1) or Failed (0)
+np.random.seed(42)
+n_samples = 1000
+
+attendance = np.random.normal(75, 15, n_samples).clip(0, 100)
+study_hours = np.random.normal(15, 8, n_samples).clip(0, 50)
+prev_grade = np.random.normal(65, 20, n_samples).clip(0, 100)
+sleep_hours = np.random.normal(7, 1.5, n_samples).clip(0, 12)
+
+# Create a realistic target where higher metrics improve the chance of passing
+prob_pass = (attendance * 0.4 + study_hours * 1.5 + prev_grade * 0.5 + sleep_hours * 2) / 100
+target = np.where(prob_pass + np.random.normal(0, 0.2, n_samples) > 0.65, 1, 0)
+
+data = pd.DataFrame({
+    'Attendance': attendance,
+    'StudyHours': study_hours,
+    'PrevGrade': prev_grade,
+    'SleepHours': sleep_hours,
+    'Passed': target
+})
+
+X = data.drop('Passed', axis=1)
+y = data['Passed']
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Function to evaluate and print metrics
+def evaluate_model(model, X_test, y_test, model_name):
+    y_pred = model.predict(X_test)
+    print(f"--- {model_name} Metrics ---")
+    print(f"Accuracy : {accuracy_score(y_test, y_pred):.4f}")
+    print(f"Precision: {precision_score(y_test, y_pred):.4f}")
+    print(f"Recall   : {recall_score(y_test, y_pred):.4f}")
+    print(f"F1-Score : {f1_score(y_test, y_pred):.4f}\n")
+
+# 2. Train Default Model
+default_rf = RandomForestClassifier(random_state=42)
+default_rf.fit(X_train, y_train)
+evaluate_model(default_rf, X_test, y_test, "Default RandomForest")
+
+# 3. Hyperparameter Tuning
+print("Tuning hyperparameters (n_estimators, max_depth)... Please wait.\n")
+param_grid = {
+    'n_estimators': [50, 100, 200, 300],
+    'max_depth': [None, 5, 10, 15, 20]
+}
+
+grid_search = GridSearchCV(
+    estimator=RandomForestClassifier(random_state=42),
+    param_grid=param_grid,
+    cv=5,
+    scoring='f1', # Optimizing for F1-score
+    n_jobs=-1
+)
+
+grid_search.fit(X_train, y_train)
+
+# 4. Train Tuned Model
+tuned_rf = grid_search.best_estimator_
+print(f"Best Parameters Found: {grid_search.best_params_}\n")
+
+evaluate_model(tuned_rf, X_test, y_test, "Tuned RandomForest")

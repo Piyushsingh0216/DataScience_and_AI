@@ -109,3 +109,69 @@ axes[1, 1].set_title('Scatter Plot: Hours Studied vs Previous Scores')
 
 plt.tight_layout()
 plt.show()
+
+
+
+
+
+from sklearn.ensemble import RandomForestClassifier
+
+# 1. Generate the synthetic dataset
+np.random.seed(42)
+n_samples = 1000
+
+attendance = np.random.normal(75, 15, n_samples).clip(0, 100)
+study_hours = np.random.normal(15, 8, n_samples).clip(0, 50)
+prev_grade = np.random.normal(65, 20, n_samples).clip(0, 100)
+sleep_hours = np.random.normal(7, 1.5, n_samples).clip(0, 12)
+
+prob_pass = (attendance * 0.4 + study_hours * 1.5 + prev_grade * 0.5 + sleep_hours * 2) / 100
+target = np.where(prob_pass + np.random.normal(0, 0.2, n_samples) > 0.65, 1, 0)
+
+df = pd.DataFrame({
+    'Attendance': attendance,
+    'StudyHours': study_hours,
+    'PrevGrade': prev_grade,
+    'SleepHours': sleep_hours,
+    'Passed': target
+})
+
+X = df.drop('Passed', axis=1)
+y = df['Passed']
+
+# Train model to get feature importances
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X, y)
+importances = rf.feature_importances_
+
+# 2. Set up the visualization grid
+sns.set_theme(style="whitegrid")
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+fig.suptitle('Student Performance Data Analysis', fontsize=16, fontweight='bold')
+
+# --- Chart 1: Feature Importance Bar Chart ---
+sns.barplot(x=importances, y=X.columns, ax=axes[0, 0], palette="viridis")
+axes[0, 0].set_title('Feature Importance for Predicting "Pass"')
+axes[0, 0].set_xlabel('Importance Score')
+axes[0, 0].set_ylabel('Features')
+
+# --- Chart 2: Box Plot ---
+sns.boxplot(x='Passed', y='StudyHours', data=df, ax=axes[0, 1], palette="Set2")
+axes[0, 1].set_title('Study Hours Distribution by Pass/Fail Status')
+axes[0, 1].set_xlabel('Passed (0 = No, 1 = Yes)')
+axes[0, 1].set_ylabel('Study Hours / Week')
+
+# --- Chart 3: Histogram ---
+sns.histplot(df['Attendance'], bins=20, kde=True, ax=axes[1, 0], color='skyblue')
+axes[1, 0].set_title('Distribution of Student Attendance')
+axes[1, 0].set_xlabel('Attendance (%)')
+axes[1, 0].set_ylabel('Count')
+
+# --- Chart 4: Scatter Plot ---
+sns.scatterplot(x='StudyHours', y='SleepHours', hue='Passed', data=df, alpha=0.7, palette="coolwarm", ax=axes[1, 1])
+axes[1, 1].set_title('Study Hours vs Sleep Hours (Colored by Target)')
+axes[1, 1].set_xlabel('Study Hours / Week')
+axes[1, 1].set_ylabel('Sleep Hours / Night')
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.show()

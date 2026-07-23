@@ -210,3 +210,50 @@ print("=== Department Statistics Summary ===")
 print(dept_summary)
 
 
+
+
+
+
+# 1. Create synthetic dataset
+np.random.seed(42)
+n_students = 200
+departments = ['Computer Science', 'Mechanical', 'Electrical', 'Civil']
+
+data = {
+    'Student_ID': range(1, n_students + 1),
+    'Department': np.random.choice(departments, n_students),
+    'Attendance_Percentage': np.random.uniform(50, 100, n_students).round(2),
+    'Marks': np.random.uniform(30, 100, n_students).round(2)
+}
+df = pd.DataFrame(data)
+
+# 2. Department performance summary
+dept_performance = df.groupby('Department')['Marks'].agg(['mean', 'min', 'max', 'count']).round(2)
+dept_performance.rename(
+    columns={'mean': 'Average_Marks', 'min': 'Min_Marks', 'max': 'Max_Marks', 'count': 'Total_Students'}, 
+    inplace=True
+)
+dept_performance.to_csv('department_performance_summary.csv')
+
+# 3. Attendance analysis
+# Categorize attendance into bins
+bins_att = [0, 75, 90, 100]
+labels_att = ['Low (<75%)', 'Medium (75-90%)', 'High (>90%)']
+df['Attendance_Category'] = pd.cut(df['Attendance_Percentage'], bins=bins_att, labels=labels_att)
+
+# Group by department and attendance category
+attendance_analysis = df.groupby(['Department', 'Attendance_Category'], observed=True).size().unstack(fill_value=0)
+attendance_analysis.to_csv('attendance_analysis.csv')
+
+# 4. Marks distribution report
+# Categorize marks into bins
+bins_marks = [0, 40, 60, 80, 100]
+labels_marks = ['Fail (<40)', 'Pass (40-60)', 'First Class (60-80)', 'Distinction (80-100)']
+df['Marks_Category'] = pd.cut(df['Marks'], bins=bins_marks, labels=labels_marks)
+
+# Count students in each grade category
+marks_distribution = df['Marks_Category'].value_counts().sort_index().reset_index()
+marks_distribution.columns = ['Grade_Category', 'Number_of_Students']
+marks_distribution.to_csv('marks_distribution_report.csv')
+
+print("CSV files generated successfully.")
