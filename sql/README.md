@@ -2,16 +2,16 @@
 
 Welcome to my SQL Learning Repository!
 
-This repository documents my daily SQL learning journey as part of my **6-Month AI & Data Science Roadmap**. It covers everything from SQL fundamentals to advanced interview-level query solving through consistent daily practice.
+This repository documents my SQL learning journey as part of my **6-Month AI & Data Science Roadmap**. Every day focuses on writing cleaner queries, improving problem-solving skills, and preparing for Data Analyst and AI/ML interviews.
 
 ---
 
 # 📅 Current Progress
 
-* 📚 SQL Learning Day: **24**
-* 🎯 Goal: Become Interview Ready
-* 💻 Practice Platform: MySQL & LeetCode SQL
-* 📈 Current Level: Intermediate → Advanced
+* 📚 SQL Learning Day: **25**
+* 🎯 Goal: Master SQL for Data Analytics & AI Interviews
+* 💻 Database: MySQL
+* 📈 Level: Intermediate → Advanced
 
 ---
 
@@ -22,9 +22,9 @@ This repository documents my daily SQL learning journey as part of my **6-Month 
 * CREATE DATABASE
 * CREATE TABLE
 * INSERT
-* SELECT
 * UPDATE
 * DELETE
+* SELECT
 * WHERE
 * ORDER BY
 * LIMIT
@@ -40,7 +40,7 @@ This repository documents my daily SQL learning journey as part of my **6-Month 
 * LEFT JOIN
 * RIGHT JOIN
 * CROSS JOIN
-* SELF JOIN (Concept)
+* SELF JOIN
 * UNION
 * UNION ALL
 
@@ -56,27 +56,31 @@ This repository documents my daily SQL learning journey as part of my **6-Month 
 * RANK()
 * DENSE_RANK()
 * PARTITION BY
+* OVER()
 * CASE Statements
 * Running Totals
 * Running Averages
 * Ranking Queries
 * Query Optimization
 
-## 💼 SQL Interview Practice
+---
 
-* Highest Salary Problems
+# 💼 Interview Problems Practiced
+
+* Highest Salary
 * Second, Third & Fourth Highest Salary
-* Department-wise Top N Salaries
+* Top N Salaries
 * Department-wise Ranking
 * Running Totals
-* Running Averages
-* Monthly Sales Reports
+* Running Average
+* Moving Average
 * Revenue Trends
+* Monthly Sales Report
+* Above Average Salary
 * Duplicate Records
-* Above Average Queries
 * Customers with No Orders
-* Employees Without Managers
 * Products Never Sold
+* Employees Without Managers
 
 ---
 
@@ -88,42 +92,57 @@ SQL/
 ├── README.md
 ├── Day_01/
 ├── Day_02/
-├── Day_03/
 ├── ...
-├── Day_24/
+├── Day_25/
+│   ├── practice.sql
+│   ├── solutions.sql
+│   └── notes.md
 ```
 
 ---
 
-# 📈 Progress Summary
+# 📊 Learning Progress
 
-| Module                 | Status      |
-| ---------------------- | ----------- |
-| SQL Fundamentals       | ✅ Completed |
-| Aggregate Functions    | ✅ Completed |
-| JOINs                  | ✅ Completed |
-| Subqueries             | ✅ Completed |
-| Views                  | ✅ Completed |
-| CTEs                   | ✅ Completed |
-| Window Functions       | ✅ Completed |
-| CASE Statements        | ✅ Completed |
-| SQL Interview Practice | 🔄 Ongoing  |
-| Query Optimization     | 🔄 Ongoing  |
+| Module                  | Status         |
+| ----------------------- | -------------- |
+| SQL Fundamentals        | ✅ Completed    |
+| Aggregate Functions     | ✅ Completed    |
+| JOINs                   | ✅ Completed    |
+| Subqueries              | ✅ Completed    |
+| Views                   | ✅ Completed    |
+| CTEs                    | ✅ Completed    |
+| Window Functions        | ✅ Completed    |
+| CASE Statements         | ✅ Completed    |
+| SQL Interview Questions | 🔄 In Progress |
+| Query Optimization      | 🔄 In Progress |
 
 ---
 
-# 🎯 Upcoming Topics
+# 🎯 Next Topics
 
 * Stored Procedures
 * Triggers
 * Indexes
-* Transactions
-* Database Normalization
-* Query Execution Plans
-* SQL Performance Tuning
+* Transactions (COMMIT / ROLLBACK)
+* Normalization
+* Execution Plans
+* Performance Tuning
 
 ---
 
-# 🚀 Goal
+# 📈 Roadmap Goal
 
-Solve **250+ SQL Interview Questions** and confidently write optimized SQL queries for Data Analyst, Data Scientist, and AI Engineer interviews.
+* ✅ Complete **100+ SQL Concepts**
+* ✅ Solve **250+ SQL Interview Questions**
+* ✅ Master Window Functions & CTEs
+* 🎯 Become Interview Ready for Data Analyst, AI Engineer, and Machine Learning roles.
+
+---
+
+## ⭐ Repository Highlights
+
+* 📅 25 Days of SQL Practice
+* 💻 Daily Hands-on Queries
+* 🧠 Interview-Focused Problems
+* 📚 Well-Organized Notes
+* 🚀 Continuous GitHub Updates

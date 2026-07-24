@@ -257,3 +257,99 @@ marks_distribution.columns = ['Grade_Category', 'Number_of_Students']
 marks_distribution.to_csv('marks_distribution_report.csv')
 
 print("CSV files generated successfully.")
+
+
+
+
+
+
+
+# ==========================================
+# 1. GENERATE SYNTHETIC DATASET (or load yours)
+# ==========================================
+# To use your own data, replace this section with: df = pd.read_csv('your_file.csv')
+np.random.seed(42)
+n_students = 500
+
+data = {
+    'Student_ID': range(1, n_students + 1),
+    'Department': np.random.choice(['Computer Science', 'Mathematics', 'Physics', 'Literature', 'Economics'], n_students),
+    'Study_Hours': np.random.normal(15, 5, n_students),
+    'Attendance': np.random.normal(82, 12, n_students),
+    'Marks': np.random.normal(65, 15, n_students)
+}
+df = pd.DataFrame(data)
+
+# Introduce some missing values randomly
+df.loc[np.random.choice(df.index, 25, replace=False), 'Marks'] = np.nan
+df.loc[np.random.choice(df.index, 15, replace=False), 'Attendance'] = np.nan
+df.loc[np.random.choice(df.index, 10, replace=False), 'Study_Hours'] = np.nan
+
+# Ensure logical bounds
+df['Attendance'] = df['Attendance'].clip(0, 100)
+df['Marks'] = df['Marks'].clip(0, 100)
+
+print("Dataset loaded. Generating reports...\n")
+
+
+# ==========================================
+# 2. GENERATE REPORTS
+# ==========================================
+
+# A. Missing Values Report
+missing_report = df.isnull().sum().to_frame(name='Missing_Count')
+missing_report['Missing_Percentage'] = (missing_report['Missing_Count'] / len(df)) * 100
+missing_report.index.name = 'Feature'
+
+# B. Correlation Report (Only on numeric columns)
+correlation_report = df.corr(numeric_only=True)
+
+# C. Department-wise Marks Summary
+dept_marks_summary = df.groupby('Department')['Marks'].agg(
+    Student_Count='count',
+    Average_Marks='mean',
+    Min_Marks='min',
+    Max_Marks='max',
+    Median_Marks='median'
+).round(2)
+
+# D. Attendance Summary (Overall stats + Department-wise average)
+# Creating a multi-faceted summary by combining overall describe and department grouping
+overall_attendance = df['Attendance'].describe().to_frame(name='Overall_Attendance_Stats').round(2)
+
+dept_attendance_summary = df.groupby('Department')['Attendance'].agg(
+    Average_Attendance='mean',
+    Min_Attendance='min',
+    Max_Attendance='max'
+).round(2)
+
+
+# ==========================================
+# 3. EXPORT TO CSV
+# ==========================================
+missing_report.to_csv('missing_values_report.csv')
+correlation_report.to_csv('correlation_report.csv')
+dept_marks_summary.to_csv('department_marks_summary.csv')
+dept_attendance_summary.to_csv('attendance_summary.csv')
+
+
+# ==========================================
+# 4. PRINT PREVIEWS TO TERMINAL
+# ==========================================
+print("--- 1. MISSING VALUES REPORT ---")
+print(missing_report)
+print("\n")
+
+print("--- 2. CORRELATION REPORT ---")
+print(correlation_report.round(3))
+print("\n")
+
+print("--- 3. DEPARTMENT-WISE MARKS SUMMARY ---")
+print(dept_marks_summary)
+print("\n")
+
+print("--- 4. ATTENDANCE SUMMARY (Department-wise) ---")
+print(dept_attendance_summary)
+print("\n")
+
+print("✅ SUCCESS: All 4 reports have been exported as CSV files to your current directory.")

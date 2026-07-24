@@ -175,3 +175,75 @@ axes[1, 1].set_ylabel('Sleep Hours / Night')
 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.show()
+
+
+
+
+
+
+
+
+
+# ==========================================
+# 1. GENERATE SYNTHETIC DATA
+# ==========================================
+np.random.seed(42)
+n_samples = 500
+
+data = {
+    'Department': np.random.choice(['Math', 'Physics', 'Literature', 'History', 'Biology'], n_samples),
+    'Study_Hours': np.random.normal(15, 5, n_samples),
+    'Attendance': np.random.normal(85, 10, n_samples),
+    'Past_Score': np.random.normal(70, 12, n_samples),
+    'Stress_Level': np.random.randint(1, 10, n_samples)
+}
+df = pd.DataFrame(data)
+
+# Generate target variable (Marks) based on features
+df['Marks'] = (df['Study_Hours'] * 1.5 + 
+               df['Attendance'] * 0.4 + 
+               df['Past_Score'] * 0.5 - 
+               df['Stress_Level'] * 1.2 + 
+               np.random.normal(0, 5, n_samples))
+df['Marks'] = df['Marks'].clip(0, 100)
+
+# ==========================================
+# 2. CALCULATE FEATURE IMPORTANCE
+# ==========================================
+X = df[['Study_Hours', 'Attendance', 'Past_Score', 'Stress_Level']]
+y = df['Marks']
+
+rf = RandomForestRegressor(random_state=42)
+rf.fit(X, y)
+
+feat_imp = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': rf.feature_importances_
+}).sort_values(by='Importance', ascending=False)
+
+# ==========================================
+# 3. CREATE VISUALIZATIONS (2x2 Grid)
+# ==========================================
+sns.set_theme(style="whitegrid")
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+fig.suptitle('Student Performance Analysis Dashboard', fontsize=18, fontweight='bold')
+
+# A. Correlation Heatmap (Top Left)
+numeric_cols = df.select_dtypes(include=[np.number])
+sns.heatmap(numeric_cols.corr(), annot=True, cmap='coolwarm', fmt=".2f", ax=axes[0, 0])
+axes[0, 0].set_title('Correlation Heatmap', fontsize=14)
+
+# B. Feature Importance Bar Chart (Top Right)
+sns.barplot(x='Importance', y='Feature', data=feat_imp, palette='viridis', ax=axes[0, 1])
+axes[0, 1].set_title('Feature Importance (Random Forest)', fontsize=14)
+
+# C. Box Plot (Bottom Left)
+sns.boxplot(x='Department', y='Marks', data=df, palette='Set2', ax=axes[1, 0])
+axes[1, 0].set_title('Marks Distribution by Department', fontsize=14)
+
+# D. Scatter Plot (Bottom Right)
+sns.scatterplot(x='Study_Hours', y='Marks', hue='Department', data=df, alpha=0.7, ax=axes[1, 1])
+axes[1, 1].set_title('Study Hours vs. Marks', fontsize=14)
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.show()

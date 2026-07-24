@@ -466,3 +466,111 @@ tuned_rf = grid_search.best_estimator_
 print(f"Best Parameters Found: {grid_search.best_params_}\n")
 
 evaluate_model(tuned_rf, X_test, y_test, "Tuned RandomForest")
+
+
+
+
+
+
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# ==========================================
+# 1. GENERATE SYNTHETIC DATASET (or load yours)
+# ==========================================
+np.random.seed(42)
+n_samples = 1000
+
+# Creating 10 features, some highly predictive, some random noise
+data = {
+    'study_hours_per_week': np.random.normal(10, 4, n_samples),
+    'attendance_rate': np.random.normal(85, 10, n_samples),
+    'previous_term_score': np.random.normal(70, 15, n_samples),
+    'sleep_hours_per_night': np.random.normal(7, 1.5, n_samples),
+    'screen_time_hours': np.random.normal(5, 2, n_samples),
+    'extracurricular_activities': np.random.randint(0, 4, n_samples),
+    'parent_education_level': np.random.randint(1, 4, n_samples),
+    'commute_time_mins': np.random.normal(30, 15, n_samples),
+    'tutoring_sessions': np.random.randint(0, 5, n_samples),
+    'stress_level': np.random.randint(1, 10, n_samples)
+}
+df = pd.DataFrame(data)
+
+# Target Variable: 'Passed' (1 for Pass, 0 for Fail)
+# The outcome heavily relies on study hours, attendance, and previous scores.
+target_threshold = (df['study_hours_per_week'] * 1.5 + 
+                    df['attendance_rate'] * 0.5 + 
+                    df['previous_term_score'] * 0.8)
+df['passed'] = (target_threshold > 115).astype(int)
+
+# Separate features (X) and target (y)
+X = df.drop('passed', axis=1)
+y = df['passed']
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+# ==========================================
+# 2. TRAIN BASELINE MODEL
+# ==========================================
+rf_base = RandomForestClassifier(random_state=42)
+rf_base.fit(X_train, y_train)
+y_pred_base = rf_base.predict(X_test)
+
+def evaluate_model(y_true, y_pred):
+    return {
+        "Accuracy": accuracy_score(y_true, y_pred),
+        "Precision": precision_score(y_true, y_pred),
+        "Recall": recall_score(y_true, y_pred),
+        "F1-Score": f1_score(y_true, y_pred)
+    }
+
+base_metrics = evaluate_model(y_test, y_pred_base)
+
+
+# ==========================================
+# 3. IDENTIFY TOP 5 FEATURES
+# ==========================================
+feature_importances = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': rf_base.feature_importances_
+}).sort_values(by='Importance', ascending=False)
+
+top_5_features = feature_importances['Feature'].head(5).tolist()
+
+
+# ==========================================
+# 4. RETRAIN MODEL WITH TOP 5 FEATURES
+# ==========================================
+X_train_reduced = X_train[top_5_features]
+X_test_reduced = X_test[top_5_features]
+
+rf_reduced = RandomForestClassifier(random_state=42)
+rf_reduced.fit(X_train_reduced, y_train)
+y_pred_reduced = rf_reduced.predict(X_test_reduced)
+
+reduced_metrics = evaluate_model(y_test, y_pred_reduced)
+
+
+# ==========================================
+# 5. COMPARE RESULTS & PRINT CONCLUSION
+# ==========================================
+print("\n--- TOP 5 MOST IMPORTANT FEATURES ---")
+for i, feature in enumerate(top_5_features, 1):
+    print(f"{i}. {feature}")
+
+print("\n--- PERFORMANCE COMPARISON ---")
+comparison_df = pd.DataFrame({
+    'Baseline Model (10 features)': base_metrics,
+    'Reduced Model (Top 5 features)': reduced_metrics
+})
+print(comparison_df.round(4).to_string())
+
+print("\n--- CONCLUSION ---")
+diff_f1 = reduced_metrics['F1-Score'] - base_metrics['F1-Score']
+if abs(diff_f1) < 0.02:
+    print("CONCLUSION: Reducing the features maintained model performance beautifully. By dropping the bottom 5 noisy/unimportant features, we simplified the model, reduced potential overfitting, and achieved nearly identical accuracy and F1-scores. This makes the model faster to run and easier to explain without sacrificing predictive power.")
+elif diff_f1 > 0:
+    print("CONCLUSION: Reducing the features actually IMPROVED performance! By removing noise and irrelevant variables, the Random Forest model was able to focus strictly on the core drivers of student success, leading to better generalization on the test set.")
+else:
+    print("CONCLUSION: Reducing the features caused a slight drop in performance. While the top 5 features capture the majority of the predictive power, the remaining features contained minor, non-negligible signals that the baseline model successfully leveraged.")
